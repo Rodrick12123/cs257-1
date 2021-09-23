@@ -7,7 +7,7 @@ SYNOPSIS
 	search [-tay] [string]
 
 DESCRIPTION
-	This search method looks through the given database of books (and the related information such as author and publication year) and prints lists composed with one or more of three specifications. By default, it will search for the user-specified term within titles. ** 
+	This search method looks through the given database of books (and the related information such as author and publication year) and prints lists composed with one of three specifications. By default, it will search for the user-specified term within titles. ** 
 
 OPTIONS
 
