@@ -6,7 +6,7 @@ OPTIONS
 
 search -t
  
-Prints books, sorted by title, whose titles contain the user-specified search term (case insensitive).
+Prints books, sorted alphabetically by title, whose titles contain the user-specified search term (case insensitive).
 
 
 search -a
@@ -19,6 +19,8 @@ search -y
 Prints books published between the user-specified years (inclusive) in order of publication year.
 
 -hs --helpsearch
+
+usage: search [-t|-a|-y] [str]
 
 Gives instructions on the different functions related to “search”.
 
