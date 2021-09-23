@@ -4,16 +4,16 @@ SYNOPSIS (TBD)
 
 OPTIONS
 
--st --searchtitle
 search -t
  
 Prints books, sorted by title, whose titles contain the user-specified search term (case insensitive).
 
--sa --searchauthor
+
 search -a
+
 Prints authors whose names contain the user-specified search term (case insensitive) in alphabetical order by surname as well as a list of their books. 
 
--sy --searchyears
+
 search -y
  
 Prints books published between the user-specified years (inclusive) in order of publication year.
