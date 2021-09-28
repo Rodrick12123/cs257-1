@@ -22,14 +22,14 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertEqual(self.data_source.authors("None"), allBooks)
     def test_a_alphabeticallyBySurname(self):
         self.smaller_data_source = booksdatasource.BooksDataSource('a_alphabeticallyBySurname.csv')
-        whatShouldBeReturned = ['"Fine, Thanks",2019,Mary Dunnewold (1962-)','The Kite Runner,2003,Khaled Hosseini (1965-)', '"The Life and Opinions of Tristram Shandy, Gentleman",1759,Laurence Sterne (1713-1768)']
+        whatShouldBeReturned = [Author('Dunnewold', 'Mary'),Author('Hosseini', 'Khaled'),Author('Sterne', 'Laurence')]
         self.assertEqual(self.smaller_data_source.authors("a"), whatShouldBeReturned)
     def test_a_alphabeticallyByFirstName(self):
         self.smaller_data_source = booksdatasource.BooksDataSource('a_alphabeticallyByFirstName.csv')
-        whatShouldBeReturned = ['The Tenant of Wildfell Hall,1848,Ann Brontë (1820-1849)','Villette,1853,Charlotte Brontë (1816-1855)','Wuthering Heights,1847,Emily Brontë (1818-1848)']
+        whatShouldBeReturned = [Author('Brontë','Ann'),Author('Brontë','Charlotte'),Author('Brontë','Emily)']
         self.assertEqual(self.smaller_data_source.authors("Brontë"), whatShouldBeReturned)
     def test_a_testTwoAuthors(self):
-        whatShouldBeReturned = ['Good Omens,1990,Neil Gaiman (1960-) and Terry Pratchett (1948-2015)']
+        whatShouldBeReturned = [Author('Gaiman', 'Neil'),Author('Pratchett','Terry')]
         self.assertEqual(self.data_source("Gaiman and Pratchett"), whatShouldBeReturned)
 
     def test_a_typoTest(self):
@@ -40,13 +40,13 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertEqual(self.data_source.authors('OtherName Christie'), [Author('Christie', 'Agatha')])
 
     def test_t_typoTest(self):
-        whatShouldBeReturned = ["No results. Please check your entry for typos."]
+        whatShouldBeReturned = []
         self.assertEqual(self.data_source("f1re"), whatShouldBeReturned)
     def test_t_portionOfTitleTest(self):
-        whatShouldBeReturned = ['The Code of the Woosters,1938,Pelham Grenville Wodehouse (1881-1975)', 'The Tenant of Wildfell Hall,1848,Ann Brontë (1820-1849)']
+        whatShouldBeReturned = [Book('The Code of the Woosters'), Book('The Tenant of Wildfell Hall')]
         self.assertEqual(self.data_source("Code Hall"), whatShouldBeReturned)
     def test_t_defaultTest(self):
-        whatShouldBeReturned = ['Omoo,1847,Herman Melville (1819-1891)']
+        whatShouldBeReturned = [Book('Omoo')]
         self.assertEqual(self.data_source("Omoo"), whatShouldBeReturned)
     def test_t_noneTest(self):
         booksFile = open("books1.csv", "r")
@@ -58,7 +58,7 @@ class BooksDataSourceTester(unittest.TestCase):
             cleanTest.append(line)
         self.assertEqual(self.data_source.authors("None"), allBooks)
     def test_t_portionTest(self):
-        whatShouldBeReturned = ['Wuthering Heights,1847,Emily Brontë (1818-1848)']
+        whatShouldBeReturned = [Book('Wuthering Heights')]
         self.assertEqual(self.data_source("Wu"), whatShouldBeReturned)
 
     def test_t_alphabeticalByTitle(self):
@@ -77,11 +77,11 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertEqual(self.data_source.authors("None"), allBooks)
     def test_y_firstTermNone(self):
         self.smaller_data_source = booksdatasource.BooksDataSource('y_firstTermNoneANDLastTermNone.csv')
-        whatShouldBeReturned = ['Jane Eyre,1847,Charlotte Brontë (1816-1855)', 'Main Street,1920,Sinclair Lewis (1885-1951)', 'Leave it to Psmith,1923,Pelham Grenville Wodehouse (1881-1975)']
+        whatShouldBeReturned = [Book('Jane Eyre'), Book('Main Street'), Book('Leave it to Psmith')]
         self.assertEqual(self.data_source("None","1923"), whatShouldBeReturned)
     def test_y_lastTermNone(self):
         self.smaller_data_source = booksdatasource.BooksDataSource('y_firstTermNoneANDLastTermNone.csv')
-        whatShouldBeReturned = ['Leave it to Psmith,1923,Pelham Grenville Wodehouse (1881-1975)','The Fire Next Time,1963,James Baldwin (1924-1987)','Love in the Time of Cholera,1985,Gabriel García Márquez (1927-2014)', 'Mirror Dance,1994,Lois McMaster Bujold (1949-)']
+        whatShouldBeReturned = [Book('Leave it to Psmith'),Book('The Fire Next Time'),Book('Love in the Time of Cholera'), Book('Mirror Dance')]
         self.assertEqual(self.data_source("1923", "None"), whatShouldBeReturned)
 
     def test_y_inclusiveAndTieBreaker(self):
