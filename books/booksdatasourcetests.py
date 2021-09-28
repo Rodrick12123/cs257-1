@@ -12,14 +12,9 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertTrue(len(authors) == 1)
         self.assertTrue(authors[0] == Author('Pratchett', 'Terry'))
     def test_a_noneCase(self):
-        booksFile = open("books1.csv", "r")
-        allBooks = booksFile.readlines()
-        booksFile.close()
-        cleanTest = []
-        for line in allBooks:
-            line = line.strip()
-            cleanTest.append(line)
-        self.assertEqual(self.data_source.authors("None"), allBooks)
+        self.smaller_data_source = booksdatasource.BooksDataSource('testNone.csv')
+        whatShouldBeReturned = [Author('Brontë', 'Charlotte'),Author('Márquez', 'Gabriel'),Author('Wodehouse', 'Pelham')]
+        self.assertEqual(self.smaller_data_source.authors("None"), whatShouldBeReturned)
     def test_a_alphabeticallyBySurname(self):
         self.smaller_data_source = booksdatasource.BooksDataSource('a_alphabeticallyBySurname.csv')
         whatShouldBeReturned = [Author('Dunnewold', 'Mary'),Author('Hosseini', 'Khaled'),Author('Sterne', 'Laurence')]
@@ -50,14 +45,9 @@ class BooksDataSourceTester(unittest.TestCase):
         whatShouldBeReturned = [Book('Omoo')]
         self.assertEqual(self.data_source.books("Omoo"), whatShouldBeReturned)
     def test_t_noneTest(self):
-        booksFile = open("books1.csv", "r")
-        allBooks = booksFile.readlines()
-        booksFile.close()
-        cleanTest = []
-        for line in allBooks:
-            line = line.strip()
-            cleanTest.append(line)
-        self.assertEqual(self.data_source.books("None"), allBooks)
+        self.smaller_data_source = booksdatasource.BooksDataSource('testNone.csv')
+        whatShouldBeReturned = [Book('Jane Eyre'),Book('Leave it to Psmith'),Book('Love in the Time of Cholera')]
+        self.assertEqual(self.smaller_data_source.books("None"), whatShouldBeReturned)
     def test_t_portionTest(self):
         whatShouldBeReturned = [Book('Wuthering Heights')]
         self.assertEqual(self.data_source.books("Wu"), whatShouldBeReturned)
@@ -68,14 +58,9 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertEqual(self.data_source.books('time', 'year'), [Book('The Fire Next Time', 1963, [Author('Baldwin', 'James')]), Book('Love in the Time of Cholera', 1985, [Author('García Márquez', 'Gabriel')]), Book('Thief of Time', 1996, [Author('Pratchett', 'Terry')])])
 
     def test_y_doubleNoneTest(self):
-        booksFile = open("books1.csv", "r")
-        allBooks = booksFile.readlines()
-        booksFile.close()
-        cleanTest = []
-        for line in allBooks:
-            line = line.strip()
-            cleanTest.append(line)
-        self.assertEqual(self.data_source.books_between_years("None"), allBooks)
+        self.smaller_data_source = booksdatasource.BooksDataSource('testNone.csv')
+        whatShouldBeReturned = [Book('Jane Eyre'),Book('Leave it to Psmith'),Book('Love in the Time of Cholera')]
+        self.assertEqual(self.smaller_data_source.books_between_years("None"), whatShouldBeReturned)
     def test_y_firstTermNone(self):
         self.smaller_data_source = booksdatasource.BooksDataSource('y_firstTermNoneANDLastTermNone.csv')
         whatShouldBeReturned = [Book('Jane Eyre'), Book('Main Street'), Book('Leave it to Psmith')]
