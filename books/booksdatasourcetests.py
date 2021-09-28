@@ -33,11 +33,13 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertEqual(self.data_source("Gaiman and Pratchett"), whatShouldBeReturned)
 
     def test_a_typoTest(self):
-        #should be no cases in which a book appears for this search term
+        #should be no cases in which a book appears for this search term (so, ok that it passes right now)
         #could also run on books() or even books_between_years()
         self.assertEqual(self.data_source.authors('f1re'), [])
     def test_a_parsingMultipleSearchTerms(self):
-        self.assertEqual(self.data_source.authors('OtherName Christie'), [Author('Christie', 'Agatha')])
+        #situation: user enters multiple search terms in a string separated by spaces (i.e. 'Agaths Cristie')
+        #should pull up anything that matches any of the terms (i.e. Agatha Cristie)
+        self.assertEqual(self.data_source.authors('Agaths Christie'), [Author('Christie', 'Agatha')])
 
     def test_t_typoTest(self):
         whatShouldBeReturned = ["No results. Please check your entry for typos."]
@@ -62,9 +64,9 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertEqual(self.data_source("Wu"), whatShouldBeReturned)
 
     def test_t_alphabeticalByTitle(self):
-        self.assertEqual(self.data_source.books('time', 'title'), ['Love in the Time of Cholera,1985,Gabriel García Márquez (1927-2014)', 'The Fire Next Time,1963,James Baldwin (1924-1987)', 'Thief of Time,1996,Terry Pratchett (1948-2015)'])
+        self.assertEqual(self.data_source.books('time', 'title'), [Book('Love in the Time of Cholera', 1985, [Author('García Márquez', 'Gabriel')]), Book('The Fire Next Time', 1963, [Author('Baldwin', 'James')]), Book('Thief of Time', 1996, [Author('Pratchett', 'Terry')])])
     def test_t_sortByYear(self):
-        self.assertEqual(self.data_source.books('time', 'year'), ['Thief of Time,1996,Terry Pratchett (1948-2015)', 'Love in the Time of Cholera,1985,Gabriel García Márquez (1927-2014)', 'The Fire Next Time,1963,James Baldwin (1924-1987)'])
+        self.assertEqual(self.data_source.books('time', 'year'), [Book('The Fire Next Time', 1963, [Author('Baldwin', 'James')]), Book('Love in the Time of Cholera', 1985, [Author('García Márquez', 'Gabriel')]), Book('Thief of Time', 1996, [Author('Pratchett', 'Terry')])])
 
     def test_y_doubleNoneTest(self):
         booksFile = open("books1.csv", "r")
@@ -85,10 +87,10 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertEqual(self.data_source("1923", "None"), whatShouldBeReturned)
 
     def test_y_inclusiveAndTieBreaker(self):
-        self.assertEqual(self.data_source.books_between_years(2005, 2010), ['1Q84,2009,Haruki Murakami (1949-)', 'All Clear,2010,Connie Willis (1945-)', 'Blackout,2010,Connie Willis (1945-)'])
+        self.assertEqual(self.data_source.books_between_years(2005, 2010), [Book('1Q84', 2009, [Author('Murakami', 'Haruki')]), Book('All Clear', 2010, [Author('Willis', 'Connie')]), Book('Blackout', 2010, [Author('Willis', 'Connie')])])
     def test_y_typoTest(self):
-        #would a typo just count as a None? probably yes, in which case:
-        self.assertEqual(self.data_source.books_between_years(2020, 'hello'), ['Boys and Sex,2020,Peggy Orenstein (1961-)', 'The Invisible Life of Addie LaRue,2020,V.E. Schwab (1987-)'])
-
+        #situation: one of the search terms (start year or end year) is not valid (i.e. letters instead of numbers)
+        #should raise a TypeError exception if one of the terms is something other than an integer or None
+        self.assertRaises(TypeError, self.data_source.books_between_years, 2020, 'hello')
 if __name__ == '__main__':
     unittest.main()
