@@ -31,6 +31,14 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_a_testTwoAuthors(self):
         whatShouldBeReturned = ['Good Omens,1990,Neil Gaiman (1960-) and Terry Pratchett (1948-2015)']
         self.assertEqual(self.data_source("Gaiman and Pratchett"), whatShouldBeReturned)
+
+def test_a_typoTest(self):
+        #should be no cases in which a book appears for this search term
+        #could also run on books() or even books_between_years()
+        self.assertEqual(self.data_source.authors('f1re'), [])
+    def test_a_parsingMultipleSearchTerms(self):
+        self.assertEqual(self.data_source.authors('OtherName Christie'), [Author('Christie', 'Agatha')])
+
     def test_t_typoTest(self):
         whatShouldBeReturned = ["No results. Please check your entry for typos."]
         self.assertEqual(self.data_source("f1re"), whatShouldBeReturned)
@@ -52,6 +60,12 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_t_portionTest(self):
         whatShouldBeReturned = ['Wuthering Heights,1847,Emily Brontë (1818-1848)']
         self.assertEqual(self.data_source("Wu"), whatShouldBeReturned)
+
+def test_t_alphabeticalByTitle(self):
+        self.assertEqual(self.data_source.books('time', 'title'), ['Love in the Time of Cholera,1985,Gabriel García Márquez (1927-2014)', 'The Fire Next Time,1963,James Baldwin (1924-1987)', 'Thief of Time,1996,Terry Pratchett (1948-2015)'])
+    def test_t_sortByYear(self):
+        self.assertEqual(self.data_source.books('time', 'year'), ['Thief of Time,1996,Terry Pratchett (1948-2015)', 'Love in the Time of Cholera,1985,Gabriel García Márquez (1927-2014)', 'The Fire Next Time,1963,James Baldwin (1924-1987)'])
+
     def test_y_doubleNoneTest(self):
         booksFile = open("books1.csv", "r")
         allBooks = booksFile.readlines()
@@ -69,5 +83,12 @@ class BooksDataSourceTester(unittest.TestCase):
         self.smaller_data_source = booksdatasource.BooksDataSource('y_firstTermNoneANDLastTermNone.csv')
         whatShouldBeReturned = ['Leave it to Psmith,1923,Pelham Grenville Wodehouse (1881-1975)','The Fire Next Time,1963,James Baldwin (1924-1987)','Love in the Time of Cholera,1985,Gabriel García Márquez (1927-2014)', 'Mirror Dance,1994,Lois McMaster Bujold (1949-)']
         self.assertEqual(self.data_source("1923", "None"), whatShouldBeReturned)
+
+def test_y_inclusiveAndTieBreaker(self):
+        self.assertEqual(self.data_source.books_between_years(2005, 2010), ['1Q84,2009,Haruki Murakami (1949-)', 'All Clear,2010,Connie Willis (1945-)', 'Blackout,2010,Connie Willis (1945-)'])
+    def test_y_typoTest(self):
+        #would a typo just count as a None? probably yes, in which case:
+        self.assertEqual(self.data_source.books_between_years(2020, 'hello'), ['Boys and Sex,2020,Peggy Orenstein (1961-)', 'The Invisible Life of Addie LaRue,2020,V.E. Schwab (1987-)'])
+
 if __name__ == '__main__':
     unittest.main()
