@@ -4,10 +4,10 @@ NAME
 	search
 
 SYNOPSIS
-	search [-tay] [string]
+	search [-t|-a|-y] [string]
 
 DESCRIPTION
-	This search method looks through the given database of books (and the related information such as author and publication year) and prints lists composed from one of three specifications. By default, it will search for the user-specified term within titles. ** 
+	This search method looks through the given database of books (and the related information such as author and publication year) and prints lists composed from one of three specifications. By default, it will search for the user-specified term within titles. 
 
 OPTIONS
 
@@ -29,5 +29,4 @@ Prints books published between the user-specified years (inclusive) in order of 
 
 Gives instructions on the different functions related to “search”.
 
-usage: search [-t|-a|-y] [str]
 
