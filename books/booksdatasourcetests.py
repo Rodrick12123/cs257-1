@@ -1,5 +1,5 @@
 #This is code by Thea Traw and Lysander Miller
-import booksdatasource
+from booksdatasource import Book, Author, BookDataSource
 import unittest
 
 class BooksDataSourceTester(unittest.TestCase):
