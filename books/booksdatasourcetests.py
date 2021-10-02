@@ -14,7 +14,7 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_a_noneCase(self):
         self.smaller_data_source = BooksDataSource('testNone.csv')
         whatShouldBeReturned = [Author('Brontë', 'Charlotte'),Author('Márquez', 'Gabriel'),Author('Wodehouse', 'Pelham')]
-        self.assertEqual(self.smaller_data_source.authors("None"), whatShouldBeReturned)
+        self.assertEqual(self.smaller_data_source.authors(None), whatShouldBeReturned)
     def test_a_alphabeticallyBySurname(self):
         self.smaller_data_source = BooksDataSource('a_alphabeticallyBySurname.csv')
         whatShouldBeReturned = [Author('Dunnewold', 'Mary'),Author('Hosseini', 'Khaled'),Author('Sterne', 'Laurence')]
