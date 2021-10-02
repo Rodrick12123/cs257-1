@@ -51,7 +51,7 @@ class BooksDataSource:
         '''
         self.listOfAuthors = []
         self.listOfBooks = []
-        booksFile = open("book1.csv", "r")
+        booksFile = open(books_csv_file_name, "r")
         books = booksFile.readlines()
         booksFileLength = len(books)
         booksFile.close()
@@ -93,13 +93,13 @@ class BooksDataSource:
                 else:
                     authorsBirthYear = author[-10:][:4]
                     authorsDeathYear = author[-5:][:4]
-                listOfAuthors.append(Author(authorsLastName, authorsFirstName, authorsBirthYear, authorsDeathYear))
+                self.listOfAuthors.append(Author(authorsLastName, authorsFirstName, authorsBirthYear, authorsDeathYear))
             if (twoAuthors == True):
-                listToPass = [listOfAuthors[(len(listOfAuthors)-1)], listOfAuthors[len(listOfAuthors)-2]]
-                listOfBooks.append(Book(editedInformation[0], editedInformation[1], listToPass))
+                listToPass = [self.listOfAuthors[(len(self.listOfAuthors)-1)], self.listOfAuthors[len(self.listOfAuthors)-2]]
+                self.listOfBooks.append(Book(editedInformation[0], editedInformation[1], listToPass))
             else:
-                listToPass = [listOfAuthors[(len(listOfAuthors)-1)]]
-                listOfBooks.append(Book(editedInformation[0], editedInformation[1], listToPass))
+                listToPass = [self.listOfAuthors[(len(self.listOfAuthors)-1)]]
+                self.listOfBooks.append(Book(editedInformation[0], editedInformation[1], listToPass))
             twoAuthors = False
             lineNumber += 1  
 
@@ -111,10 +111,10 @@ class BooksDataSource:
         '''
         listOfAuthorsWithThisString = []
         if (search_text == "None"):
-            listOfAuthorsSorted = sorted(listOfAuthors, key=lambda x: x.surname)
+            listOfAuthorsSorted = sorted(self.listOfAuthors, key=lambda x: x.surname)
             return listOfAuthorsSorted
         search_text = search_text.lower()
-        for author in listOfAuthors:
+        for author in self.listOfAuthors:
             if ((search_text in author.surname.lower()) or (search_text in author.given_name.lower())):
                 listOfAuthorsWithThisString.append(author)
         listOfAuthorsWithThisString = sorted(listOfAuthorsWithThisString, key=lambda x: (x.surname, x.given_name))
