@@ -14,7 +14,7 @@ def get_parsed_arguments():
 
 def main():
     arguments = get_parsed_arguments()
-    print(arguments.searchterms)
+    print(arguments)
     #think I should remove this loop
     for term in arguments.searchterms:
         term = term.split(" ")
