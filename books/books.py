@@ -6,7 +6,6 @@ import booksdatasource
 def get_parsed_arguments():
     parser = argparse.ArgumentParser(description='Sorts books and authors')
     parser.add_argument('searchterms', metavar='search', nargs='+', help='search function--put in your search term here')
-    parser.add_argument('--titles', metavar='-t', nargs='+', help='search function--put in your search term here')
     parser.add_argument('--titles', '-t', default='--titles', help='sort by titles')
     parser.add_argument('--authors', '-a', default=None,  help='sort by authors')
     parser.add_argument('--years', '-y', default=None, help='sort by years')
