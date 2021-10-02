@@ -167,12 +167,12 @@ class BooksDataSource:
                     locatedBooks.append(book)
 
         elif (start_year==None):
-            for book in books:
+            for book in self.listOfBooks:
                 if (book.publication_year <= end_year):
                     locatedBooks.append(book)
 
         elif (end_year==None):
-            for book in books:
+            for book in self.listOfBooks:
                 if (book.publication_year >= start_year):
                     locatedBooks.append(book)
 
