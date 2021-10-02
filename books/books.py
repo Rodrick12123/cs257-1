@@ -17,10 +17,10 @@ def main():
     print(arguments)
     for title in arguments.titles:
         #FIX THIS LATER
-        print(booksdatasource.books(title, "year"))
+        print(BooksDataSource.books(title, "year"))
     for author in arguments.authors:
-        print(booksdatasource.authors(author))
-    print(booksdatasource.books_between_years(arguments.years[0], arguments.years[1]))
+        print(BooksDataSource.authors(author))
+    print(BooksDataSource.books_between_years(arguments.years[0], arguments.years[1]))
 
 if __name__ == '__main__':
     main()
