@@ -135,10 +135,14 @@ class BooksDataSource:
 
         locatedBooks = []
 
+        if (search_text==None):
+            locatedBooks = self.listOfBooks
+
         #finding books that contain search_term
-        for book in self.listOfBooks:
-            if search_text.casefold() in book.title.casefold():
-                locatedBooks.append(book)
+        else:
+            for book in self.listOfBooks:
+                if search_text.casefold() in book.title.casefold():
+                    locatedBooks.append(book)
 
         if (sort_by != 'year' or sort_by == 'title'):
             return sorted(locatedBooks, key=lambda book: (book.title))
@@ -161,23 +165,26 @@ class BooksDataSource:
 
         locatedBooks = []
 
-        if (start_year!=None and end_year!=None):
-            for book in self.listOfBooks:
-                if (book.publication_year >= start_year and book.publication_year <= end_year):
-                    locatedBooks.append(book)
+        #make it so that in Book object, publication years are integers when put in
+        #figure out how command line treats ints as arguments so can throw error when string or something
+
+        if (start_year==None and end_year==None):
+            locatedBooks = self.listOfBooks
 
         elif (start_year==None):
             for book in self.listOfBooks:
-                if (book.publication_year <= end_year):
+                if (int(book.publication_year) <= int(end_year)):
                     locatedBooks.append(book)
 
         elif (end_year==None):
             for book in self.listOfBooks:
-                if (book.publication_year >= start_year):
+                if (int(book.publication_year) >= int(start_year)):
                     locatedBooks.append(book)
 
-        else: #both terms are None
-            locatedBooks = self.listOfBooks
+        else: #neither term is None
+            for book in self.listOfBooks:
+                if (int(book.publication_year) >= int(start_year) and int(book.publication_year) <= int(end_year)):
+                    locatedBooks.append(book)
 
         return sorted(locatedBooks, key=lambda book: (book.publication_year, book.title))
 

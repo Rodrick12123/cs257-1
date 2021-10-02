@@ -47,7 +47,7 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_t_noneTest(self):
         self.smaller_data_source = BooksDataSource('testNone.csv')
         whatShouldBeReturned = [Book('Jane Eyre'),Book('Leave it to Psmith'),Book('Love in the Time of Cholera')]
-        self.assertEqual(self.smaller_data_source.books("None"), whatShouldBeReturned)
+        self.assertEqual(self.smaller_data_source.books(None), whatShouldBeReturned)
     def test_t_portionTest(self):
         whatShouldBeReturned = [Book('Wuthering Heights')]
         self.assertEqual(self.data_source.books("Wu"), whatShouldBeReturned)
@@ -60,15 +60,15 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_y_doubleNoneTest(self):
         self.smaller_data_source = BooksDataSource('testNone.csv')
         whatShouldBeReturned = [Book('Jane Eyre'),Book('Leave it to Psmith'),Book('Love in the Time of Cholera')]
-        self.assertEqual(self.smaller_data_source.books_between_years("None"), whatShouldBeReturned)
+        self.assertEqual(self.smaller_data_source.books_between_years(None), whatShouldBeReturned)
     def test_y_firstTermNone(self):
         self.smaller_data_source = BooksDataSource('y_firstTermNoneANDLastTermNone.csv')
         whatShouldBeReturned = [Book('Jane Eyre'), Book('Main Street'), Book('Leave it to Psmith')]
-        self.assertEqual(self.data_source.books_between_years("None","1923"), whatShouldBeReturned)
+        self.assertEqual(self.data_source.books_between_years(None,"1923"), whatShouldBeReturned)
     def test_y_lastTermNone(self):
         self.smaller_data_source = BooksDataSource('y_firstTermNoneANDLastTermNone.csv')
         whatShouldBeReturned = [Book('Leave it to Psmith'),Book('The Fire Next Time'),Book('Love in the Time of Cholera'), Book('Mirror Dance')]
-        self.assertEqual(self.data_source.books_between_years("1923", "None"), whatShouldBeReturned)
+        self.assertEqual(self.data_source.books_between_years("1923", None), whatShouldBeReturned)
 
     def test_y_inclusiveAndTieBreaker(self):
         self.assertEqual(self.data_source.books_between_years(2005, 2010), [Book('1Q84', 2009, [Author('Murakami', 'Haruki')]), Book('All Clear', 2010, [Author('Willis', 'Connie')]), Book('Blackout', 2010, [Author('Willis', 'Connie')])])
