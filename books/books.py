@@ -18,7 +18,7 @@ def main():
         print(booksdatasource.books(title))
     for author in arguments.authors:
         print(booksdatasource.authors(author))
-    print(booksdatasource.books_between_years(arguments.years[0], arguments.years[1])
+    print(booksdatasource.books_between_years(arguments.years[0], arguments.years[1]))
 
 if __name__ == '__main__':
     main()
