@@ -14,24 +14,25 @@ def get_parsed_arguments():
 
 def main():
     arguments = get_parsed_arguments()
+    #think I should remove this loop
     for term in arguments.searchterms:
         term = term.split(" ")
         arguments = term[0] + " " + term[1]
-        searchTerm = ""
+        searchTerm = []
         i = 2
         while i < len(term):
-            searchTerm += term[i] + " "
+            searchTerm = searchTerm.append(term[i])
             i+=1
-        searchTerm = searchTerm.strip()
-        if (arguments == '--titles year' or arguments == '-t year'):
-            booksdatasource.books(searchTerm, 'year')
-        elif (arguments == '--titles title' or arguments == '-t title' or arguments == '--titles' or arguments == '-t'):
-            booksdatasource.books(searchTerm, 'title')
-        elif (arguments == '--authors' or arguments == '-a'):
-            booksdatasource.authors(searchTerm)
-        elif (arguments == '--years' or arguments == '-y'):
-            booksdatasource.books_between_years(searchTerm)
-        else:
-            print("Not a valid command. You can access help through
+        for term in searchTerm:
+            if (arguments == '--titles year' or arguments == '-t year'):
+                print(booksdatasource.books(term, 'year'))
+            elif (arguments == '--titles title' or arguments == '-t title' or arguments == '--titles' or arguments == '-t'):
+                print(booksdatasource.books(term, 'title'))
+            elif (arguments == '--authors' or arguments == '-a'):
+                print(booksdatasource.authors(term))
+            elif (arguments == '--years' or arguments == '-y'):
+                print(booksdatasource.books_between_years(term))
+            else:
+                print("Not a valid command. You can access help through")
 if __name__ == '__main__':
     main()
