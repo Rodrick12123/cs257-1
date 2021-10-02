@@ -49,7 +49,59 @@ class BooksDataSource:
             suitable instance variables for the BooksDataSource object containing
             a collection of Author objects and a collection of Book objects.
         '''
-        pass
+        self.listOfAuthors = []
+        self.listOfBooks = []
+        booksFile = open("test.csv", "r")
+        books = booksFile.readlines()
+        booksFileLength = len(books)
+        booksFile.close()
+        lineNumber = 0
+        for line in books:
+            editedInformation = []
+            twoAuthors = False
+            if ('"' in line):
+                title = line.split('"')[1]
+                everythingButTitle = line.split('"')[2][1:]
+                editedInformation.append(title)
+                everythingButTitleSeperated = everythingButTitle.split(",")
+                for item in everythingButTitleSeperated:
+                    editedInformation.append(item)
+            else:
+                editedInformation = line.split(",")
+            if (lineNumber != (booksFileLength -1)):
+                    editedInformation[2] = editedInformation[2][:-1]
+            authorAndYears = editedInformation[2]
+            authorInfo = [authorAndYears]
+            if ("and" in authorAndYears):
+                splitTwoAuthors = authorAndYears.split("and")
+                splitTwoAuthors[0] = splitTwoAuthors[0][:-1]
+                splitTwoAuthors[1] = splitTwoAuthors[1][1:]
+                authorInfo[0] = splitTwoAuthors[0]
+                authorInfo.append(splitTwoAuthors[1])
+                twoAuthors = True
+            for author in authorInfo:
+                authorsFirstName = author.split(" ")[0]
+                authorsLastName = ""
+                authorsBirthYear = None
+                authorsDeathYear = None
+                if (len(author.split(" ")) > 3):
+                    authorsLastName = author.split(" ")[2]
+                else:
+                    authorsLastName = author.split(" ")[1]
+                if (author[-2:][0] == "-"):
+                    authorsBirthYear = author[-6:][:4]
+                else:
+                    authorsBirthYear = author[-10:][:4]
+                    authorsDeathYear = author[-5:][:4]
+                listOfAuthors.append(Author(authorsLastName, authorsFirstName, authorsBirthYear, authorsDeathYear))
+            if (twoAuthors == True):
+                listToPass = [listOfAuthors[(len(listOfAuthors)-1)], listOfAuthors[len(listOfAuthors)-2]]
+                listOfBooks.append(Book(editedInformation[0], editedInformation[1], listToPass))
+            else:
+                listToPass = [listOfAuthors[(len(listOfAuthors)-1)]]
+                listOfBooks.append(Book(editedInformation[0], editedInformation[1], listToPass))
+            twoAuthors = False
+            lineNumber += 1  
 
     def authors(self, search_text=None):
         ''' Returns a list of all the Author objects in this data source whose names contain
