@@ -93,7 +93,7 @@ class BooksDataSource:
                 else:
                     authorsBirthYear = author[-10:][:4]
                     authorsDeathYear = author[-5:][:4]
-                if (Author(authorsLastName, authorsFirstName, authorsBirthYear, authorsDeathYear) in listOfAuthors == False):
+                if (Author(authorsLastName, authorsFirstName, authorsBirthYear, authorsDeathYear) in self.listOfAuthors == False):
                     listOfAuthors.append(Author(authorsLastName, authorsFirstName, authorsBirthYear, authorsDeathYear))
             if (twoAuthors == True):
                 listToPass = [self.listOfAuthors[(len(self.listOfAuthors)-1)], self.listOfAuthors[len(self.listOfAuthors)-2]]
