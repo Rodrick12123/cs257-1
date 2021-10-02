@@ -16,7 +16,8 @@ def main():
     arguments = get_parsed_arguments()
     print(arguments)
     for title in arguments.titles:
-        print(booksdatasource.books(title))
+        #FIX THIS LATER
+        print(booksdatasource.books(title, "year"))
     for author in arguments.authors:
         print(booksdatasource.authors(author))
     print(booksdatasource.books_between_years(arguments.years[0], arguments.years[1]))
