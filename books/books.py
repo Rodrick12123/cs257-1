@@ -15,13 +15,13 @@ def get_parsed_arguments():
 def main():
     arguments = get_parsed_arguments()
     print(arguments.titles)
-    for title in arguments.titles:
+    #for title in arguments.titles:
         #FIX THIS LATER
-        print("HIOI")
-        print(booksdatasource.BooksDataSource.books(title, "year"))
+        #print("HIOI")
+        #print(booksdatasource.BooksDataSource.books(title, "year"))
     for author in arguments.authors:
         print(booksdatasource.BooksDataSource.authors(author))
-    print(booksdatasource.BooksDataSource.books_between_years(arguments.years[0], arguments.years[1]))
+    #print(booksdatasource.BooksDataSource.books_between_years(arguments.years[0], arguments.years[1]))
 
 if __name__ == '__main__':
     main()
