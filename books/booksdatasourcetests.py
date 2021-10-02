@@ -4,7 +4,7 @@ import unittest
 
 class BooksDataSourceTester(unittest.TestCase):
     def setUp(self):
-        self.data_source = booksdatasource.BooksDataSource('books1.csv')
+        self.data_source = BooksDataSource('books1.csv')
     def tearDown(self):
         pass
     def test_unique_author(self):
@@ -12,15 +12,15 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertTrue(len(authors) == 1)
         self.assertTrue(authors[0] == Author('Pratchett', 'Terry'))
     def test_a_noneCase(self):
-        self.smaller_data_source = booksdatasource.BooksDataSource('testNone.csv')
+        self.smaller_data_source = BooksDataSource('testNone.csv')
         whatShouldBeReturned = [Author('Brontë', 'Charlotte'),Author('Márquez', 'Gabriel'),Author('Wodehouse', 'Pelham')]
         self.assertEqual(self.smaller_data_source.authors("None"), whatShouldBeReturned)
     def test_a_alphabeticallyBySurname(self):
-        self.smaller_data_source = booksdatasource.BooksDataSource('a_alphabeticallyBySurname.csv')
+        self.smaller_data_source = BooksDataSource('a_alphabeticallyBySurname.csv')
         whatShouldBeReturned = [Author('Dunnewold', 'Mary'),Author('Hosseini', 'Khaled'),Author('Sterne', 'Laurence')]
         self.assertEqual(self.smaller_data_source.authors("a"), whatShouldBeReturned)
     def test_a_alphabeticallyByFirstName(self):
-        self.smaller_data_source = booksdatasource.BooksDataSource('a_alphabeticallyByFirstName.csv')
+        self.smaller_data_source = BooksDataSource('a_alphabeticallyByFirstName.csv')
         whatShouldBeReturned = [Author('Brontë','Ann'),Author('Brontë','Charlotte'),Author('Brontë','Emily')]
         self.assertEqual(self.smaller_data_source.authors("Brontë"), whatShouldBeReturned)
     def test_a_testTwoAuthors(self):
@@ -45,7 +45,7 @@ class BooksDataSourceTester(unittest.TestCase):
         whatShouldBeReturned = [Book('Omoo')]
         self.assertEqual(self.data_source.books("Omoo"), whatShouldBeReturned)
     def test_t_noneTest(self):
-        self.smaller_data_source = booksdatasource.BooksDataSource('testNone.csv')
+        self.smaller_data_source = BooksDataSource('testNone.csv')
         whatShouldBeReturned = [Book('Jane Eyre'),Book('Leave it to Psmith'),Book('Love in the Time of Cholera')]
         self.assertEqual(self.smaller_data_source.books("None"), whatShouldBeReturned)
     def test_t_portionTest(self):
@@ -58,15 +58,15 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertEqual(self.data_source.books('time', 'year'), [Book('The Fire Next Time', 1963, [Author('Baldwin', 'James')]), Book('Love in the Time of Cholera', 1985, [Author('García Márquez', 'Gabriel')]), Book('Thief of Time', 1996, [Author('Pratchett', 'Terry')])])
 
     def test_y_doubleNoneTest(self):
-        self.smaller_data_source = booksdatasource.BooksDataSource('testNone.csv')
+        self.smaller_data_source = BooksDataSource('testNone.csv')
         whatShouldBeReturned = [Book('Jane Eyre'),Book('Leave it to Psmith'),Book('Love in the Time of Cholera')]
         self.assertEqual(self.smaller_data_source.books_between_years("None"), whatShouldBeReturned)
     def test_y_firstTermNone(self):
-        self.smaller_data_source = booksdatasource.BooksDataSource('y_firstTermNoneANDLastTermNone.csv')
+        self.smaller_data_source = BooksDataSource('y_firstTermNoneANDLastTermNone.csv')
         whatShouldBeReturned = [Book('Jane Eyre'), Book('Main Street'), Book('Leave it to Psmith')]
         self.assertEqual(self.data_source.books_between_years("None","1923"), whatShouldBeReturned)
     def test_y_lastTermNone(self):
-        self.smaller_data_source = booksdatasource.BooksDataSource('y_firstTermNoneANDLastTermNone.csv')
+        self.smaller_data_source = BooksDataSource('y_firstTermNoneANDLastTermNone.csv')
         whatShouldBeReturned = [Book('Leave it to Psmith'),Book('The Fire Next Time'),Book('Love in the Time of Cholera'), Book('Mirror Dance')]
         self.assertEqual(self.data_source.books_between_years("1923", "None"), whatShouldBeReturned)
 
