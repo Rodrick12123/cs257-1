@@ -132,7 +132,20 @@ class BooksDataSource:
                 default -- same as 'title' (that is, if sort_by is anything other than 'year'
                             or 'title', just do the same thing you would do for 'title')
         '''
-        return []
+
+        locatedBooks = []
+
+        #finding books that contain search_term
+        for book in self.listOfBooks:
+            if search_text.casefold() in book.title.casefold():
+                locatedBooks.append(book)
+
+        if (sort_by != 'year' or sort_by == 'title'):
+            return sorted(locatedBooks, key=lambda book: (book.title))
+
+        else:
+            return sorted(locatedBooks, key=lambda book: (book.publication_year, book.title))
+
 
     def books_between_years(self, start_year=None, end_year=None):
         ''' Returns a list of all the Book objects in this data source whose publication
@@ -145,5 +158,26 @@ class BooksDataSource:
             during start_year should be included. If both are None, then all books
             should be included.
         '''
-        return []
+
+        locatedBooks = []
+
+        if (start_year!=None and end_year!=None):
+            for book in self.listOfBooks:
+                if (book.publication_year >= start_year and book.publication_year <= end_year):
+                    locatedBooks.append(book)
+
+        elif (start_year==None):
+            for book in books:
+                if (book.publication_year <= end_year):
+                    locatedBooks.append(book)
+
+        elif (end_year==None):
+            for book in books:
+                if (book.publication_year >= start_year):
+                    locatedBooks.append(book)
+
+        else: #both terms are None
+            locatedBooks = self.listOfBooks
+
+        return sorted(locatedBooks, key=lambda book: (book.publication_year, book.title))
 
