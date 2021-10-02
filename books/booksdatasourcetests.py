@@ -32,8 +32,8 @@ class BooksDataSourceTester(unittest.TestCase):
         #could also run on books() or even books_between_years()
         self.assertEqual(self.data_source.authors('f1re'), [])
     def test_a_parsingMultipleSearchTerms(self):
-        #situation: user enters multiple search terms in a string separated by spaces (i.e. 'Agatha Cristie')
-        #should pull up anything that matches any of the terms (i.e. Agatha Cristie)
+        #situation: user enters multiple search terms in a string separated by spaces (i.e. 'Agatha Christie')
+        #should pull up anything that matches any of the terms (i.e. Agatha Christie)
         self.assertEqual(self.data_source.authors('Agatha Christie'), [Author('Christie', 'Agatha')])
 
     def test_t_typoTest(self):
