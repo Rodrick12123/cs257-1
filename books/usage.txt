@@ -1,31 +1,33 @@
-search(1)			User Commands			search(1)
+				User Commands			
 
 NAME
 	search
 
 SYNOPSIS
-	search [-t|-a|-y] [string]
+	search [-t|-a] [search-term]
+	search [-y] [start-year] [end-year]
+	search [-h]
 
 DESCRIPTION
-	This search method looks through the given database of books (and the related information such as author and publication year) and prints lists composed from one of three specifications. By default, it will search for the user-specified term within titles. 
+	This search method looks through the given database of books and authors and prints lists composed from one of three specifications. Combinations of flags are not supported. By default, it will search for the user-specified term with the title flag. 
 
 OPTIONS
 
-search -t
+-t 
 
-Prints books, sorted alphabetically by title, whose titles contain the user-specified search term (case insensitive).
+Prints books, sorted alphabetically by title, whose titles contain the user-specified search term (case insensitive). Multiple words enclosed with quotation marks (i.e. "Jane Eyre") will be searched for as one single term. Multiple search terms not enclosed by quotations marks (i.e. Jane Eyre) will be searched for as unique terms, and the returned list will contain the results from all terms.
+***need to address sort_by argument
+
+-a
+
+Prints authors whose names contain the user-specified search term (case insensitive) in alphabetical order by surname, with ties broken by first name, as well as a list of their books. 
 
 
-search -a
+-y
 
-Prints authors whose names contain the user-specified search term (case insensitive) in alphabetical order by surname as well as a list of their books. 
+Prints books published between the user-specified years (inclusive) in order of publication year. Use None if you do not want to provide either start_year or end_year. If only one of the two arguments is provided, it will be assumed to be the start_year and the end_year will be None.
 
-
-search -y
-
-Prints books published between the user-specified years (inclusive) in order of publication year.
-
--hs --helpsearch
+-h --help
 
 Gives instructions on the different functions related to “search”.
 
