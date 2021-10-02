@@ -109,7 +109,16 @@ class BooksDataSource:
             returns all of the Author objects. In either case, the returned list is sorted
             by surname, breaking ties using given name (e.g. Ann Brontë comes before Charlotte Brontë).
         '''
-        return []
+        listOfAuthorsWithThisString = []
+        if (search_text == "None"):
+            listOfAuthorsSorted = sorted(listOfAuthors, key=lambda x: x.surname)
+            return listOfAuthorsSorted
+        search_text = search_text.lower()
+        for author in listOfAuthors:
+            if ((search_text in author.surname.lower()) or (search_text in author.given_name.lower())):
+                listOfAuthorsWithThisString.append(author)
+        listOfAuthorsWithThisString = sorted(listOfAuthorsWithThisString, key=lambda x: (x.surname, x.given_name))
+        return listOfAuthorsWithThisString
 
     def books(self, search_text=None, sort_by='title'):
         ''' Returns a list of all the Book objects in this data source whose
