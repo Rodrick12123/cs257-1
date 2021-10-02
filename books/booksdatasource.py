@@ -103,7 +103,7 @@ class BooksDataSource:
                 listToPass = [self.listOfAuthors[(len(self.listOfAuthors)-1)]]
                 self.listOfBooks.append(Book(editedInformation[0], editedInformation[1], listToPass))
             twoAuthors = False
-            lineNumber += 1  
+            lineNumber += 1
 
     def authors(self, search_text=None):
         ''' Returns a list of all the Author objects in this data source whose names contain
