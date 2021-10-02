@@ -15,6 +15,7 @@ def get_parsed_arguments():
 
 def main():
     arguments = get_parsed_arguments()
+    print(arguments)
     for title in arguments.titles:
         print(booksdatasource.books(title))
     for author in arguments.authors:
