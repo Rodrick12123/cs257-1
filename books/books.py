@@ -14,26 +14,10 @@ def get_parsed_arguments():
 
 def main():
     arguments = get_parsed_arguments()
-    print(arguments)
-    #think I should remove this loop
-    for term in arguments.searchterms:
-        term = term.split(" ")
-        arguments = term[0] + " " + term[1]
-        searchTerm = []
-        i = 2
-        while i < len(term):
-            searchTerm = searchTerm.append(term[i])
-            i+=1
-        for term in searchTerm:
-            if (arguments == '--titles year' or arguments == '-t year'):
-                print(booksdatasource.books(term, 'year'))
-            elif (arguments == '--titles title' or arguments == '-t title' or arguments == '--titles' or arguments == '-t'):
-                print(booksdatasource.books(term, 'title'))
-            elif (arguments == '--authors' or arguments == '-a'):
-                print(booksdatasource.authors(term))
-            elif (arguments == '--years' or arguments == '-y'):
-                print(booksdatasource.books_between_years(term))
-            else:
-                print("Not a valid command. You can access help through")
+    for title in arguments.titles:
+        print(booksdatasource.books(title))
+    for author in arguments.authors:
+        print(booksdatasource.authors(author))
+    print(booksdatasource.books_between_years(arguments.years[0], arguments.years[1])
 if __name__ == '__main__':
     main()
