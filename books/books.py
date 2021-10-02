@@ -14,10 +14,9 @@ def get_parsed_arguments():
 
 def main():
     arguments = get_parsed_arguments()
-    print(arguments.titles)
     for title in arguments.titles:
-        #FIX THIS LATER
-        print("HIOI")
+        FIX THIS LATER
+        print(title)
         print(booksdatasource.BooksDataSource.books(title, "year"))
     for author in arguments.authors:
         print(booksdatasource.BooksDataSource.authors(author))
