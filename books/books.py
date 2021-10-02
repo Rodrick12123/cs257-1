@@ -14,8 +14,7 @@ def get_parsed_arguments():
 
 def main():
     arguments = get_parsed_arguments()
-    print(arguments)
-    print(len(arguments.titles))
+    print(arguments.titles)
     for title in arguments.titles:
         #FIX THIS LATER
         print("HIOI")
