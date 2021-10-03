@@ -25,7 +25,7 @@ Prints books, sorted alphabetically by title, whose titles contain the user-spec
 
 --author -a
 
-Prints authors whose names contain the user-specified search term (case insensitive) in alphabetical order by surname, with ties broken by first name, as well as a list of their books.
+Prints authors whose names contain the user-specified search term (case insensitive) in alphabetical order by surname, with ties broken by first name.
 
 
 --year -y
