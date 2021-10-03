@@ -24,6 +24,7 @@ def main():
                 listOfAuthors += initializedBooksDataSource.authors(author)
         elif ((len(arguments.authors)) == 0):
             listOfAuthors = initializedBooksDataSource.authors(None)
+        listOfAuthors = sorted(listOfAuthors, key=lambda x: (x.surname, x.given_name))
         for authorObj in listOfAuthors:
             if ((authorObj in listOfAuthorsAlreadyPrinted) == False):
                 print(authorObj.surname, authorObj.given_name)
