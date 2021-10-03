@@ -6,7 +6,7 @@ import csv
 
 def get_parsed_arguments():
         parser = argparse.ArgumentParser(description='Sorts books and authors')
-        parser.add_argument('searchterms', metavar='search', nargs='+', help='search function--put in your search term here')
+        parser.add_argument('searchterms', metavar='search', nargs='+', help='search function--put in your search terms here')
         parser.add_argument('--titles', '-t', nargs='*',default='NoData', help='sort by titles')
         parser.add_argument('--authors', '-a',nargs='*',default='NoData',  help='sort by authors')
         parser.add_argument('--years', '-y',nargs='*',default='NoData', help='sort by years')
