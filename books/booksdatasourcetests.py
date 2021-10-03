@@ -37,9 +37,6 @@ class BooksDataSourceTester(unittest.TestCase):
         
     def test_t_typoTest(self):
         self.assertEqual(self.data_source.books("f1re"), [])
-    def test_t_portionOfTitleTest(self):
-        whatShouldBeReturned = [Book('The Code of the Woosters', 1938, [Author('Wodehouse', 'Pelham Grenville')]), Book('The Tenant of Wildfell Hall', 1848, [Author('Brontë', 'Ann')])]
-        self.assertEqual(self.data_source.books("Code Hall"), whatShouldBeReturned)
     def test_t_defaultTest(self):
         whatShouldBeReturned = [Book('Omoo', 1847, [Author('Melville', 'Herman')])]
         self.assertEqual(self.data_source.books("Omoo"), whatShouldBeReturned)
@@ -69,10 +66,6 @@ class BooksDataSourceTester(unittest.TestCase):
         self.assertEqual(self.data_source.books_between_years("1923", None), whatShouldBeReturned)
     def test_y_inclusiveAndTieBreaker(self):
         self.assertEqual(self.data_source.books_between_years(2005, 2010), [Book('1Q84', 2009, [Author('Murakami', 'Haruki')]), Book('All Clear', 2010, [Author('Willis', 'Connie')]), Book('Blackout', 2010, [Author('Willis', 'Connie')])])
-    def test_y_typoTest(self):
-        #situation: one of the search terms (start year or end year) is not valid (i.e. letters instead of numbers)
-        #should raise a TypeError exception if one of the terms is something other than an integer or None
-        self.assertRaises(TypeError, self.data_source.books_between_years, 2020, 'hello')
 
 if __name__ == '__main__':
     unittest.main()
