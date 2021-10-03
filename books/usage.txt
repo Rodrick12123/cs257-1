@@ -5,13 +5,13 @@ NAME
 
 SYNOPSIS
         search <-t|-a> (search-term)
-	search <-y> (start-year) (end-year)
+        search <-y> (start-year) (end-year)
         search <-y> <start-year> (none)
-	search <-y> <none> (end-year)
-        search <-h>
+        search <-y> <none> <end-year>
+        search <-mh>
 
 DESCRIPTION
-        This search method looks through the given database of books and authors and prints lists composed from one of three specifications. Combinations of flags are not supported. 
+        This search method looks through the given database of books and authors and prints lists composed from one of three specifications. Combinations of flags are not supported. By default, it will search for the user-specified term with the title flag.
 
 OPTIONS
 
@@ -32,8 +32,8 @@ Prints authors whose names contain the user-specified search term (case insensit
 
 --year -y
 
-Prints books published between the user-specified years (inclusive) in order of publication year from oldest to newest. Use None as the argument in place of a year if you do not want to provide either start_year or end_year. If only one of the two arguments is provided, it will be assumed to be the start_year and the end_year will be None.
+Prints books published between the user-specified years (inclusive) in order of publication year. If you don't provide a start_year or end_year, all books will be returned. If only one of the two arguments is provided, it will be assumed to be the start_year and the end_year will be None. If you'd like to have the start year be None, enter none end_year.
 
---help -h
+--moreHelp -mh -mH
 
-Gives instructions on the different functions related to “search”.
+Gives detailed instructions on the different functions related to “search”.
