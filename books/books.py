@@ -10,6 +10,7 @@ def get_parsed_arguments():
         parser.add_argument('--titles', '-t', nargs='*',default='NoData', help='sort by titles')
         parser.add_argument('--authors', '-a',nargs='*',default='NoData',  help='sort by authors')
         parser.add_argument('--years', '-y',nargs='*',default='NoData', help='sort by years')
+        parser.add_argument('--moreHelp', '-mh', '-mH', nargs='*', default = 'NoData', help='provides more information on search')
         parsed_arguments = parser.parse_args()
         return parsed_arguments
 
@@ -18,6 +19,10 @@ def main():
     arguments = get_parsed_arguments()
     listOfAuthors = []
     listOfAuthorsAlreadyPrinted = []
+    if (arguments.moreHelp != 'NoData'):
+        file = open('usage.txt', 'r')
+        contents = file.read()
+        print(contents)
     if (arguments.authors != 'NoData'):
         if ((len(arguments.authors)) > 0):
             for author in arguments.authors:
