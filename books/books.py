@@ -9,7 +9,7 @@ def get_parsed_arguments():
         parser.add_argument('searchterms', metavar='search', nargs='+', help='search function--put in your search term here')
         parser.add_argument('--titles', '-t', nargs='*',default='NoData', help='sort by titles')
         parser.add_argument('--authors', '-a',nargs='*',default='NoData',  help='sort by authors')
-        parser.add_argument('--years', '-y',nargs='+',default='NoData', help='sort by years')
+        parser.add_argument('--years', '-y',nargs='*',default='NoData', help='sort by years')
         parsed_arguments = parser.parse_args()
         return parsed_arguments
 
@@ -60,10 +60,16 @@ def main():
         for book in listOfBooks:
             print(book.title)
     if (arguments.years != 'NoData'):
-        if (len(arguments.years) > 2):
+        if (len(arguments.years) == 0):
+            listOfBooks = initializedBooksDataSource.books_between_years(None, None)
+            for book in listOfBooks:
+                print(book.title)
+        elif (len(arguments.years) > 2):
             print("You've entered too many arguments")
         else:
-            if (arguments.years[0].lower() == 'none' and arguments.years[1].lower() != 'none'):
+            if (len(arguments.years) == 1):
+                listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], None)
+            elif (arguments.years[0].lower() == 'none' and arguments.years[1].lower() != 'none'):
                 listOfBooks = initializedBooksDataSource.books_between_years(None, arguments.years[1])
             elif (arguments.years[1].lower() == 'none' and arguments.years[0].lower() != 'none'):
                 listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], None)
