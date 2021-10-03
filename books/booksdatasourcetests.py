@@ -27,7 +27,8 @@ class BooksDataSourceTester(unittest.TestCase):
         whatShouldBeReturned = [Author('Gaiman', 'Neil'),Author('Pratchett','Terry')]
         listOne = self.data_source.authors("Pratchett")
         listTwo = self.data_source.authors("Gaiman")
-        listThree = listOne.append(listTwo)
+        listThree = listOne + listTwo
+        listThree = sorted(listThree, key=lambda x: (x.surname, x.given_name))
         self.assertEqual(listThree, whatShouldBeReturned)
     def test_a_typoTest(self):
         #should be no cases in which a book appears for this search term (so, ok that it passes right now)
