@@ -17,12 +17,15 @@ def main():
     initializedBooksDataSource = booksdatasource.BooksDataSource("books1.csv")
     arguments = get_parsed_arguments()
     if (arguments.authors != None):
+        listOfAuthors = []
         for author in arguments.authors:
-            listOfAuthors = initializedBooksDataSource.authors(author)
-            for authorObj in listOfAuthors:
-                print(authorObj.surname, authorObj.given_name)
+            listOfAuthors += initializedBooksDataSource.authors(author)
+        listOfAuthors = sorted(listOfAuthors, key=lambda x: (x.surname, x.given_name))
+        for authorObj in listOfAuthors:
+            print(authorObj.surname, authorObj.given_name)
     if (arguments.titles != None):
         sortedByYear = False
+        listOfBooks = []
         for title in arguments.titles:
             if (title == 'year'):
                 sortedByYear = True
@@ -30,11 +33,15 @@ def main():
                 pass
             else:
                 if (sortedByYear == True):
-                    listOfBooks = initializedBooksDataSource.books(title, 'year')
+                    listOfBooks += initializedBooksDataSource.books(title, 'year')
                 else:
-                    listOfBooks = initializedBooksDataSource.books(title, 'title')
-                for book in listOfBooks:
-                    print(book.title)
+                    listOfBooks += initializedBooksDataSource.books(title, 'title')
+        if (sortedByYear == False):
+            listOfBooks = sorted(listOfBooks, key=lambda x: (x.title))
+        else:
+            listOfBooks = sorted(listOfBooks, key=lambda x: (x.publication_year, x.title))
+        for book in listOfBooks:
+            print(book.title)
     if (arguments.years != None):
         if (len(arguments.years) > 2):
             print("You've entered too many arguments")
