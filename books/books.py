@@ -32,7 +32,7 @@ def main():
         listOfAuthors = sorted(listOfAuthors, key=lambda x: (x.surname, x.given_name))
         for authorObj in listOfAuthors:
             if ((authorObj in listOfAuthorsAlreadyPrinted) == False):
-                print(authorObj.surname, authorObj.given_name)
+                print(authorObj.surname+", "+authorObj.given_name)
                 listOfAuthorsAlreadyPrinted.append(authorObj)
     if (arguments.titles != 'NoData'):
         sortedByYear = False
