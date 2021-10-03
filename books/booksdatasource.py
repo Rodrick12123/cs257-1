@@ -166,25 +166,42 @@ class BooksDataSource:
             should be included.
         '''
 
+        startYearNone = False
+        endYearNone = False
+
+        if (start_year == 'None'):
+            startYearNone = True
+        if (end_year == 'None'):
+            endYearNone = True
+
+        try:
+            if (startYearNone == False): 
+                x = int(start_year)
+            if (endYearNone == False):
+                y = int(end_year)
+        except ValueError:
+            raise ('sorry, invalid input')
+
         locatedBooks = []
 
         #make it so that in Book object, publication years are integers when put in
         #figure out how command line treats ints as arguments so can throw error when string or something
 
-        if (start_year==None and end_year==None):
+        if (startYearNone == True and endYearNone == True): 
             locatedBooks = self.listOfBooks
-
-        elif (start_year==None):
+            
+        elif (startYearNone == True):
             for book in self.listOfBooks:
                 if (int(book.publication_year) <= int(end_year)):
                     locatedBooks.append(book)
 
-        elif (end_year==None):
+        elif (endYearNone == True):
             for book in self.listOfBooks:
                 if (int(book.publication_year) >= int(start_year)):
                     locatedBooks.append(book)
 
         else: #neither term is None
+            
             for book in self.listOfBooks:
                 if (int(book.publication_year) >= int(start_year) and int(book.publication_year) <= int(end_year)):
                     locatedBooks.append(book)
