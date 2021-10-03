@@ -182,6 +182,7 @@ class BooksDataSource:
                 y = int(end_year)
         except ValueError:
             raise ValueError('sorry, invalid input')
+            quit()
 
         selectedBooks = []
 
