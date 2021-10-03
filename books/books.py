@@ -38,13 +38,15 @@ def main():
     if (arguments.years != None):
         if (len(arguments.years) > 2):
             print("You've entered too many arguments")
-        elif (len(arguments) == 1):
-            listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], None)
-            for book in listOfBooks:
-                print(book.title)
         else:
-            listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], arguments.years[1])
-            for book in listOfBooks:
-                print(book.title)
+            if (len(arguments.years) <=	2):
+                listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], None)
+                for book in listOfBooks:
+                    print(book.title)
+            else:
+                listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], arguments.years[1])
+                for book in listOfBooks:
+                    print(book.title)
+                    
 if __name__ == '__main__':
     main()
