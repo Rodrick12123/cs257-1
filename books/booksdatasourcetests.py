@@ -31,8 +31,6 @@ class BooksDataSourceTester(unittest.TestCase):
         listThree = sorted(listThree, key=lambda x: (x.surname, x.given_name))
         self.assertEqual(listThree, whatShouldBeReturned)
     def test_a_typoTest(self):
-        #should be no cases in which a book appears for this search term (so, ok that it passes right now)
-        #could also run on books() or even books_between_years()
         self.assertEqual(self.data_source.authors('f1re'), [])
         
     def test_t_typoTest(self):
