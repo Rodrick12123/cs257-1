@@ -18,11 +18,14 @@ def main():
     arguments = get_parsed_arguments()
     if (arguments.authors != None):
         listOfAuthors = []
+        listOfAuthorsAlreadyPrinted = []
         for author in arguments.authors:
             listOfAuthors += initializedBooksDataSource.authors(author)
         listOfAuthors = sorted(listOfAuthors, key=lambda x: (x.surname, x.given_name))
         for authorObj in listOfAuthors:
-            print(authorObj.surname, authorObj.given_name)
+            if ((authorObj in listOfAuthorsAlreadyPrinted) == False):
+                print(authorObj.surname, authorObj.given_name)
+                listOfAuthorsAlreadyPrinted.append(authorObj)
     if (arguments.titles != None):
         sortedByYear = False
         listOfBooks = []
