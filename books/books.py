@@ -42,6 +42,5 @@ def main():
             listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], arguments.years[1])
             for book in listOfBooks:
                 print(book.title)
-
 if __name__ == '__main__':
     main()
