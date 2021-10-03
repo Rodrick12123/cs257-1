@@ -49,7 +49,7 @@ def main():
         if (len(arguments.years) > 2):
             print("You've entered too many arguments")
         else:
-            if (len(arguments.years) <=	2):
+            if (len(arguments.years) < 2):
                 listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], None)
                 for book in listOfBooks:
                     print(book.title)
