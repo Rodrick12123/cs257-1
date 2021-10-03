@@ -28,7 +28,7 @@ class BooksDataSourceTester(unittest.TestCase):
         listOne = self.data_source.authors("Pratchett")
         listTwo = self.data_source.authors("Gaiman")
         listThree = listOne.append(listTwo)
-        self.assertEqual(, whatShouldBeReturned)
+        self.assertEqual(listThree, whatShouldBeReturned)
     def test_a_typoTest(self):
         #should be no cases in which a book appears for this search term (so, ok that it passes right now)
         #could also run on books() or even books_between_years()
