@@ -16,47 +16,62 @@ def get_parsed_arguments():
 def main():
     initializedBooksDataSource = booksdatasource.BooksDataSource("books1.csv")
     arguments = get_parsed_arguments()
-    if (arguments.authors != None):
-        listOfAuthors = []
-        listOfAuthorsAlreadyPrinted = []
-        for author in arguments.authors:
-            listOfAuthors += initializedBooksDataSource.authors(author)
-        listOfAuthors = sorted(listOfAuthors, key=lambda x: (x.surname, x.given_name))
+    listOfAuthors = []
+    listOfAuthorsAlreadyPrinted = []
+    if (arguments.authors != 'NoData'):
+        if ((len(arguments.authors)) > 0):
+            for author in arguments.authors:
+                listOfAuthors += initializedBooksDataSource.authors(author)
+        elif ((len(arguments.authors)) == 0):
+            listOfAuthors = initializedBooksDataSource.authors(None)
         for authorObj in listOfAuthors:
             if ((authorObj in listOfAuthorsAlreadyPrinted) == False):
                 print(authorObj.surname, authorObj.given_name)
                 listOfAuthorsAlreadyPrinted.append(authorObj)
-    if (arguments.titles != None):
+    if (arguments.titles != 'NoData'):
         sortedByYear = False
         listOfBooks = []
-        for title in arguments.titles:
-            if (title == 'year'):
-                sortedByYear = True
-            elif (title == 'title'):
-                pass
-            else:
-                if (sortedByYear == True):
-                    listOfBooks += initializedBooksDataSource.books(title, 'year')
-                else:
-                    listOfBooks += initializedBooksDataSource.books(title, 'title')
-        if (sortedByYear == False):
-            listOfBooks = sorted(listOfBooks, key=lambda x: (x.title))
+        index = 0
+        if ((len(arguments.titles) == 0)):
+            listOfBooks = initializedBooksDataSource.books(None, 'title')
         else:
-            listOfBooks = sorted(listOfBooks, key=lambda x: (x.publication_year, x.title))
+            for title in arguments.titles:
+                if (title == 'year'):
+                    sortedByYear = True
+                    index +=1
+                elif (title == 'title'):
+                    index +=1
+                    pass
+                else:
+                    if (sortedByYear == True):
+                        listOfBooks += initializedBooksDataSource.books(title, 'year')
+                    else:
+                        listOfBooks += initializedBooksDataSource.books(title, 'title')
+                if ((len(arguments.titles)) == index):
+                    if (sortedByYear == True):
+                        listOfBooks = initializedBooksDataSource.books(None, 'year')
+                    else:
+                        listOfBooks = initializedBooksDataSource.books(None, 'title')
+            if (sortedByYear == False):
+                listOfBooks = sorted(listOfBooks, key=lambda x: (x.title))
+            else:
+                listOfBooks = sorted(listOfBooks, key=lambda x: (x.publication_year, x.title))
         for book in listOfBooks:
             print(book.title)
-    if (arguments.years != None):
+    if (arguments.years != 'NoData'):
         if (len(arguments.years) > 2):
             print("You've entered too many arguments")
         else:
-            if (len(arguments.years) < 2):
+            if (arguments.years[0].lower == 'none' and arguments.years[1].lower != 'none'):
+                listOfBooks = initializedBooksDataSource.books_between_years(None, arguments.years[1])
+            elif (arguments.years[1].lower == 'none' and arguments.years[0].lower != 'none'):
                 listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], None)
-                for book in listOfBooks:
-                    print(book.title)
+            elif (arguments.years[0].lower == 'none' and arguments.years[1].lower == 'none'):
+                listOfBooks = initializedBooksDataSource.books_between_years(None, None)
             else:
                 listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], arguments.years[1])
-                for book in listOfBooks:
-                    print(book.title)
-                    
+            for book in listOfBooks:
+                print(book.title)
+
 if __name__ == '__main__':
     main()
