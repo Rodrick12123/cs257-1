@@ -136,22 +136,22 @@ class BooksDataSource:
                             or 'title', just do the same thing you would do for 'title')
         '''
 
-        locatedBooks = []
+        selectedBooks = []
 
         if (search_text=='None' or search_text == None):
-            locatedBooks = self.listOfBooks
+            selectedBooks = self.listOfBooks
 
         #finding books that contain search_term
         else:
             for book in self.listOfBooks:
                 if search_text.casefold() in book.title.casefold():
-                    locatedBooks.append(book)
+                    selectedBooks.append(book)
 
         if (sort_by != 'year' or sort_by == 'title'):
-            return sorted(locatedBooks, key=lambda book: (book.title))
+            return sorted(selectedBooks, key=lambda book: (book.title))
 
         else:
-            return sorted(locatedBooks, key=lambda book: (book.publication_year, book.title))
+            return sorted(selectedBooks, key=lambda book: (book.publication_year, book.title))
 
 
     def books_between_years(self, start_year=None, end_year=None):
@@ -183,29 +183,29 @@ class BooksDataSource:
         except ValueError:
             raise ValueError('sorry, invalid input')
 
-        locatedBooks = []
+        selectedBooks = []
 
         #make it so that in Book object, publication years are integers when put in
         #figure out how command line treats ints as arguments so can throw error when string or something
 
         if (startYearNone == True and endYearNone == True): 
-            locatedBooks = self.listOfBooks
+            selectedBooks = self.listOfBooks
             
         elif (startYearNone == True):
             for book in self.listOfBooks:
                 if (int(book.publication_year) <= int(end_year)):
-                    locatedBooks.append(book)
+                    selectedBooks.append(book)
 
         elif (endYearNone == True):
             for book in self.listOfBooks:
                 if (int(book.publication_year) >= int(start_year)):
-                    locatedBooks.append(book)
+                    selectedBooks.append(book)
 
         else: #neither term is None
             
             for book in self.listOfBooks:
                 if (int(book.publication_year) >= int(start_year) and int(book.publication_year) <= int(end_year)):
-                    locatedBooks.append(book)
+                    selectedBooks.append(book)
                     
-        return sorted(locatedBooks, key=lambda book: (book.publication_year, book.title))
+        return sorted(selectedBooks, key=lambda book: (book.publication_year, book.title))
 
