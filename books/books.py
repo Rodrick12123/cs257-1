@@ -23,7 +23,8 @@ def main():
             listOfBooks = initializedBooksDataSource.books(title, 'title')
             for book in listOfBooks:
                 print(book.title)
-    if (arguments.titles year != None):
+                '''
+   if (arguments.titles year != None):
         for title in arguments.titles year:
             listOfBooks = initializedBooksDataSource.books(title, 'year')
             for book in listOfBooks:
@@ -46,12 +47,13 @@ def main():
                     if ((authorWithString in alreadyPrintedAuthors) == False):
                         print(authorWithString.surname, authorWithString.given_name)
                         alreadyPrintedAuthors.append(authorWithString)
-    #if (len(arguments.years) > 2):
-        #print("")
-       #print(arguments.years)
-    #else:
-        #print("")
-        #print(booksdatasource.BooksDataSource.books_between_years(arguments.years[0], arguments.years[1]))
+                        '''
+    if (len(arguments.years) > 2):
+        print("You've entered too many arguments")
+    else:
+        listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], arguments.years[1])
+        for book in listOfBooks:
+            print(book.title)
 
 if __name__ == '__main__':
     main()
