@@ -4,9 +4,9 @@ NAME
 	search
 
 SYNOPSIS
-        search [-t|-a] [search-term]
-        search [-y] [start-year] [end-year]
-        search [-h]
+        search <-t|-a> <search-term>
+        search <-y> <start-year> <end-year>
+        search <-h>
 
 DESCRIPTION
         This search method looks through the given database of books and authors and prints lists composed from one of three specifications. Combinations of flags are not supported. By default, it will search for the user-specified term with the title flag.
