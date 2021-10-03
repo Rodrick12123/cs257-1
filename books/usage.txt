@@ -7,7 +7,7 @@ SYNOPSIS
         search <-t|-a> (search-term)
 	search <-y> (start-year) (end-year)
         search <-y> <start-year> (none)
-	search <-y> <none> <end-year>
+	search <-y> <none> (end-year)
         search <-h>
 
 DESCRIPTION
