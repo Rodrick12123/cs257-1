@@ -7,7 +7,9 @@ import csv
 def get_parsed_arguments():
     parser = argparse.ArgumentParser(description='Sorts books and authors')
     parser.add_argument('searchterms', metavar='search', nargs='+', help='search function--put in your search term here')
-    parser.add_argument('--titles', '-t', nargs='?', const='title', choices=['title','year'], help='sort by titles')
+    parser.add_argument('--titles', '-t', nargs='+', default="N", help='sort by titles')
+    parser.add_argument('--titles year', '-t year', nargs='+', default="N", help='sort by titles')
+    parser.add_argument('--titles title', '-t title', nargs='+', default="N", help='sort by titles')
     parser.add_argument('--authors', '-a',nargs='+', default="N",  help='sort by authors')
     parser.add_argument('--years', '-y',nargs='+', default="N", help='sort by years')
     parsed_arguments = parser.parse_args()
@@ -16,13 +18,13 @@ def get_parsed_arguments():
 def main():
     initializedBooksDataSource = booksdatasource.BooksDataSource("books1.csv")
     arguments = get_parsed_arguments()
+    listOfBooks = []
     for title in arguments.titles:
-        listOfBooks = initializedBooksDataSource.books(title)
+        listOfBooks.append(initializedBooksDataSource.books(title))
         for book in listOfBooks:
             print(book.title)
     alreadyPrintedAuthors =[]
     for author in arguments.authors:
-        print(author)
         if (author == "N"):
             listOfAuthorsNone = initializedBooksDataSource.authors("None")
             for noneAuthor in listOfAuthorsNone:
