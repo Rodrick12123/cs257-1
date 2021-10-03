@@ -181,7 +181,7 @@ class BooksDataSource:
             if (endYearNone == False):
                 y = int(end_year)
         except ValueError:
-            raise ('sorry, invalid input')
+            raise ValueError('sorry, invalid input')
 
         locatedBooks = []
 

@@ -50,7 +50,7 @@ class BooksDataSourceTester(unittest.TestCase):
     def test_t_sortByYear(self):
         self.assertEqual(self.data_source.books('time', 'year'), [Book('The Fire Next Time', 1963, [Author('Baldwin', 'James')]), Book('Love in the Time of Cholera', 1985, [Author('García Márquez', 'Gabriel')]), Book('Thief of Time', 1996, [Author('Pratchett', 'Terry')])])
 
-    def text_y_typoTest(self):
+    def test_y_typoTest(self):
         self.assertRaises(ValueError, self.data_source.books_between_years, 2000, 'hello')
     def test_y_startYearNone(self):
         self.assertEqual(self.data_source.books_between_years(None, 1815), [Book('The Life and Opinions of Tristram Shandy, Gentleman', 1759, [Author('Sterne', 'Laurence')]), Book('Pride and Prejudice', 1813, [Author('Austen', 'Jane')]), Book('Sense and Sensibility', 1813, [Author('Austen', 'Jane')]), Book('Emma', 1815, [Author('Austen', 'Jane')])])
