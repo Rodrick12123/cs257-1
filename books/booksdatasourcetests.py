@@ -56,14 +56,6 @@ class BooksDataSourceTester(unittest.TestCase):
         self.smaller_data_source = BooksDataSource('testNone.csv')
         whatShouldBeReturned = [Book('Jane Eyre', 1847, [Author('Brontë', 'Charlotte')]),Book('Leave it to Psmith', 1923, [Author('Wodehouse', 'Pelham Grenville')]),Book('Love in the Time of Cholera', 1985, [Author('García Márquez', 'Gabriel')])]
         self.assertEqual(self.smaller_data_source.books_between_years(None), whatShouldBeReturned)
-    def test_y_firstTermNone(self):
-        self.smaller_data_source = BooksDataSource('y_firstTermNoneANDLastTermNone.csv')
-        whatShouldBeReturned = [Book('Jane Eyre', 1847, [Author('Brontë', 'Charlotte')]), Book('Main Street', 1920, [Author('Lewis', 'Sinclair')]), Book('Leave it to Psmith', 1923, [Author('Wodehouse', 'Pelham Grenville')])]
-        self.assertEqual(self.data_source.books_between_years(None,"1923"), whatShouldBeReturned)
-    def test_y_lastTermNone(self):
-        self.smaller_data_source = BooksDataSource('y_firstTermNoneANDLastTermNone.csv')
-        whatShouldBeReturned = [Book('Leave it to Psmith', 1923, [Author('Wodehouse', 'Pelham Grenville')]),Book('The Fire Next Time'),Book('Love in the Time of Cholera', 1985, [Author('García Márquez', 'Gabriel')]), Book('Mirror Dance', 1994, [Author('Bujold', 'Lois')])]
-        self.assertEqual(self.data_source.books_between_years("1923", None), whatShouldBeReturned)
     def test_y_inclusiveAndTieBreaker(self):
         self.assertEqual(self.data_source.books_between_years(2005, 2010), [Book('1Q84', 2009, [Author('Murakami', 'Haruki')]), Book('All Clear', 2010, [Author('Willis', 'Connie')]), Book('Blackout', 2010, [Author('Willis', 'Connie')])])
 
