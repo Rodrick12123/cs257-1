@@ -7,23 +7,38 @@ import csv
 def get_parsed_arguments():
     parser = argparse.ArgumentParser(description='Sorts books and authors')
     parser.add_argument('searchterms', metavar='search', nargs='+', help='search function--put in your search term here')
-    parser.add_argument('--titles', '-t', default="None", help='sort by titles')
-    parser.add_argument('--authors', '-a', default="None",  help='sort by authors')
-    parser.add_argument('--years', '-y', default="None", help='sort by years')
+    parser.add_argument('--titles', '-t', nargs='?', const='title', choices=['title','year'], help='sort by titles')
+    parser.add_argument('--authors', '-a',nargs='+', default="N",  help='sort by authors')
+    parser.add_argument('--years', '-y',nargs='+', default="N", help='sort by years')
     parsed_arguments = parser.parse_args()
     return parsed_arguments
 
 def main():
     initializedBooksDataSource = booksdatasource.BooksDataSource("books1.csv")
     arguments = get_parsed_arguments()
-    #for title in arguments.titles:
-        #FIX THIS LATER
-        #print(booksdatasource.BooksDataSource.books(title, "year"))
-    
-    listOfAuthors = initializedBooksDataSource.authors(arguments.authors)
-    for author in listOfAuthors:
-        print(author.surname, author.given_name)
-    #print(booksdatasource.BooksDataSource.books_between_years(arguments.years[0], arguments.years[1]))
+    for title in arguments.titles:
+        listOfBooks = initializedBooksDataSource.books(title)
+        for book in listOfBooks:
+            print(book.title)
+    alreadyPrintedAuthors =[]
+    for author in arguments.authors:
+        print(author)
+        if (author == "N"):
+            listOfAuthorsNone = initializedBooksDataSource.authors("None")
+            for noneAuthor in listOfAuthorsNone:
+                print(noneAuthor.surname, noneAuthor.given_name)
+        else:
+            listOfAuthorsWithString = initializedBooksDataSource.authors(author)
+            for authorWithString in listOfAuthorsWithString:
+                if ((authorWithString in alreadyPrintedAuthors) == False):
+                    print(authorWithString.surname, authorWithString.given_name)
+                    alreadyPrintedAuthors.append(authorWithString)
+    if (len(arguments.years) > 2):
+        print("")
+       #print(arguments.years)
+    else:
+        print("")
+        #print(booksdatasource.BooksDataSource.books_between_years(arguments.years[0], arguments.years[1]))
 
 if __name__ == '__main__':
     main()
