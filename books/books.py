@@ -66,7 +66,7 @@ def main():
         for book in listOfBooks:
             if (book not in listOfBooksAlreadyPrinted):
                 print(book.title)
-                listOfbooksAlreadyPrinted.append(book)
+                listOfBooksAlreadyPrinted.append(book)
     if (arguments.years != 'NoData'):
         if (len(arguments.years) == 0):
             listOfBooks = initializedBooksDataSource.books_between_years(None, None)
