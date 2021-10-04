@@ -141,7 +141,6 @@ class BooksDataSource:
         if (search_text == None):
             selectedBooks = self.listOfBooks
 
-        #finding books that contain search_term
         else:
             for book in self.listOfBooks:
                 if search_text.casefold() in book.title.casefold():
@@ -185,9 +184,6 @@ class BooksDataSource:
             quit()
 
         selectedBooks = []
-
-        #make it so that in Book object, publication years are integers when put in
-        #figure out how command line treats ints as arguments so can throw error when string or something
 
         if (startYearNone == True and endYearNone == True): 
             selectedBooks = self.listOfBooks
