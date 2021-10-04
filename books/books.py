@@ -62,8 +62,11 @@ def main():
                 listOfBooks = sorted(listOfBooks, key=lambda x: (x.title))
             else:
                 listOfBooks = sorted(listOfBooks, key=lambda x: (x.publication_year, x.title))
+        listOfBooksAlreadyPrinted = []
         for book in listOfBooks:
-            print(book.title)
+            if (book not in listOfBooksAlreadyPrinted):
+                print(book.title)
+                listOfbooksAlreadyPrinted.append(book)
     if (arguments.years != 'NoData'):
         if (len(arguments.years) == 0):
             listOfBooks = initializedBooksDataSource.books_between_years(None, None)
