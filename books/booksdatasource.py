@@ -112,7 +112,7 @@ class BooksDataSource:
             by surname, breaking ties using given name (e.g. Ann Brontë comes before Charlotte Brontë).
         '''
         listOfAuthorsWithThisString = []
-        if (search_text == 'None' or search_text == None):
+        if (search_text == None):
             listOfAuthorsSorted = sorted(self.listOfAuthors, key=lambda x: x.surname)
             return listOfAuthorsSorted
         else:
@@ -138,7 +138,7 @@ class BooksDataSource:
 
         selectedBooks = []
 
-        if (search_text=='None' or search_text == None):
+        if (search_text == None):
             selectedBooks = self.listOfBooks
 
         #finding books that contain search_term
