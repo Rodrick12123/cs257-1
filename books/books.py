@@ -24,18 +24,14 @@ def main():
         contents = file.read()
         print(contents)
     if (arguments.authors != 'NoData'):
-        if ((len(arguments.authors)) > 0):
-            for author in arguments.authors:
-                listOfAuthors += initializedBooksDataSource.authors(author)
-        elif ((len(arguments.authors)) == 0):
-            listOfAuthors = initializedBooksDataSource.authors(None)
-        listOfAuthors = sorted(listOfAuthors, key=lambda x: (x.surname, x.given_name))
-        for authorObj in listOfAuthors:
-            if ((authorObj in listOfAuthorsAlreadyPrinted) == False):
-                print(authorObj.surname+", "+authorObj.given_name)
-                listOfAuthorsAlreadyPrinted.append(authorObj)
+        handle_author_call()
     if (arguments.titles != 'NoData'):
-        sortedByYear = False
+        handle_title_call()
+    if (arguments.years != 'NoData'):
+        handle_years_call()
+                
+def handle_title_call()
+    sortedByYear = False
         listOfBooks = []
         index = 0
         if ((len(arguments.titles) == 0)):
@@ -67,8 +63,21 @@ def main():
             if (book not in listOfBooksAlreadyPrinted):
                 print(book.title)
                 listOfBooksAlreadyPrinted.append(book)
-    if (arguments.years != 'NoData'):
-        if (len(arguments.years) == 0):
+    
+def handle_author_call()
+    if ((len(arguments.authors)) > 0):
+            for author in arguments.authors:
+                listOfAuthors += initializedBooksDataSource.authors(author)
+        elif ((len(arguments.authors)) == 0):
+            listOfAuthors = initializedBooksDataSource.authors(None)
+        listOfAuthors = sorted(listOfAuthors, key=lambda x: (x.surname, x.given_name))
+        for authorObj in listOfAuthors:
+            if ((authorObj in listOfAuthorsAlreadyPrinted) == False):
+                print(authorObj.surname+", "+authorObj.given_name)
+                listOfAuthorsAlreadyPrinted.append(authorObj)
+    
+def handle_years_call()
+    if (len(arguments.years) == 0):
             listOfBooks = initializedBooksDataSource.books_between_years(None, None)
             for book in listOfBooks:
                 print(book.title)
@@ -87,9 +96,6 @@ def main():
                 listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], arguments.years[1])
             for book in listOfBooks:
                 print(book.title)
-                
-def handle_title_call()
-    #blah
     
 
 if __name__ == '__main__':
