@@ -32,23 +32,23 @@ def main():
                 
 def handle_title_call():
     sortedByYear = False
-        listOfBooks = []
-        index = 0
-        if ((len(arguments.titles) == 0)):
-            listOfBooks = initializedBooksDataSource.books(None, 'title')
-        else:
-            for title in arguments.titles:
-                if (title == 'year'):
-                    sortedByYear = True
-                    index +=1
-                elif (title == 'title'):
-                    index +=1
-                    pass
+    listOfBooks = []
+    index = 0
+    if ((len(arguments.titles) == 0)):
+        listOfBooks = initializedBooksDataSource.books(None, 'title')
+    else:
+        for title in arguments.titles:
+            if (title == 'year'):
+                sortedByYear = True
+                index +=1
+            elif (title == 'title'):
+                index +=1
+                pass
+            else:
+                if (sortedByYear == True):
+                    listOfBooks += initializedBooksDataSource.books(title, 'year')
                 else:
-                    if (sortedByYear == True):
-                        listOfBooks += initializedBooksDataSource.books(title, 'year')
-                    else:
-                        listOfBooks += initializedBooksDataSource.books(title, 'title')
+                    listOfBooks += initializedBooksDataSource.books(title, 'title')
                 if ((len(arguments.titles)) == index):
                     if (sortedByYear == True):
                         listOfBooks = initializedBooksDataSource.books(None, 'year')
