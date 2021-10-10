@@ -1,17 +1,17 @@
 				User Commands			
 
 NAME
-	search
+	python3 books.py search
 
 SYNOPSIS
-        search <-t|-a> (search-term)
-        search <-y> (start-year) (end-year)
-        search <-y> <start-year> (none)
-        search <-y> <none> <end-year>
-        search <-mh>
+        python3 books.py search <-t|-a> (search-term)
+        python3 books.py search <-y> (start-year) (end-year)
+        python3 books.py search <-y> <start-year> (none)
+        python3 books.py search <-y> <none> <end-year>
+        python3 books.py search <-mh>
 
 DESCRIPTION
-        This search method looks through the given database of books and authors and prints lists composed from one of three specifications. Combinations of flags are not supported. By default, it will search for the user-specified term with the title flag.
+        This search method looks through the given database of books and authors and prints lists composed from one of three specifications. Combinations of flags are not supported. 
 
 OPTIONS
 
