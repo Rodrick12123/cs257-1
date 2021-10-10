@@ -78,9 +78,9 @@ def handle_author_call():
     
 def handle_years_call():
     if (len(arguments.years) == 0):
-            listOfBooks = initializedBooksDataSource.books_between_years(None, None)
-            for book in listOfBooks:
-                print(book.title)
+       listOfBooks = initializedBooksDataSource.books_between_years(None, None)
+       for book in listOfBooks:
+            print(book.title)
         elif (len(arguments.years) > 2):
             print("You've entered too many arguments")
         else:
