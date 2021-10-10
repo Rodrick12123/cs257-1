@@ -81,19 +81,19 @@ def handle_years_call():
         listOfBooks = initializedBooksDataSource.books_between_years(None, None)
         for book in listOfBooks:
             print(book.title)
-        elif (len(arguments.years) > 2):
-            print("You've entered too many arguments")
+    elif (len(arguments.years) > 2):
+        print("You've entered too many arguments")
+    else:
+        if (len(arguments.years) == 1):
+            listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], None)
+        elif (arguments.years[0].lower() == 'none' and arguments.years[1].lower() != 'none'):
+            listOfBooks = initializedBooksDataSource.books_between_years(None, arguments.years[1])
+        elif (arguments.years[1].lower() == 'none' and arguments.years[0].lower() != 'none'):
+            listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], None)
+        elif (arguments.years[0].lower() == 'none' and arguments.years[1].lower() == 'none'):
+            listOfBooks = initializedBooksDataSource.books_between_years(None, None)
         else:
-            if (len(arguments.years) == 1):
-                listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], None)
-            elif (arguments.years[0].lower() == 'none' and arguments.years[1].lower() != 'none'):
-                listOfBooks = initializedBooksDataSource.books_between_years(None, arguments.years[1])
-            elif (arguments.years[1].lower() == 'none' and arguments.years[0].lower() != 'none'):
-                listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], None)
-            elif (arguments.years[0].lower() == 'none' and arguments.years[1].lower() == 'none'):
-                listOfBooks = initializedBooksDataSource.books_between_years(None, None)
-            else:
-                listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], arguments.years[1])
+            listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], arguments.years[1])
             for book in listOfBooks:
                 print(book.title)
     
