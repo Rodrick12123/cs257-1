@@ -24,13 +24,13 @@ def main():
         contents = file.read()
         print(contents)
     if (arguments.authors != 'NoData'):
-        handle_author_call()
+        handle_author_call(arguments)
     if (arguments.titles != 'NoData'):
-        handle_title_call()
+        handle_title_call(arguments)
     if (arguments.years != 'NoData'):
-        handle_years_call()
+        handle_years_call(arguments)
                 
-def handle_title_call():
+def handle_title_call(arguments):
     sortedByYear = False
     listOfBooks = []
     index = 0
@@ -64,7 +64,7 @@ def handle_title_call():
                 print(book.title)
                 listOfBooksAlreadyPrinted.append(book)
     
-def handle_author_call():
+def handle_author_call(arguments):
     if ((len(arguments.authors)) > 0):
         for author in arguments.authors:
             listOfAuthors += initializedBooksDataSource.authors(author)
@@ -76,7 +76,7 @@ def handle_author_call():
                 print(authorObj.surname+", "+authorObj.given_name)
                 listOfAuthorsAlreadyPrinted.append(authorObj)
     
-def handle_years_call():
+def handle_years_call(arguments):
     if (len(arguments.years) == 0):
         listOfBooks = initializedBooksDataSource.books_between_years(None, None)
         for book in listOfBooks:
