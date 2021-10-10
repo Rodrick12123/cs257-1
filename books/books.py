@@ -33,7 +33,6 @@ def handle_title_call(initializedBooksDataSource, arguments):
     sortedByYear = False
     listOfBooks = []
     index = 0
-    print(len(arguments.titles))
     if ((len(arguments.titles) == 0)):
         listOfBooks = initializedBooksDataSource.books(None, 'title')
     else:
@@ -58,11 +57,11 @@ def handle_title_call(initializedBooksDataSource, arguments):
                 listOfBooks = sorted(listOfBooks, key=lambda x: (x.title))
             else:
                 listOfBooks = sorted(listOfBooks, key=lambda x: (x.publication_year, x.title))
-        listOfBooksAlreadyPrinted = []
-        for book in listOfBooks:
-            if (book not in listOfBooksAlreadyPrinted):
-                print(book.title)
-                listOfBooksAlreadyPrinted.append(book)
+    listOfBooksAlreadyPrinted = []
+    for book in listOfBooks:
+        if (book not in listOfBooksAlreadyPrinted):
+            print(book.title)
+            listOfBooksAlreadyPrinted.append(book)
     
 def handle_author_call(initializedBooksDataSource, arguments):
     listOfAuthors = []
