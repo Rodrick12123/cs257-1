@@ -5,14 +5,14 @@ import booksdatasource
 import csv
 
 def get_parsed_arguments():
-        parser = argparse.ArgumentParser(description='Sorts books and authors')
-        parser.add_argument('searchterms', metavar='search', nargs='+', help='search function--put in your search terms here')
-        parser.add_argument('--titles', '-t', nargs='*',default='NoData', help='sort by titles')
-        parser.add_argument('--authors', '-a',nargs='*',default='NoData',  help='sort by authors')
-        parser.add_argument('--years', '-y',nargs='*',default='NoData', help='sort by years')
-        parser.add_argument('--moreHelp', '-mh', '-mH', nargs='*', default = 'NoData', help='provides more information on search')
-        parsed_arguments = parser.parse_args()
-        return parsed_arguments
+    parser = argparse.ArgumentParser(description='Sorts books and authors')
+    parser.add_argument('searchterms', metavar='search', nargs='+', help='search function--put in your search terms here')
+    parser.add_argument('--titles', '-t', nargs='*',default='NoData', help='sort by titles')
+    parser.add_argument('--authors', '-a',nargs='*',default='NoData',  help='sort by authors')
+    parser.add_argument('--years', '-y',nargs='*',default='NoData', help='sort by years')
+    parser.add_argument('--moreHelp', '-mh', '-mH', nargs='*', default = 'NoData', help='provides more information on search')
+    parsed_arguments = parser.parse_args()
+    return parsed_arguments
 
 def main():
     initializedBooksDataSource = booksdatasource.BooksDataSource("books1.csv")
@@ -87,6 +87,10 @@ def main():
                 listOfBooks = initializedBooksDataSource.books_between_years(arguments.years[0], arguments.years[1])
             for book in listOfBooks:
                 print(book.title)
+                
+def handle_title_call()
+    #blah
+    
 
 if __name__ == '__main__':
     main()
