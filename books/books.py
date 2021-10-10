@@ -33,6 +33,7 @@ def handle_title_call(initializedBooksDataSource, arguments):
     sortedByYear = False
     listOfBooks = []
     index = 0
+    print(len(arguments.titles))
     if ((len(arguments.titles) == 0)):
         listOfBooks = initializedBooksDataSource.books(None, 'title')
     else:
