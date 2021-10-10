@@ -73,10 +73,12 @@ def handle_author_call(initializedBooksDataSource, arguments):
     elif ((len(arguments.authors)) == 0):
         listOfAuthors = initializedBooksDataSource.authors(None)
         listOfAuthors = sorted(listOfAuthors, key=lambda x: (x.surname, x.given_name))
-        for authorObj in listOfAuthors:
-            if ((authorObj in listOfAuthorsAlreadyPrinted) == False):
-                print(authorObj.surname+", "+authorObj.given_name)
-                listOfAuthorsAlreadyPrinted.append(authorObj)
+        for author in listOfAuthors:
+            if ((author in listOfAuthorsAlreadyPrinted) == False):
+                print(author.surname+', '+author.given_name)
+                for book in initializedBooksDataSource.books_by_author(author):
+                    print("    "+book.title+' ('+book.publication_year+')')
+                listOfAuthorsAlreadyPrinted.append(author)
     
 def handle_years_call(initializedBooksDataSource, arguments):
     if (len(arguments.years) == 0):
