@@ -17,8 +17,7 @@ def get_parsed_arguments():
 def main():
     initializedBooksDataSource = booksdatasource.BooksDataSource("books1.csv")
     arguments = get_parsed_arguments()
-    listOfAuthors = []
-    listOfAuthorsAlreadyPrinted = []
+    
     if (arguments.moreHelp != 'NoData'):
         file = open('usage.txt', 'r')
         contents = file.read()
@@ -65,6 +64,9 @@ def handle_title_call(arguments):
                 listOfBooksAlreadyPrinted.append(book)
     
 def handle_author_call(arguments):
+    listOfAuthors = []
+    listOfAuthorsAlreadyPrinted = []
+    
     if ((len(arguments.authors)) > 0):
         for author in arguments.authors:
             listOfAuthors += initializedBooksDataSource.authors(author)
