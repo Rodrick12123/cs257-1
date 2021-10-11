@@ -1,4 +1,5 @@
 #This is code by Lysander Miller and Thea Traw
+#Revised by Thea Traw
 
 import argparse
 import booksdatasource
@@ -6,11 +7,11 @@ import csv
 
 def get_parsed_arguments():
     parser = argparse.ArgumentParser(description='Sorts books and authors')
-    parser.add_argument('searchterms', metavar='search', nargs='+', help='search function--put in your search terms here')
+    parser.add_argument('searchterms', metavar='search', nargs='+', help='search function')
     parser.add_argument('--titles', '-t', nargs='*',default='NoData', help='sort by titles')
     parser.add_argument('--authors', '-a',nargs='*',default='NoData',  help='sort by authors')
     parser.add_argument('--years', '-y',nargs='*',default='NoData', help='sort by years')
-    parser.add_argument('--moreHelp', '-mh', '-mH', nargs='*', default = 'NoData', help='provides more information on search')
+    parser.add_argument('--morehelp', '-mh', '-?', nargs='*', default = 'NoData', help='provides more information on search')
     parsed_arguments = parser.parse_args()
     return parsed_arguments
 
@@ -18,7 +19,7 @@ def main():
     initialized_books_data_source = booksdatasource.BooksDataSource("books1.csv")
     arguments = get_parsed_arguments()
     
-    if arguments.moreHelp != 'NoData':
+    if arguments.morehelp != 'NoData':
         file = open('usage.txt', 'r')
         contents = file.read()
         print(contents)
@@ -30,13 +31,10 @@ def main():
         handle_years_call(initialized_books_data_source, arguments)
                 
 def handle_title_call(initialized_books_data_source, arguments):
-
-    #not working atm, look in history to see what went wrong
     
     sorted_by_year = False
     number_of_arguments = 0
     list_of_books = []
-    #index = 0
     if len(arguments.titles) == 0:
         list_of_books = initialized_books_data_source.books(None)
     else:
@@ -48,12 +46,12 @@ def handle_title_call(initialized_books_data_source, arguments):
                 number_of_arguments += 1
                 pass
             else:
-                if number_of_arguments > 1:
-                    if sorted_by_year == True:
-                        list_of_books += initialized_books_data_source.books(term, 'year')
-                    else:
-                        list_of_books += initialized_books_data_source.books(term, 'title')
+                
+                if sorted_by_year == True:
+                    list_of_books += initialized_books_data_source.books(term, 'year')
                 else:
+                    list_of_books += initialized_books_data_source.books(term, 'title')
+                if len(arguments.titles) == number_of_arguments:
                     if sorted_by_year == True:
                         list_of_books = initialized_books_data_source.books(None, 'year')
                     else:
@@ -66,7 +64,7 @@ def handle_title_call(initialized_books_data_source, arguments):
     list_of_books_already_printed = []
     for book in list_of_books:
         if (book not in list_of_books_already_printed):
-            print(book.title)
+            print(book.title+' ('+book.publication_year+')')
             list_of_books_already_printed.append(book)
     
 def handle_author_call(initialized_books_data_source, arguments):
@@ -107,7 +105,7 @@ def handle_years_call(initialized_books_data_source, arguments):
             list_of_books = initialized_books_data_source.books_between_years(arguments.years[0], arguments.years[1])
     
     for book in list_of_books:
-        print(book.title)
+        print(book.title+' ('+book.publication_year+')')
 
 
 if __name__ == '__main__':
