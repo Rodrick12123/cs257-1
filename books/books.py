@@ -52,6 +52,13 @@ def handle_title_call(initialized_books_data_source, arguments):
             for title in arguments.titles:
                 list_of_books += initialized_books_data_source.books(title, 'year')
    
+    #in case there were multiple search terms
+    if not sorted_by_year:
+        list_of_books = sorted(list_of_books, key=lambda book: (book.title))
+    else:
+        list_of_books = sorted(list_of_books, key=lambda book: (book.publication_year, book.title))
+
+
     list_of_books_already_printed = []                                          
     for book in list_of_books:                                                  
         if (book not in list_of_books_already_printed):                         
