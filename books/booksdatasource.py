@@ -7,6 +7,8 @@
     CS 257 Software Design class, Fall 2021.
 '''
 
+#Revised by Thea Traw
+
 import csv
 
 class Author:
@@ -104,9 +106,6 @@ class BooksDataSource:
 
     def process_author(author_info):
 
-        #if there's just a single author
-        #if author_info.find(" and ") == -1:
-
         #separate names and birth & death year                                                                                   
         split_index = author_info.rfind(" ")
         names = author_info[:split_index]
@@ -135,11 +134,9 @@ class BooksDataSource:
         if author_info.find(' and ') == -1:
             sole_author = BooksDataSource.process_author(author_info)
             authors.append(sole_author)
+
         else:
             author_strings = author_info.split(" and ")
-            #first_author = author_info[:authors_split_index]
-            #other_authors = author_info[(authors_split_index + len(" and ")):]
-
             for author_string in author_strings:
                 author = BooksDataSource.process_author(author_string)
                 authors.append(author)
@@ -147,19 +144,13 @@ class BooksDataSource:
         return authors 
 
 
-            #authors = [BooksDataSource.process_authors(first_author)[0], BooksDataSource.process_authors(other_authors)[0]]
-            #return authors
-                
-            #author_append_list = BooksDataSource.process_authors(first_author)
-            #author_append_list.append(BooksDataSource.process_authors(other_authors)[0])
-            #return author_append_list
-
     def authors(self, search_text=None):
         ''' Returns a list of all the Author objects in this data source whose names contain
             (case-insensitively) the search text. If search_text is None, then this method
             returns all of the Author objects. In either case, the returned list is sorted
             by surname, breaking ties using given name (e.g. Ann Brontë comes before Charlotte Brontë).
         '''
+
         selected_authors = []
         if (search_text == None):
             selected_authors = self.list_of_authors
@@ -220,8 +211,7 @@ class BooksDataSource:
         if (end_year == 'None' or end_year == None):
             end_year_none = True
 
-        try:
-            
+        try:            
             if (start_year_none == False): 
                 x = int(start_year)
             if (end_year_none == False):
