@@ -69,8 +69,10 @@ class BooksDataSource:
             author_info = parsed_information[2]
 
             processed_list_of_authors = BooksDataSource.process_list_of_authors(author_info)
-
+            
+            authors_list = []
             for author in processed_list_of_authors:
+                authors_list.append(author)
                 if author not in self.list_of_authors:
                     self.list_of_authors.append(author)
             
