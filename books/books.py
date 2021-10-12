@@ -65,37 +65,7 @@ def handle_title_call(initialized_books_data_source, arguments):
             print(book.title+' ('+book.publication_year+')')                    
             list_of_books_already_printed.append(book)  
             
-'''
-        for term in arguments.titles:
-            if term == 'year':
-                sorted_by_year = True
-                number_of_arguments += 1
-            elif term == 'title':
-                number_of_arguments += 1
-                pass
-            else:
-                
-                if sorted_by_year == True:
-                    list_of_books += initialized_books_data_source.books(term, 'year')
-                else:
-                    list_of_books += initialized_books_data_source.books(term, 'title')
-                if len(arguments.titles) == number_of_arguments:
-                    if sorted_by_year == True:
-                        list_of_books = initialized_books_data_source.books(None, 'year')
-                    else:
-                        list_of_books = initialized_books_data_source.books(None, 'title')
-            if sorted_by_year == False:
-                list_of_books = sorted(list_of_books, key=lambda x: (x.title))
-            else:
-                list_of_books = sorted(list_of_books, key=lambda x: (x.publication_year, x.title))
-
-    
-    list_of_books_already_printed = []
-    for book in list_of_books:
-        if (book not in list_of_books_already_printed):
-            print(book.title+' ('+book.publication_year+')')
-            list_of_books_already_printed.append(book)
-'''    
+            
 def handle_author_call(initialized_books_data_source, arguments):
     list_of_authors = []
     list_of_authors_already_printed = []
