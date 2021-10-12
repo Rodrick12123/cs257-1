@@ -65,7 +65,7 @@ class BooksDataSource:
             publication_year = parsed_information[1]
             author_info = parsed_information[2]
 
-            processed_list_of_authors = BooksDataSource.process_authors(author_info)
+            processed_list_of_authors = BooksDataSource.process_list_of_authors(author_info)
 
             authors_list = []
 
@@ -102,48 +102,57 @@ class BooksDataSource:
             
         return parsed_information
 
-    def process_authors(author_info):
+    def process_author(author_info):
 
-        authors = []
         #if there's just a single author
-        if author_info.find(" and ") == -1:
+        #if author_info.find(" and ") == -1:
 
-                #separate names and birth & death year                                                                                   
-                split_index = author_info.rfind(" ")
-                names = author_info[:split_index]
-                #birth and death year follow the space (" ") after the last name                                                         
-                birth_and_death_year = author_info[(split_index + 2):]
+        #separate names and birth & death year                                                                                   
+        split_index = author_info.rfind(" ")
+        names = author_info[:split_index]
+        #birth and death year follow the space (" ") after the last name                                                         
+        birth_and_death_year = author_info[(split_index + 2):]
 
-                #just count any "middle" names as part of first name                                                                     
-                name_split = names.rfind(" ")
-                given_name = names[:name_split]
-                surname = names[(name_split + 1):]
+        #just count any "middle" names as part of first name                                                                     
+        name_split = names.rfind(" ")
+        given_name = names[:name_split]
+        surname = names[(name_split + 1):]
                 
-                #for birth year and death year                                                                                           
-                birth_and_death_year_split = birth_and_death_year.split("-")
-                birth_year = birth_and_death_year_split[0].split("(")[0]
+        #for birth year and death year                                                                                           
+        birth_and_death_year_split = birth_and_death_year.split("-")
+        birth_year = birth_and_death_year_split[0].split("(")[0]
 
-                #assume no death year                                                                                                    
-                death_year = None
-                if len(birth_and_death_year_split[1]) > 1: #meaning not just a ")"                                                               
-                    death_year = birth_and_death_year_split[1].split(")")[0]
-
-                authors.append(Author(surname, given_name, birth_year, death_year))
-                    
-                return authors
-
-        else:
-                authors_split_index = author_info.find(" and ")
-                first_author = author_info[:authors_split_index]
-                other_authors = author_info[(authors_split_index + len(" and ")):]
-
-                authors = [BooksDataSource.process_authors(first_author)[0], BooksDataSource.process_authors(other_authors)[0]]
-                return authors
-                
-                #author_append_list = BooksDataSource.process_authors(first_author)
-                #author_append_list.append(BooksDataSource.process_authors(other_authors)[0])
+        #assume no death year                                                                                                    
+        death_year = None
+        if len(birth_and_death_year_split[1]) > 1: #meaning not just a ")"                                                               
+            death_year = birth_and_death_year_split[1].split(")")[0]
             
-                #return author_append_list
+        return Author(surname, given_name, birth_year, death_year)
+
+    def process_list_of_authors(author_info):
+        
+        authors = []
+        if author_info.find(' and ') == -1:
+            sole_author = BooksDataSource.process_author(author_info)
+            authors.append(sole_author)
+        else:
+            author_strings = author_info.split(" and ")
+            #first_author = author_info[:authors_split_index]
+            #other_authors = author_info[(authors_split_index + len(" and ")):]
+
+            for author_string in author_strings:
+                author = BooksDataSource.process_author(author_string)
+                authors.append(author)
+        
+        return authors 
+
+
+            #authors = [BooksDataSource.process_authors(first_author)[0], BooksDataSource.process_authors(other_authors)[0]]
+            #return authors
+                
+            #author_append_list = BooksDataSource.process_authors(first_author)
+            #author_append_list.append(BooksDataSource.process_authors(other_authors)[0])
+            #return author_append_list
 
     def authors(self, search_text=None):
         ''' Returns a list of all the Author objects in this data source whose names contain
