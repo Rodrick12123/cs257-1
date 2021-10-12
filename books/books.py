@@ -9,9 +9,10 @@ def get_parsed_arguments():
     parser = argparse.ArgumentParser(description='Sorts books and authors')
     parser.add_argument('searchterms', metavar='search', nargs='+', help='search function')
     parser.add_argument('--titles', '-t', nargs='*',default='NoData', help='sort by titles')
+    parser.add_argument('--sort', '-s',nargs='?',default='NoData', help='provides option to sort titles by')
     parser.add_argument('--authors', '-a',nargs='*',default='NoData',  help='sort by authors')
     parser.add_argument('--years', '-y',nargs='*',default='NoData', help='sort by years')
-    parser.add_argument('--morehelp', '-mh', '-?', nargs='*', default = 'NoData', help='provides more information on search')
+    parser.add_argument('--moreHelp', '-mh','-?',nargs='*',default='NoData', help='provides more information on search')
     parsed_arguments = parser.parse_args()
     return parsed_arguments
 
@@ -19,25 +20,45 @@ def main():
     initialized_books_data_source = booksdatasource.BooksDataSource("books1.csv")
     arguments = get_parsed_arguments()
     
-    if arguments.morehelp != 'NoData':
+    if arguments.moreHelp != 'NoData':
         file = open('usage.txt', 'r')
         contents = file.read()
         print(contents)
-    if arguments.authors != 'NoData':
+    elif arguments.authors != 'NoData':
         handle_author_call(initialized_books_data_source, arguments)
-    if arguments.titles != 'NoData':
+    elif arguments.titles != 'NoData':
         handle_title_call(initialized_books_data_source, arguments)
-    if arguments.years != 'NoData':
+    elif arguments.years != 'NoData':
         handle_years_call(initialized_books_data_source, arguments)
                 
 def handle_title_call(initialized_books_data_source, arguments):
     
     sorted_by_year = False
-    number_of_arguments = 0
+    
+    if arguments.sort == 'year':
+        sorted_by_year = True
+
     list_of_books = []
     if len(arguments.titles) == 0:
-        list_of_books = initialized_books_data_source.books(None)
+        if not sorted_by_year:
+            list_of_books = initialized_books_data_source.books(None)
+        else:
+            list_of_books = initialized_books_data_source.books(None, 'year')
     else:
+        if not sorted_by_year:
+            for title in arguments.titles:
+                list_of_books += initialized_books_data_source.books(title)
+        else:
+            for title in arguments.titles:
+                list_of_books += initialized_books_data_source.books(title, 'year')
+   
+    list_of_books_already_printed = []                                          
+    for book in list_of_books:                                                  
+        if (book not in list_of_books_already_printed):                         
+            print(book.title+' ('+book.publication_year+')')                    
+            list_of_books_already_printed.append(book)  
+            
+'''
         for term in arguments.titles:
             if term == 'year':
                 sorted_by_year = True
@@ -60,13 +81,14 @@ def handle_title_call(initialized_books_data_source, arguments):
                 list_of_books = sorted(list_of_books, key=lambda x: (x.title))
             else:
                 list_of_books = sorted(list_of_books, key=lambda x: (x.publication_year, x.title))
+
     
     list_of_books_already_printed = []
     for book in list_of_books:
         if (book not in list_of_books_already_printed):
             print(book.title+' ('+book.publication_year+')')
             list_of_books_already_printed.append(book)
-    
+'''    
 def handle_author_call(initialized_books_data_source, arguments):
     list_of_authors = []
     list_of_authors_already_printed = []
