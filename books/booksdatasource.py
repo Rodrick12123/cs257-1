@@ -54,6 +54,7 @@ class BooksDataSource:
         self.list_of_authors = []
         self.list_of_books = []
 
+        #open and read file
         books_file = open(books_csv_file_name, "r")
         lines_in_books_file = books_file.readlines()
         books_file_length = len(lines_in_books_file)
@@ -69,11 +70,7 @@ class BooksDataSource:
 
             processed_list_of_authors = BooksDataSource.process_list_of_authors(author_info)
 
-            authors_list = []
-
             for author in processed_list_of_authors:
-
-                authors_list.append(author)
                 if author not in self.list_of_authors:
                     self.list_of_authors.append(author)
             
@@ -97,7 +94,6 @@ class BooksDataSource:
 
             #everything following the comma after the last quote                                                                     
             publication_and_author_info = line[(index_last_quote + 2):].split(",")                                                                                      
-
             parsed_information.append(title)
             parsed_information.append(publication_and_author_info[0])
             parsed_information.append(publication_and_author_info[1])
@@ -107,6 +103,7 @@ class BooksDataSource:
     def process_author(author_info):
 
         #separate names and birth & death year                                                                                   
+        #rfind() from https://www.w3schools.com/python/ref_string_rfind.asp
         split_index = author_info.rfind(" ")
         names = author_info[:split_index]
         #birth and death year follow the space (" ") after the last name                                                         
@@ -158,7 +155,9 @@ class BooksDataSource:
             for author in self.list_of_authors:
                 if ((search_text.lower() in author.surname.lower()) or (search_text.lower() in author.given_name.lower())):
                     selected_authors.append(author)
+        #lambda sorting method from sorted() documentation: https://docs.python.org/3/howto/sorting.html
         return sorted(selected_authors, key=lambda x: (x.surname, x.given_name))
+
 
     def books(self, search_text=None, sort_by='title'):
         ''' Returns a list of all the Book objects in this data source whose
@@ -185,6 +184,7 @@ class BooksDataSource:
                     selected_books.append(book)
 
         if (sort_by != 'year' or sort_by == 'title'):
+            #lambda sorting method from sorted() documentation: https://docs.python.org/3/howto/sorting.html
             return sorted(selected_books, key=lambda book: (book.title))
 
         else:
@@ -211,6 +211,7 @@ class BooksDataSource:
         if (end_year == 'None' or end_year == None):
             end_year_none = True
 
+        #check for improper type in input (anything not an integer)
         try:            
             if (start_year_none == False): 
                 x = int(start_year)
@@ -241,6 +242,7 @@ class BooksDataSource:
                 if (int(book.publication_year) >= int(start_year) and int(book.publication_year) <= int(end_year)):
                     selected_books.append(book)
                     
+        #lambda sorting method from sorted() documentation: https://docs.python.org/3/howto/sorting.html
         return sorted(selected_books, key=lambda book: (book.publication_year, book.title))
 
 
