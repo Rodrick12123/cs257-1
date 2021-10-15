@@ -97,10 +97,10 @@ class FileParser:
         return row_for_table
         
     def parse_for_athletes_table(line_data):
-        athlete_dictionary[
-        row_for_table = [
+        row_for_table = [line_data[0], line_data[1], line_data[2], noc_dictionary[line_data[3]], event_dictionary[line_data[9]], game_dictionary[line_data[4]], line_data[10]]
 
-    def parse_for_medals_table(line_data):
+    def parse_for_medals_table(line_data, unique_medal_id):
+        row_for_table = [unique_medal_id, line_data[10], game_dictionary[line_data[4]], event_dictionary[line_data[9]], line_data[0]]
 
     
     def write_file(table):
