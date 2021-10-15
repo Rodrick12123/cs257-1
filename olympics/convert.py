@@ -19,7 +19,7 @@ class FileParser:
         lines_in_file = data_file.readlines()
         #data_file_length = len(lines_in_file)
         data_file.close()
-
+        
         return lines_in_file
 
     def parse_noc_data(self):
@@ -60,9 +60,6 @@ class FileParser:
                     FileParser.parse_for_events_table(edited_data)
                 if edited_data[8] not in game_dictionary:
                     FileParser.parse_for_games_table(edited_data)
-                else:
-                    
-
 
             else:
                 is_first_line = False
