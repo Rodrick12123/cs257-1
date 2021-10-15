@@ -57,8 +57,11 @@ class FileParser:
                 edited_data = FileParser.file_line_athlete_events(line)
 
                 if edited_data[13] not in event_dictionary:
+                    FileParser.parse_for_events_table(edited_data)
+                if edited_data[8] not in game_dictionary:
+                    FileParser.parse_for_games_table(edited_data)
+                else:
                     
-
 
 
             else:
