@@ -11,6 +11,8 @@ class FileParser:
     noc_dictionary = {}
     event_dictionary = {}
     unique_event_id = 1
+    game_dictionary = {}
+    unique_game_id = 1
 
     def read_file_into_lines(self, csv_file_name):
         data_file = open(csv_file_name, "r")
@@ -87,17 +89,23 @@ class FileParser:
         unique_event_id += 1
         row_for_table = [unique_event_id, line_data[13], line[12]]
         return row_for_table
+
+    def parse_for_games(line_data):
+        game_dictionary[line_data[8]] = unique_game_id
+        unique_game_id += 1
+        row_for_table = [unique_game_id, line_data[9], line_data[10], line_data[11]]
+        return row_for_table
         
     def parse_for_athletes_table(line_data):
+        athlete_dictionary[
         row_for_table = [
-        
+
+    def parse_for_medals_table(line_data):
 
     
     def write_file(table):
-        
         with open('/Users/theat/Downloads/nocs.csv', 'w', newline='') as f:
             writer = csv.writer(f)
-
             writer.writerows(table)
 
 def main():
