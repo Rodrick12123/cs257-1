@@ -51,14 +51,8 @@ events_writer = csv.writer(events_file)
 games_file = open('games.csv', 'w')
 games_writer = csv.writer(games_file)
 
-athletes_events_file = open('athletes_events.csv', 'w')
-athletes_events_writer = csv.writer(athletes_events_file)
-
 nocs_athletes_file = open('nocs_athletes.csv', 'w')
 nocs_athletes_writer = csv.writer(nocs_athletes_file)
-
-events_games_file = open('events_games.csv', 'w')
-events_games_writer = csv.writer(events_games_file)
 
 athletes_events_games_file = open('athletes_events_games.csv', 'w')
 athletes_events_games_writer = csv.writer(athletes_events_games_file)
@@ -128,28 +122,7 @@ def add_nocs_athletes_entry(row, writer):
     if tuple(entry_to_add) not in nocs_athletes:
         writer.writerow(entry_to_add)
         nocs_athletes.add(tuple(entry_to_add))
-        
-def add_athletes_events_entry(row, writer):
-    athlete_id = row[0]
-    event_name = row[13]
-    event_id = events[event_name][0]
 
-    medal = row[14]
-
-    writer.writerow([athlete_id, event_id, medal])
-
-events_games = set()
-def add_events_games_entry(row, writer):
-    event_name = row[13]
-    event_id = events[event_name][0]
-    games_year = row[9]
-    games_id = games[games_year][0]
-
-    entry_to_add = [event_id, games_id]
-
-    if tuple(entry_to_add) not in events_games:
-        writer.writerow(entry_to_add)
-        events_games.add(tuple(entry_to_add))
 
 def add_athletes_events_games_entry(row, writer):
 
@@ -178,55 +151,10 @@ for row in athlete_events_reader:
 
     add_nocs_athletes_entry(row, nocs_athletes_writer)
 
-    add_athletes_events_entry(row, athletes_events_writer)
-
-    add_events_games_entry(row, events_games_writer)
-
     add_athletes_events_games_entry(row, athletes_events_games_writer)
 
-    '''
-    athlete_id = row[0]
-    event_name = row[13]
-    event_id = events[event_name] # this is guaranteed to work by section (2)
-    medal = row[14]
-    writer.writerow([athlete_id, event_id, medal])
-    '''
 
 athlete_events_data_file.close()
 athletes_file.close()
 events_file.close()
 
-#helper functions
-'''
-def add_athlete_entry(row, writer):
-    athlete_id = row[0]
-
-    full_name = row[1]
-    #will only consider very last word to be surname
-    name_split_index = full_name.rfind(' ')
-    given_name = full_name[:name_split_index]
-    surname = full_name[name_split_index + 1:]
-
-    if athlete_id not in athletes:
-        athletes[athlete_id] = [surname, given_name]
-        writer.writerow([athlete_id, surname, given_name])
-
-def add_event_entry(row, writer):
-    event_name = row[13]
-    sport = row[12]
-    if event_name not in events:
-        event_id = len(events) + 1
-        events[event_name] = [event_id, sport]
-        writer.writerow([event_id, event_name, sport])
-
-def add_games_entry(row, writer):
-    #each key will be the year of the given Olympic games
-    games_year = row[9]
-    season = row[10]
-    city = row[11]
-    if games_year not in games:
-        games_id = len(games) + 1
-        games[games_year] = [games_id, season, city]
-        writer.writerow([games_id, games_year, season, city])
-
-'''
