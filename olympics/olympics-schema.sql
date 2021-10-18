@@ -2,8 +2,8 @@
 CREATE TABLE athletes(
        id integer,
        surname text,
-       given_name text
-     
+       given_name text,
+       nickname text   
 );
 
 CREATE TABLE nocs(
