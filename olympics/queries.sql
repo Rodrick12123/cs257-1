@@ -28,7 +28,7 @@ ORDER BY games.year;
 
 /* List all the NOCs and the number of gold medals they have won, in decreasing order of the number of gold medals. */
 
-/* how GROUP BY method works from: https://www.w3schools.com/sql/sql_groupby.asp */
+/* where I found how GROUP BY method works: https://www.w3schools.com/sql/sql_groupby.asp */
 
 SELECT nocs.noc, COUNT(athletes_events_games.medal)
 FROM nocs, events, athletes, nocs_athletes, athletes_events_games, games
