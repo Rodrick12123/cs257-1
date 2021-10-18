@@ -1,118 +1,232 @@
 #Written by Thea Traw
 
-'''
-Converts two olympics dataset csv files into separate csv files that will be used in my olympics database design.
-'''
-
 import csv
 
-class FileParser:
+#USING noc_regions.csv
 
-    noc_dictionary = {}
-    event_dictionary = {}
-    unique_event_id = 1
-    game_dictionary = {}
-    unique_game_id = 1
+nocs = {}
 
-    def read_file_into_lines(self, csv_file_name):
-        data_file = open(csv_file_name, "r")
-        lines_in_file = data_file.readlines()
-        #data_file_length = len(lines_in_file)
-        data_file.close()
-        
-        return lines_in_file
+noc_regions_data_file = open('noc_regions.csv')
+noc_regions_reader = csv.reader(noc_regions_data_file)
 
-    def parse_noc_data(self):
-        noc_regions = FileParser.read_file_into_lines(self, 'noc_regions.csv')
+nocs_data_file = open('nocs.csv', 'w')
+nocs_writer = csv.writer(nocs_data_file)
+
+heading_row = next(noc_regions_reader)
+for row in noc_regions_reader:
+    noc = row[0]
+    region = row[1]
+    if noc not in nocs:
+
+        #deal with Singapore
+        if noc == "SIN":
+            noc = "SGP"
+
+        noc_id = len(nocs) + 1
+        nocs[noc] = [noc_id, region] 
+        nocs_writer.writerow([noc_id, noc, region])
+
+for key in nocs:
+    print(key, nocs[key][0], nocs[key][1])
+
+nocs_data_file.close()
+
+#USING athletes_events.csv
+
+#dictionaries
+athletes = {}
+events = {}
+games = {}
+
+athlete_events_data_file = open('athlete_events.csv')
+athlete_events_reader = csv.reader(athlete_events_data_file)
+
+#all file writers
+athletes_file = open('athletes.csv', 'w')
+athletes_writer = csv.writer(athletes_file)
+
+events_file = open('events.csv', 'w')
+events_writer = csv.writer(events_file)
+
+games_file = open('games.csv', 'w')
+games_writer = csv.writer(games_file)
+
+athletes_events_file = open('athletes_events.csv', 'w')
+athletes_events_writer = csv.writer(athletes_events_file)
+
+nocs_athletes_file = open('nocs_athletes.csv', 'w')
+nocs_athletes_writer = csv.writer(nocs_athletes_file)
+
+events_games_file = open('events_games.csv', 'w')
+events_games_writer = csv.writer(events_games_file)
+
+athletes_events_games_file = open('athletes_events_games.csv', 'w')
+athletes_events_games_writer = csv.writer(athletes_events_games_file)
+
+
+#helper functions
+
+def add_athlete_entry(row, writer):
+    athlete_id = row[0]
+
+    full_name = row[1]
+
+    #will only consider very last word to be surname
+
+    name_components = full_name.split(' ')
+
+    surname = name_components[-1]
+    surname_index = -1
+
+    if surname == 'Jr.' or surname.find('(') != -1 or surname == 'III':
+        surname = name_components[-2] + ' ' + surname
+        surname_index = -2
+
+    #given name is the rest
+    given_name = ''
+    for component in name_components[:surname_index]:
+        given_name += component + ' '
+    given_name = given_name[:len(given_name) - 1] #eliminates final space after given name
+
+    #handle nickname
+    nickname = 'NA'
+    if given_name.find('"') != -1:
+        given_name_components = given_name.split('"')
+        given_name = given_name_components[0].strip(' ')
+        nickname = given_name_components[1].strip('"')
     
-        nocs_table = []
+    if athlete_id not in athletes:
+        athletes[athlete_id] = [surname, given_name, nickname]
+        writer.writerow([athlete_id, surname, given_name, nickname])
 
-        noc_unique_id = 1
-        is_first_line = True
-        for line in noc_regions:
-            if is_first_line is False: #first line, not actual data
-                row_for_table = FileParser.parse_line_noc_regions(line, noc_unique_id)
-                nocs_table.append(row_for_table)
-                noc_dictionary[row_for_table[0]] = row_for_table[1]
-                noc_unique_id += 1
-            else:
-                is_first_line = False
+def add_event_entry(row, writer):
+    event_name = row[13]
+    sport = row[12]
+    if event_name not in events:
+        event_id = len(events) + 1
+        events[event_name] = [event_id, sport]
+        writer.writerow([event_id, event_name, sport])
 
-        return nocs_table
+def add_games_entry(row, writer):
+    #each key will be the year of the given Olympic games                                  
+    games_year = row[9]
+    season = row[10]
+    city = row[11]
+    if games_year not in games:
+        games_id = len(games) + 1
+        games[games_year] = [games_id, season, city]
+        writer.writerow([games_id, games_year, season, city])
 
-    def parse_athlete_events_data(self):
-        athlete_events = FileParser.read_file_into_lines(self, 'athlete_events.csv')
+nocs_athletes = set() #set so it doesn't take forever to search
+def add_nocs_athletes_entry(row, writer):
+    noc = row[7]
+    noc_id = nocs[noc][0]
+    athlete_id = row[0]
 
-        athletes_table = []
-        nocs_athletes_table = []
-        athletes_medals_table = []
-        games_table = []
-        events_table = []
-        medals_table = []
+    entry_to_add = [noc_id, athlete_id]
 
-        is_first_line = True
-        for line in athlete_events:
-            if is_first_line is False:
-           
-                edited_data = FileParser.file_line_athlete_events(line)
-
-                if edited_data[13] not in event_dictionary:
-                    FileParser.parse_for_events_table(edited_data)
-                if edited_data[8] not in game_dictionary:
-                    FileParser.parse_for_games_table(edited_data)
-
-            else:
-                is_first_line = False
-
-    def parse_line_noc_regions(line_in_data_file, noc_unique_id):
-        all_line_data = line_in_data_file.split(',')
-        row_for_table = [noc_unique_id, all_line_data[0], all_line_data[1]]
-        return row_for_table
+    if tuple(entry_to_add) not in nocs_athletes:
+        writer.writerow(entry_to_add)
+        nocs_athletes.add(tuple(entry_to_add))
         
+def add_athletes_events_entry(row, writer):
+    athlete_id = row[0]
+    event_name = row[13]
+    event_id = events[event_name][0]
 
-    def parse_line_athlete_events(line_in_data_file):
-        all_line_data = line_in_data_file.split(',')
-        
-        full_name = all_line_data[1]
-        name_split_index = full_name.rfind(' ')
-        given_name = full_name[:name_split_index]
-        surname = full_name[name_split_index + 1:]
+    medal = row[14]
 
-        #all_line_data[0] is unique athlete id, [7] is noc, 
-        edited_data = [all_line_data[0], surname, given_name, all_line_data[7], all_line_data[8], all_line_data[9], all_line_data[10], all_line_data[11], all_line_data[12], all_line_data[13], all_line_data[14]]
-        
-        return edited_line
+    writer.writerow([athlete_id, event_id, medal])
+
+events_games = set()
+def add_events_games_entry(row, writer):
+    event_name = row[13]
+    event_id = events[event_name][0]
+    games_year = row[9]
+    games_id = games[games_year][0]
+
+    entry_to_add = [event_id, games_id]
+
+    if tuple(entry_to_add) not in events_games:
+        writer.writerow(entry_to_add)
+        events_games.add(tuple(entry_to_add))
+
+def add_athletes_events_games_entry(row, writer):
+
+    athlete_id = row[0]
+    event_name = row[13]
+    medal = row[14]
+    games_year = row[9]
     
+    games_id = games[games_year][0]
+    event_id = events[event_name][0]
 
-    def parse_for_events_table(line_data):
-        event_dictionary[line_data[13]] = unique_event_id
-        unique_event_id += 1
-        row_for_table = [unique_event_id, line_data[13], line[12]]
-        return row_for_table
+    writer.writerow([athlete_id, event_id, games_id, medal])
 
-    def parse_for_games(line_data):
-        game_dictionary[line_data[8]] = unique_game_id
-        unique_game_id += 1
-        row_for_table = [unique_game_id, line_data[9], line_data[10], line_data[11]]
-        return row_for_table
-        
-    def parse_for_athletes_table(line_data):
-        row_for_table = [line_data[0], line_data[1], line_data[2], noc_dictionary[line_data[3]], event_dictionary[line_data[9]], game_dictionary[line_data[4]], line_data[10]]
 
-    def parse_for_medals_table(line_data, unique_medal_id):
-        row_for_table = [unique_medal_id, line_data[10], game_dictionary[line_data[4]], event_dictionary[line_data[9]], line_data[0]]
+#go through all in lines in athlete_events.csv (except first line)
+heading_row = next(athlete_events_reader) #skip first line (from Jeff's example code)
+for row in athlete_events_reader:
 
+    #first, add new information to dictionaries & write to respective files
     
-    def write_file(table):
-        with open('/Users/theat/Downloads/nocs.csv', 'w', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerows(table)
+    add_athlete_entry(row, athletes_writer)
 
-def main():
-    file_parser = FileParser()
-    nocs_table = file_parser.parse_noc_data()
-    FileParser.write_file(nocs_table)
-    
+    add_event_entry(row, events_writer)
 
-if __name__ == '__main__':
-    main()
+    add_games_entry(row, games_writer)
+
+    add_nocs_athletes_entry(row, nocs_athletes_writer)
+
+    add_athletes_events_entry(row, athletes_events_writer)
+
+    add_events_games_entry(row, events_games_writer)
+
+    add_athletes_events_games_entry(row, athletes_events_games_writer)
+
+    '''
+    athlete_id = row[0]
+    event_name = row[13]
+    event_id = events[event_name] # this is guaranteed to work by section (2)
+    medal = row[14]
+    writer.writerow([athlete_id, event_id, medal])
+    '''
+
+athlete_events_data_file.close()
+athletes_file.close()
+events_file.close()
+
+#helper functions
+'''
+def add_athlete_entry(row, writer):
+    athlete_id = row[0]
+
+    full_name = row[1]
+    #will only consider very last word to be surname
+    name_split_index = full_name.rfind(' ')
+    given_name = full_name[:name_split_index]
+    surname = full_name[name_split_index + 1:]
+
+    if athlete_id not in athletes:
+        athletes[athlete_id] = [surname, given_name]
+        writer.writerow([athlete_id, surname, given_name])
+
+def add_event_entry(row, writer):
+    event_name = row[13]
+    sport = row[12]
+    if event_name not in events:
+        event_id = len(events) + 1
+        events[event_name] = [event_id, sport]
+        writer.writerow([event_id, event_name, sport])
+
+def add_games_entry(row, writer):
+    #each key will be the year of the given Olympic games
+    games_year = row[9]
+    season = row[10]
+    city = row[11]
+    if games_year not in games:
+        games_id = len(games) + 1
+        games[games_year] = [games_id, season, city]
+        writer.writerow([games_id, games_year, season, city])
+
+'''

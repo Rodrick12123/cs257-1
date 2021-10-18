@@ -17,15 +17,11 @@ CREATE TABLE nocs_athletes(
        athlete_id integer
 );
 
-CREATE TABLE athletes_events(
+CREATE TABLE athletes_events_games(
        athlete_id integer,
-       event_id integer
-       medal text
-);
-
-CREATE TABLE events_games(
        event_id integer,
-       game_id integer,
+       games_id integer,
+       medal text
 );
 
 CREATE TABLE games(
@@ -40,17 +36,3 @@ CREATE TABLE events(
        event text,
        sport text
 );
-
-
-
-
-
-#maybe not this
-CREATE TABLE medals(
-       id SERIAL,
-       finish text,
-       games_id integer,
-       event_id integer,
-       athlete_id integer
-);       
- 
