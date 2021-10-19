@@ -38,9 +38,6 @@ athletes = {}
 events = {}
 games = {}
 
-athlete_events_data_file = open('athlete_events.csv')
-athlete_events_reader = csv.reader(athlete_events_data_file)
-
 #all file writers
 athletes_file = open('athletes.csv', 'w')
 athletes_writer = csv.writer(athletes_file)
@@ -51,11 +48,8 @@ events_writer = csv.writer(events_file)
 games_file = open('games.csv', 'w')
 games_writer = csv.writer(games_file)
 
-nocs_athletes_file = open('nocs_athletes.csv', 'w')
-nocs_athletes_writer = csv.writer(nocs_athletes_file)
-
-athletes_events_games_file = open('athletes_events_games.csv', 'w')
-athletes_events_games_writer = csv.writer(athletes_events_games_file)
+nocs_athletes_events_games_file = open('nocs_athletes_events_games.csv', 'w')
+nocs_athletes_events_games_writer = csv.writer(nocs_athletes_events_games_file)
 
 
 #helper functions
@@ -111,30 +105,20 @@ def add_games_entry(row, writer):
         games[games_year] = [games_id, season, city]
         writer.writerow([games_id, games_year, season, city])
 
-nocs_athletes = set() #set so it doesn't take forever to search
-def add_nocs_athletes_entry(row, writer):
-    noc = row[7]
-    noc_id = nocs[noc][0]
-    athlete_id = row[0]
 
-    entry_to_add = [noc_id, athlete_id]
+def add_nocs_athletes_events_games_entry(row, writer):
 
-    if tuple(entry_to_add) not in nocs_athletes:
-        writer.writerow(entry_to_add)
-        nocs_athletes.add(tuple(entry_to_add))
-
-
-def add_athletes_events_games_entry(row, writer):
-
+    noc_name = row[7]
     athlete_id = row[0]
     event_name = row[13]
     medal = row[14]
     games_year = row[9]
     
+    noc_id = nocs[noc_name][0]
     games_id = games[games_year][0]
     event_id = events[event_name][0]
 
-    writer.writerow([athlete_id, event_id, games_id, medal])
+    writer.writerow([noc_id, athlete_id, event_id, games_id, medal])
 
 
 #go through all in lines in athlete_events.csv (except first line)
@@ -149,12 +133,11 @@ for row in athlete_events_reader:
 
     add_games_entry(row, games_writer)
 
-    add_nocs_athletes_entry(row, nocs_athletes_writer)
-
-    add_athletes_events_games_entry(row, athletes_events_games_writer)
+    add_nocs_athletes_events_games_entry(row, nocs_athletes_events_games_writer)
 
 
 athlete_events_data_file.close()
 athletes_file.close()
 events_file.close()
-
+games_file.close()
+nocs_athletes_events_games_file.close()

@@ -6,23 +6,23 @@ ORDER BY nocs.noc;
 
 /* List the names of all the athletes from Kenya. If your database design allows it, sort the athletes by last name. */
 
-SELECT nocs.noc, athletes.surname, athletes.given_name, athletes.nickname
-FROM athletes, nocs, nocs_athletes
-WHERE athletes.id = nocs_athletes.athlete_id
-AND nocs.id = nocs_athletes.noc_id
+SELECT DISTINCT nocs.noc, athletes.surname, athletes.given_name, athletes.nickname
+FROM athletes, nocs, nocs_athletes_events_games
+WHERE athletes.id = nocs_athletes_events_games.athlete_id
+AND nocs.id = nocs_athletes_events_games.noc_id
 AND nocs.region = 'Kenya'
 ORDER BY athletes.surname;
 
 /* List all the medals won by Greg Louganis, sorted by year. Include whatever fields in this output that you think appropriate. */
 
-SELECT athletes.nickname, athletes.surname, athletes_events_games.medal, events.event, games.year, games.season, games.city
-FROM events, athletes, athletes_events_games, games
-WHERE athletes.id = athletes_events_games.athlete_id
-AND events.id = athletes_events_games.event_id
-AND games.id = athletes_events_games.games_id
+SELECT athletes.nickname, athletes.surname, nocs_athletes_events_games.medal, events.event, games.year, games.season, games.city
+FROM events, athletes, nocs_athletes_events_games, games
+WHERE athletes.id = nocs_athletes_events_games.athlete_id
+AND events.id = nocs_athletes_events_games.event_id
+AND games.id = nocs_athletes_events_games.games_id
 AND athletes.surname = 'Louganis' 
 AND athletes.nickname = 'Greg'
-AND athletes_events_games.medal != 'NA'
+AND nocs_athletes_events_games.medal != 'NA'
 ORDER BY games.year;
 
 
@@ -30,13 +30,15 @@ ORDER BY games.year;
 
 /* where I found how GROUP BY method works: https://www.w3schools.com/sql/sql_groupby.asp */
 
-SELECT nocs.noc, COUNT(athletes_events_games.medal)
-FROM nocs, events, athletes, nocs_athletes, athletes_events_games, games
-WHERE athletes.id = nocs_athletes.athlete_id
-AND nocs.id = nocs_athletes.noc_id
-AND athletes.id = athletes_events_games.athlete_id
-AND events.id = athletes_events_games.event_id
-AND games.id = athletes_events_games.games_id
-AND athletes_events_games.medal = 'Gold'
+SELECT nocs.noc, COUNT(nocs_athletes_events_games.medal)
+FROM nocs, athletes, events, games, nocs_athletes_events_games
+WHERE nocs.id = nocs_athletes_events_games.noc_id
+AND athletes.id = nocs_athletes_events_games.athlete_id
+AND events.id = nocs_athletes_events_games.event_id
+AND games.id = nocs_athletes_events_games.games_id
+AND nocs_athletes_events_games.medal = 'Gold'
 GROUP BY nocs.noc
-ORDER BY COUNT(athletes_events_games.medal) DESC;
+ORDER BY COUNT(nocs_athletes_events_games.medal) DESC;
+
+
+/*THE PROBLEM IS THAT IN TEAM SPORTS, EVERYBODY WINS THE MEDAL BUT IT ONLY COUNTS AS ONE*/

@@ -12,12 +12,8 @@ CREATE TABLE nocs(
        region text
 );
 
-CREATE TABLE nocs_athletes(
+CREATE TABLE nocs_athletes_events_games(
        noc_id integer,
-       athlete_id integer
-);
-
-CREATE TABLE athletes_events_games(
        athlete_id integer,
        event_id integer,
        games_id integer,
