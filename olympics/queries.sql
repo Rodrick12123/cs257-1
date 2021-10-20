@@ -39,6 +39,3 @@ AND games.id = nocs_athletes_events_games.games_id
 AND nocs_athletes_events_games.medal = 'Gold'
 GROUP BY nocs.noc
 ORDER BY COUNT(nocs_athletes_events_games.medal) DESC;
-
-
-/*THE PROBLEM IS THAT IN TEAM SPORTS, EVERYBODY WINS THE MEDAL BUT IT ONLY COUNTS AS ONE*/
