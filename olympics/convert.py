@@ -125,16 +125,10 @@ def add_nocs_athletes_events_games_entry(row, writer):
 heading_row = next(athlete_events_reader) #skip first line (from Jeff's example code)
 for row in athlete_events_reader:
 
-    #first, add new information to dictionaries & write to respective files
-    
     add_athlete_entry(row, athletes_writer)
-
     add_event_entry(row, events_writer)
-
     add_games_entry(row, games_writer)
-
     add_nocs_athletes_events_games_entry(row, nocs_athletes_events_games_writer)
-
 
 athlete_events_data_file.close()
 athletes_file.close()
