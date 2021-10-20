@@ -33,12 +33,16 @@ nocs_data_file.close()
 
 #USING athletes_events.csv
 
+athlete_events_data_file = open('athlete_events.csv')
+athlete_events_reader = csv.reader(athlete_events_data_file)
+
 #dictionaries
 athletes = {}
 events = {}
 games = {}
 
 #all file writers
+
 athletes_file = open('athletes.csv', 'w')
 athletes_writer = csv.writer(athletes_file)
 
