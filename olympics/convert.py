@@ -26,9 +26,6 @@ for row in noc_regions_reader:
         nocs[noc] = [noc_id, region] 
         nocs_writer.writerow([noc_id, noc, region])
 
-for key in nocs:
-    print(key, nocs[key][0], nocs[key][1])
-
 nocs_data_file.close()
 
 #USING athletes_events.csv
