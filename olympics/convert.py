@@ -61,13 +61,12 @@ def add_athlete_entry(row, writer):
     full_name = row[1]
 
     #will only consider very last word to be surname
-
     name_components = full_name.split(' ')
 
     surname = name_components[-1]
     surname_index = -1
 
-    if surname == 'Jr.' or surname.find('(') != -1 or surname == 'III':
+    if surname == 'Jr.' or surname.find('(') != -1 or surname == 'III' or surname == 'II' or surname == 'I':
         surname = name_components[-2] + ' ' + surname
         surname_index = -2
 
