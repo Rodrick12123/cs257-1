@@ -1,7 +1,7 @@
 				User Commands
 
 NAME
-	python3 olympics.py search
+	python3 olympics.py
 
 SYNOPSIS
 	python3 olympics.py <-n> <noc>
