@@ -74,7 +74,16 @@ def add_athlete_entry(row, writer):
     given_name = ''
     for component in name_components[:surname_index]:
         given_name += component + ' '
+
     given_name = given_name[:len(given_name) - 1] #eliminates final space after given name
+
+    #check for an odd occurence:
+    if surname == '' or surname == ')':
+        name_parts = given_name.split(' ')
+        given_name = name_parts[0]
+        surname = '' #reset surname in case it was ')'
+        for name_part in name_parts[1:]:
+            surname += name_part + ' '
 
     #handle nickname
     nickname = 'NA'
