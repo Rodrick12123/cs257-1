@@ -17,11 +17,11 @@ import argparse
 
 def get_parsed_arguments():
     parser = argparse.ArgumentParser(description='Reports back info on Olympics database')
-    parser.add_argument('searchterms', metavar='search', nargs='+', help='search function')
+    #parser.add_argument('searchterms', metavar='search', nargs='+', help='search function')
     parser.add_argument('--athletes', '-a', nargs='*', help='print all athletes')
     parser.add_argument('--nocgolds', '-g',nargs='*', help='print all nocs and their gold medal count')
-    parser.add_argument('--medalingathletes', '-m',nargs='*', help='print all of the athletes who medaled in a given event and Olympics')
-    parser.add_argument('--help', '-h','-?',nargs='*', help='provides more information on search')
+    parser.add_argument('--medalingathletes', '-m',nargs='*', help='print all of the athletes who medaled in a given event and Olympics year')
+    parser.add_argument('--moreHelp', '-mH','-?',nargs='*', help='provides more information on searching functions')
     parsed_arguments = parser.parse_args()
     return parsed_arguments
 
@@ -29,7 +29,7 @@ def main():
     initialized_querier = Querier()
     arguments = get_parsed_arguments()
     
-    if arguments.help is not None:
+    if arguments.moreHelp is not None:
         file = open('usage.txt', 'r')
         contents = file.read()
         print(contents)
@@ -70,8 +70,11 @@ class Querier:
 
                 self.cursor.execute(query, (search_string,))
 
-                print('Printing results for all of the athletes from {0}'.format(search_string))
+                print_heading_information = True
                 for row in self.cursor:
+                    if print_heading_information:
+                        print('===Printing results for all of the athletes from {0}'.format(search_string)+'===')
+                        print_heading_information = False
                     if row[3] == 'NA': #no nickname
                         print(row[1]+', '+row[2])
                     else:
@@ -82,14 +85,19 @@ class Querier:
                 quit()
 
     def handle_nocgolds_call(self):
+
         try:
 
-            query = '''SELECT nocs.noc, COUNT(nocs_athletes_events_games.medal) FROM nocs, athletes, events, games, nocs_athletes_events_games WHERE nocs.id = nocs_athletes_events_games.noc_id AND athletes.id = nocs_athletes_events_games.athlete_id AND events.id = nocs_athletes_events_games.event_id AND games.id = nocs_athletes_events_games.games_id AND nocs_athletes_events_games.medal = 'Gold' GROUP BY nocs.noc ORDER BY COUNT(nocs_athletes_events_games.medal) DESC;'''
+            query = '''SELECT nocs.noc, COUNT(nocs_athletes_events_games.medal) FROM nocs, athletes, events, games, nocs_athletes_events_games WHERE nocs.id = nocs_athletes_events_games.noc_id AND athletes.id = nocs_athletes_events_games.athlete_id AND events.id = nocs_athletes_events_games.event_id AND games.id = nocs_athletes_events_games.games_id AND nocs_athletes_events_games.medal = 'Gold' GROUP BY nocs.noc ORDER BY COUNT(nocs_athletes_events_games.medal) DESC, nocs.noc;'''
 
             self.cursor.execute(query)
 
-            print('The total count of all gold medallions awarded to each NOC')
+
+            print_heading_information = True
             for row in self.cursor:
+                if print_heading_information:
+                    print('===The total count of all gold medallions awarded to each NOC===')
+                    print_heading_information = False
                 if row[1] > 1:
                     print('Team '+row[0]+' has won '+ str(row[1])+' gold medals.')
                 else:
@@ -101,7 +109,7 @@ class Querier:
 
     def handle_medalingathletes_call(self, arguments):
 
-        if len(arguments) == 0:
+        if len(arguments) == 0 or len(arguments) > 3:
             print('Please enter proper search terms.')
         else:
 
@@ -110,7 +118,7 @@ class Querier:
 
             try:
 
-                query = '''SELECT nocs.noc, athletes.surname, athletes.given_name, athletes.nickname, events.event, games.year, nocs_athletes_events_games.medal, games.season, games.city, UPPER(athletes.surname) FROM athletes, nocs, events, games, nocs_athletes_events_games WHERE athletes.id = nocs_athletes_events_games.athlete_id AND nocs.id = nocs_athletes_events_games.noc_id AND events.id = nocs_athletes_events_games.event_id AND games.id = nocs_athletes_events_games.games_id AND nocs_athletes_events_games.medal != 'NA' AND events.event LIKE %s AND games.year = %s ORDER BY CASE WHEN nocs_athletes_events_games.medal = 'Gold' THEN 1 WHEN nocs_athletes_events_games.medal = 'Silver' THEN 2 WHEN nocs_athletes_events_games.medal = 'Bronze' THEN 3 END, UPPER(athletes.surname);'''
+                query = '''SELECT nocs.noc, athletes.surname, athletes.given_name, athletes.nickname, events.event, games.year, nocs_athletes_events_games.medal, games.season, games.city, UPPER(athletes.surname) FROM athletes, nocs, events, games, nocs_athletes_events_games WHERE athletes.id = nocs_athletes_events_games.athlete_id AND nocs.id = nocs_athletes_events_games.noc_id AND events.id = nocs_athletes_events_games.event_id AND games.id = nocs_athletes_events_games.games_id AND nocs_athletes_events_games.medal != 'NA' AND events.event LIKE '%s%' AND games.year = '%s' ORDER BY CASE WHEN nocs_athletes_events_games.medal = 'Gold' THEN 1 WHEN nocs_athletes_events_games.medal = 'Silver' THEN 2 WHEN nocs_athletes_events_games.medal = 'Bronze' THEN 3 END, UPPER(athletes.surname);'''
 
                 self.cursor.execute(query, (search_string_event, search_string_year))
 
