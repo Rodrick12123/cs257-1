@@ -21,7 +21,7 @@ def get_parsed_arguments():
     parser.add_argument('--athletes', '-a', nargs='*', help='print all athletes')
     parser.add_argument('--nocgolds', '-g',nargs='*', help='print all nocs and their gold medal count')
     parser.add_argument('--medalingathletes', '-m',nargs='*', help='print all of the athletes who medaled in a given event and Olympics year')
-    parser.add_argument('--moreHelp', '-mH','-?',nargs='*', help='provides more information on searching functions')
+    parser.add_argument('--help', '-h','-?',nargs='*', help='provides more information on searching functions')
     parsed_arguments = parser.parse_args()
     return parsed_arguments
 
@@ -29,7 +29,7 @@ def main():
     initialized_querier = Querier()
     arguments = get_parsed_arguments()
     
-    if arguments.moreHelp is not None:
+    if arguments.help is not None:
         file = open('usage.txt', 'r')
         contents = file.read()
         print(contents)
