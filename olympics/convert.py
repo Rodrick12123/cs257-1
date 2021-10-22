@@ -55,35 +55,79 @@ nocs_athletes_events_games_writer = csv.writer(nocs_athletes_events_games_file)
 
 #helper functions
 
-def add_athlete_entry(row, writer):
-    athlete_id = row[0]
+def process_name_into_parts(full_name):
 
-    full_name = row[1]
+     #deal with parentheses in last name                                         
+    open_parenthesis_index = full_name.find('(')
+    if open_parenthesis_index != -1:
+        given_name = full_name[:open_parenthesis_index]
 
-    #will only consider very last word to be surname
-    name_components = full_name.split(' ')
+        surname_components = full_name[open_parenthesis_index:].split(' ')
 
-    surname = name_components[-1]
-    surname_index = -1
+        start_of_surname = ''
+        rest_of_surname = ''
+        for component in surname_components:
+            if component.find('(') == -1 and component.find(')') == -1:
+                start_of_surname = component
+                surname_components.remove(component)
+            else:
+                rest_of_surname += component+' '
+        
+        #check if surname is just in parentheses:                               
+        if start_of_surname == '':
+            given_and_start_of_surname = given_name.split(' ')
+            start_of_surname = given_and_start_of_surname[-2]
+            given_and_start_of_surname.pop(-2)
+            updated_given_name = ''
+            for name in given_and_start_of_surname:
+                updated_given_name += name+' '
+            given_name = updated_given_name
+            
+        surname = start_of_surname+' '+rest_of_surname
 
-    if surname == 'Jr.' or surname.find('(') != -1 or surname == 'III' or surname == 'II' or surname == 'I':
-        surname = name_components[-2] + ' ' + surname
-        surname_index = -2
+    #all other names                                                           
+    else:
 
-    #given name is the rest
-    given_name = ''
-    for component in name_components[:surname_index]:
-        given_name += component + ' '
+        name_components = full_name.split(' ')
 
-    given_name = given_name[:len(given_name) - 1] #eliminates final space after given name
+        surname = name_components[-1]
+        surname_index = -1
 
-    #check for an odd occurence:
-    if surname == '' or surname == ')':
-        name_parts = given_name.split(' ')
-        given_name = name_parts[0]
-        surname = '' #reset surname in case it was ')'
-        for name_part in name_parts[1:]:
-            surname += name_part + ' '
+        if surname == 'Jr.' or surname == 'III' or surname == 'II' or surname == 'I':
+            surname = name_components[-2] + ' ' + surname
+            surname_index = -2
+
+        #given name is the rest                                                 
+        given_name = ''
+        for component in name_components[:surname_index]:
+            given_name += component + ' '
+        
+        given_name = given_name[:len(given_name) - 1] #eliminates final space after given name                                                                               
+        #check for issues                                                              
+        if surname == '':
+            given_and_surname = given_name.split(' ')
+            surname_index = -1
+            if given_and_surname[surname_index] != '':
+                surname = given_and_surname[surname_index]
+            else:
+                surname_index = -2
+                surname = given_and_surname[surname_index]
+            updated_given_name = ''
+            for name in given_name[:surname_index]:
+                updated_given_name += name+' '
+            given_name = updated_given_name
+        
+        #check for hyphenated last names                                               
+        if surname[0] == '-':
+            given_and_start_of_surname = given_name.split(' ')
+            start_of_surname = given_and_start_of_surname[-2]
+            given_and_start_of_surname.pop(-2)
+            updated_given_name = ''
+            for name in given_and_start_of_surname:
+                updated_given_name += name+' '
+            given_name = updated_given_name
+
+            surname = start_of_surname+' '+rest_of_surname
 
     #handle nickname
     nickname = 'NA'
@@ -91,6 +135,18 @@ def add_athlete_entry(row, writer):
         given_name_components = given_name.split('"')
         given_name = given_name_components[0].strip(' ')
         nickname = given_name_components[1].strip('"')
+
+    return [surname, given_name, nickname]
+
+def add_athlete_entry(row, writer):
+    athlete_id = row[0]
+
+    full_name = row[1]
+
+    processed_athlete = process_name_into_parts(full_name)
+    surname = processed_athlete[0]
+    given_name = processed_athlete[1]
+    nickname = processed_athlete[2]
     
     if athlete_id not in athletes:
         athletes[athlete_id] = [surname, given_name, nickname]

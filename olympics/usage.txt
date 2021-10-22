@@ -4,24 +4,28 @@ NAME
 	python3 olympics.py
 
 SYNOPSIS
-	python3 olympics.py <-n> <noc>
+	python3 olympics.py <-n> <noc-term>
 	python3 olympics.py <-a>
-	python3 olympics.py <-g> <event> <year>
-	python3 olympics.py <-?>
+	python3 olympics.py <-p> <event> <year>
+	python3 olympics.py <-h>
 
 DECSRIPTION
-	This method prints out various information from an Olympics database according to user specifications. Combinations of flags are not supported.
+	This method prints out the results from various queries to an Olympics database according to user specifications. Combinations of flags are not supported.
 
 OPTIONS
 
---atheltes -a <noc>
+--athletes -a <noc>
 	  Prints a list of all of the athletes from a user-specified NOC. If the NOC search term is not in the database, nothing will be returned.
 
---goldmedals
+EX. python3 olympics.py -a NRU
+
+--nocgolds -g 
 	Prints all of the NOCs and how many gold medals they have won. NOCs with no gold medals are not printed.
 
---podiumfinish
-	Prints all of the athletes who finished on the podium in a user-specified event and year.
+--podiumfinishers -p <event> <year>
+	Prints all of the athletes who finished on the podium in a user-specified event and year. It is necessary to include the entire name of the event (format is "SPORT MEN'S/WOMEN'S/MIXED EVENT_NAME", otherwise nothing will be returned.
 
---moreHelp
-	Provides usage statements for all of the above functions.
+EX. python3 olympics.py "Football Women's Football" 1996 
+
+--help -h -?
+	Provides usage statements for all of the possible method calls.
