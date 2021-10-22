@@ -23,7 +23,7 @@ EX. python3 olympics.py -a NRU
 	Prints all of the NOCs and how many gold medals they have won. NOCs with no gold medals are not printed.
 
 --podiumfinishers -p <event> <year>
-	Prints all of the athletes who finished on the podium in a user-specified event and year. It is necessary to include the entire name of the event (format is "Sport_Name Men's/Women's/Mixed Event_Name", otherwise nothing will be returned.
+	Prints all of the athletes who finished on the podium in a user-specified event and year. It is necessary to include the entire name of the event (format is "Sport_Name Men's/Women's/Mixed Event", otherwise nothing will be returned.
 
 EX. python3 olympics.py "Football Women's Football" 1996 
 
