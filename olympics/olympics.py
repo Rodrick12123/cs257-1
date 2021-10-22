@@ -1,15 +1,5 @@
 #Written by Thea Traw
 
-'''
-Prints a usage statement for "python3 olympics.py -h" (or --help). You may use argparse or not for command-line parsing and usage statement printing.
-
-List the names of all the athletes from a specified NOC.
-
-List all the NOCs and the number of gold medals they have won, in decreasing order of the number of gold medals.
-
-One more operation of your choosing. Simple is fine, crazily-ambitious is also fine. (Both are worth the same number of points, though crazily-ambitious may earn you more points on the Cosmic Scoreboard. Or fewer. I have no idea how the cosmos keeps score.)
-'''
-
 import psycopg2
 import config
 import argparse
@@ -125,7 +115,7 @@ class Querier:
                 quit()
     
             try:
-
+                #ORDER BY CASE from https://www.gab.lc/articles/order_by_custom_list/
                 query = '''SELECT nocs.noc, athletes.surname, athletes.given_name, athletes.nickname, events.event, games.year, nocs_athletes_events_games.medal, games.season, games.city, UPPER(athletes.surname) FROM athletes, nocs, events, games, nocs_athletes_events_games WHERE athletes.id = nocs_athletes_events_games.athlete_id AND nocs.id = nocs_athletes_events_games.noc_id AND events.id = nocs_athletes_events_games.event_id AND games.id = nocs_athletes_events_games.games_id AND nocs_athletes_events_games.medal != 'NA' AND events.event LIKE %s AND games.year = %s ORDER BY CASE WHEN nocs_athletes_events_games.medal = 'Gold' THEN 1 WHEN nocs_athletes_events_games.medal = 'Silver' THEN 2 WHEN nocs_athletes_events_games.medal = 'Bronze' THEN 3 END, UPPER(athletes.surname);'''
 
                 self.cursor.execute(query, (search_string_event, search_string_year))
