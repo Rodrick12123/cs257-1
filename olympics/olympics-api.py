@@ -9,7 +9,6 @@ import config
 
 app = flask.Flask(__name__)
 
-
 #this class is to handle the interactions with the database
 class Querier:
 
@@ -140,12 +139,10 @@ def get_all_medalists(games_id):
     return querier.handle_medalists_query(games_id)
 
 
-def main():
+if __name__ == '__main__':
     parser = argparse.ArgumentParser('A sample Flask application/API')
     parser.add_argument('host', help='the host on which this application is running')
     parser.add_argument('port', type=int, help='the port on which this application is listening')
     arguments = parser.parse_args()
     app.run(host=arguments.host, port=arguments.port, debug=True)
 
-if __name__ == '__main__':
-    main()
