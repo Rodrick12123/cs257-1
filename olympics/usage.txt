@@ -4,8 +4,8 @@ NAME
 	python3 olympics.py
 
 SYNOPSIS
-	python3 olympics.py <-n> <noc-term>
-	python3 olympics.py <-a>
+	python3 olympics.py <-a> <noc-term>
+	python3 olympics.py <-g>
 	python3 olympics.py <-p> <event> <year>
 	python3 olympics.py <-h>
 
