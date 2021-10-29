@@ -142,6 +142,7 @@ def add_athlete_entry(row, writer):
     athlete_id = row[0]
 
     full_name = row[1]
+    sex = row[2]
 
     processed_athlete = process_name_into_parts(full_name)
     surname = processed_athlete[0]
@@ -150,7 +151,7 @@ def add_athlete_entry(row, writer):
     
     if athlete_id not in athletes:
         athletes[athlete_id] = [surname, given_name, nickname]
-        writer.writerow([athlete_id, surname, given_name, nickname])
+        writer.writerow([athlete_id, surname, given_name, nickname, full_name, sex])
 
 def add_event_entry(row, writer):
     event_name = row[13]
