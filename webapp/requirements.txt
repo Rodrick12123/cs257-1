@@ -1,1 +1,31 @@
 #####
+'''
+Description:
+This dataset includes all of the data obtained from all of the differnt world cup games.
+Obtaining the dataset requires one to make a kaggle account. You can either go on the kaggle
+website and type in the search bar fifa world cup, or simply go to this website 
+https://www.kaggle.com/abecklas/fifa-world-cup to find the dataset. Click the download button in
+the middle right of the screen to get the all the dataset files.
+'''
+'''
+
+
+1.
+STORY: A Brazil soccer team fan can get a list of the total number of goals their team scored in each World Cup. They could then use this information to compare with another team and find out who was more prolific, all-time or in a certain WC.
+IMPLEMENTATION: One simple way to do this may be to have a dropdown list of all the fifa teams, in which the user can select all the teams they want to search information for. Then have a list of different data choices including the years of the world cup games. Clicking on one year will give another menu which gives the option to check all the data that should be displayed.
+2.
+STORY: Someone may want to see how well a specific team does in their hometown. (maybe how has the host of the WC done?)
+IMPLEMENTATION: In the dropdown list of teams we can have an option for hometown. This will then show how well a specific team does at home and gives information about their scores, and win lose data.
+3. STORY: Most dominant player in terms of goals scored in a certain WC.
+IMPLEMENTATION: We can have a button that allows players to look at scores. When clicking on the button there will be more options such as teams or players in which the user can select players and see a list of all the players and their scores from greatest to least. There could also be a filter for what year the user wants to look at.
+4.
+STORY: A soccer fan can find out whether their team tends to be more dominant, goals-wise, in the first half or the second half of a game, given a specific WC run. This could, for example, allow a fan of team France to see if in the 1998 WC, the team was more a ‘first half’ or ‘second half’ team. 
+IMPLEMENTATION: To do this, we could use the same drop-down menu (for all of the fifa teams) mentioned above to select the team they want to search about. Then, ... (figure out specifics here in tandem with wireframe design thinking)
+5. 
+STORY: A fan might want to see how their favorite team has fared versus their rival in all WC competitions. For instance, a team France fan could see the results of all WC matches played against team England over all WCs. 
+IMPLEMENTATION: There would have to be two drop-down menus / search boxes (not exactly sure which would be cleaner/easier) to select the two teams to be compared from. Then, maybe there’s something to click that says ‘compare’ that produces a list of all of the match-ups between the two teams and the score.
+6. 
+STORY: Most podium finishes for a team? Produces a list, ranked by number of golds, of each team and how many golds, silvers, and bronzes they have earned.
+IMPLEMENTATION: This would need something to click that says ‘all-time records’ and then all of the fifa teams that have competed would be printed in a list.
+--print out roster for a given team in a given world cup
+'''
