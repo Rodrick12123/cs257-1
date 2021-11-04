@@ -6,58 +6,64 @@
     <link rel="stylesheet" href="mockup.css" type="text/css" />
 </head>
 
-<body>
-    <h3>Specific World Cup</h3>
+<body>   
 
-    <p>Here you can query various questions about either a team of your choosing or a player of your choosing. <em>Have fun!</em></p>
-
+    <ul class="horizontal-navbar">
+        <li><a href="index.html">Home</a></li>
+    </ul>
+ 
+    <h3>World Cup 1998</h3> 
+ 
     <div id="menus">
-        
-        <div id="teams">
-	  <div class="dropdown">
-	    <button class="dropbutton">Teams
-              <i class="fa fa-caret-down"></i>
-	    </button>
-	    <div class="dropdown-content">
-              <a href="#">France</a>
-              <a href="#">Brazil</a>
-	      <a href="#">Germany</a>
-	    </div>
+      <div id="team-controls">
+	<div class="dropdown">
+	  <button class="dropbutton">Teams
+            <i class="fa fa-caret-down"></i>
+	  </button>
+	  <div class="dropdown-content">
+            <a href="#">France</a>
+            <a href="#">Brazil</a>
+	    <a href="#">Germany</a>
 	  </div>
 	</div>
-        <div id="team-queries">
-	  <div>
-	    <select class="box">
-              <option>How many wins?</option>
-              <option>How many goals?</option>
-              <option>How many golds?</option>
-              <option selected>All team queries</option>
-	    </select>
-	  </div>	
-	</div>
-	<div id="players">
-	  <div class="dropdown">
-	    <button class="dropbutton">Players
-              <i class="fa fa-caret-down"></i>
-	    </button>
-	    <div class="dropdown-content">
-              <a href="#">Zidane, Zinedine</a>
-              <a href="#">Messi, Leo</a>
-	      <a href="#">Lewandowski, Robert</a>
-	    </div>
+	<div id="spacer-white"></div>
+	<div id="spacer-black"></div>
+	<div id="spacer-white"></div>
+	<div>
+	  <select class="box">
+            <option>How many wins?</option>
+            <option>How many goals?</option>
+            <option>How many golds?</option>
+            <option selected>All team queries</option>
+	  </select>
+	</div>	
+      </div>
+
+
+      <div id="player-controls">
+	<div class="dropdown">
+	  <button class="dropbutton">Players
+            <i class="fa fa-caret-down"></i>
+	  </button>
+	  <div class="dropdown-content">
+            <a href="#">Zidane, Zinedine</a>
+            <a href="#">Messi, Leo</a>
+	    <a href="#">Lewandowski, Robert</a>
 	  </div>
 	</div>
-	<div id="player-queries">
-	  <div>
-	    <select class="box">
-              <option>How many goals?</option>
-              <option>How many fouls?</option>
-              <option>How many appearances?</option>
-              <option selected>All player queries</option>
-	    </select>
-	  </div>
+	<div id="spacer-white"></div>
+	<div id="spacer-black"></div>
+	<div id="spacer-white"></div>
+	<div>
+	  <select class="box">
+            <option>How many goals?</option>
+            <option>How many fouls?</option>
+            <option>How many appearances?</option>
+            <option selected>All player queries</option>
+	  </select>
 	</div>
-    </div>
+      </div>
+    </div>  
     
     <p>Results printed here.<p>
     <div id="results"></div>

@@ -20,7 +20,7 @@
 }
 
 .dropdown .dropbutton {
-  font-size: 16px;  
+  font-size: 16px; 
   border: none;
   outline: none;
   color: white;
@@ -70,25 +70,52 @@
   color: #1c87c9;
   background-color: white;
   border-radius: 2px;
+  border-width:2px;
+  border-color:black;
 }
 
 
 #menus {
-    height: 75px;
+    height: 50px;
     width: 100%;
 }
 
-#teams {
-    width: 25%;
+#team-controls {
+   
+    width: 350px;
     height: 100%;
     float:left;
     font-size: 24pt;
     color: white;
-    background-color: #ebf2f9;
 }
 
+#player-controls {
+   
+    margin-left: 20%;
+    width: 350px;
+    height: 100%;
+    float:left;
+    font-size: 24pt;
+    color: white;
+}
+
+
+#spacer-white {
+  width:10px;
+  height:50px;
+  float:left;
+}
+#spacer-black {
+  width:2px;
+  height:50px;
+  background-color:black;
+  float:left;
+}
+
+
+
 #team-queries {
-    width: 25%;
+    width: auto;
     height: 100%;
     float:left;
     font-size: 24pt;
@@ -97,7 +124,7 @@
 }
 
 #players {
-    width: 25%;
+    width: auto;
     height: 100%;
     float:left;
     font-size: 24pt;
@@ -106,7 +133,7 @@
 }
 
 #player-queries {
-    width: 25%;
+    width: auto;
     height: 100%;
     float:left;
     font-size: 24pt;
@@ -122,7 +149,8 @@
 #results {
     width: 100%;
     height: 300px;
-    background-color: grey;	 
+    border-style: solid;
+    border-width:2px;	 
 }
 
 #results-content {
@@ -132,9 +160,28 @@
     float:left;
 }
 
-#border-space {
-    width: 10%;
-    height: 50%;
-    background-color: pink;
-    float:left;    
+/* Horizontal navigation */
+ul.horizontal-navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+}
+
+ul.horizontal-navbar li {
+    float: left;
+}
+
+ul.horizontal-navbar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul.horizontal-navbar li a:hover {
+    background-color: #555;
+    color: white;
 }
