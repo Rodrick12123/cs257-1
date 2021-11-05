@@ -9,7 +9,7 @@
   cursor: pointer;
   text-align: center;
 }
-div {
+.m1 {
   background: rgb(255, 255, 255);
   border: 5px solid rgb(0, 0, 0);
   text-align: center;
@@ -22,7 +22,7 @@ div {
   left: 0%;
   
 }
-h1 {  
+.head1 {  
   background-color: rgb(255, 254, 254);  
   color: rgb(0, 0, 0);  
   padding: 10px;  

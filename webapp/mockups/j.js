@@ -1,7 +1,5 @@
 function valGetter() {  
-    alert("Choose sth")
-
-    // const years = new Array();
+    
     let years = [];
     var all = document.getElementById("allc");  
     var v1 = document.getElementById("1930");  
@@ -114,10 +112,12 @@ function valGetter() {
             years.push(u)  
         }
     }
-    if (years.length != 0 && all.checked == false){
-        window.location.href="C:\Users\rodri\cs257\257\cs257\cs257\webapp\mockups\mockup2.html";
-        
-    }
+    if (years.length != 0){
+        if(all.checked == false){
+            window.location.href="C:\Users\rodri\cs257\257\cs257\cs257\webapp\mockups\mockup2.html";
+            
+        }
+    } 
     else{
         //return document.getElementById("error").innerHTML = "Please mark choose a World Cup year";
         alert("You Must Select Something")
