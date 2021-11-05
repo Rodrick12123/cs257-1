@@ -26,7 +26,7 @@ IMPLEMENTATION: To do this, we could use the same drop-down menu (for all of the
 5. 
 STORY: A fan might want to see how their favorite team has fared versus their rival in all WC competitions. For instance, a 
 team France fan could see the results of all WC matches played against team England over all WCs. 
-IMPLEMENTATION: There would have to be two drop-down menus/search boxes (not exactly sure which would be cleaner/easier) to select the two teams to be compared from. Then, maybe there’s something to click that says ‘compare’ that produces a list of all of the match-ups between the two teams and the score.
+IMPLEMENTATION: There could be a drop-down menu with a multiple-select option (would have to limit this to them just being able to select two teams) to select the two teams they want to compare. Then, maybe there’s a drop-down of possible queries they can ask, and they can choose the query they want to get all of the match-ups between the two teams and the score.
 6. 
 STORY: A user wants to know how many times their favorite team (USA) has won a medal at a World Cup 
 IMPLEMENTATION: This would need something to click that says ‘all-time records’ and then have a drop-down menu to choose the specified team. Then, an option to make this query (maybe a button? maybe a drop-down menu?) could be used and the results would be displayed.
@@ -34,8 +34,8 @@ IMPLEMENTATION: This would need something to click that says ‘all-time records
 STORY: Somebody wants to know how many games a player appeared in during a specific World Cup (or all time).
 IMPLEMENTATION: There would be an option to either choose a specific World Cup or all-time (from the homepage), then a drop-down to select the player. Then, there'd be a way to choose the query and get the results (a select box).
 8.
-Story: Someone wants to know the all-time goal differential (goals scored bs goals given up) of their favorite team vs their rival (say, England vs France). 
-Implementation: There'd be a way to pick all-time World Cups from the homepage, then they can select the two teams to compare from two drop-down menus. Then, select the query from a select box.
+Story: Someone wants to know the all-time goal differential (goals scored vs goals given up) of their favorite team vs their rival (say, England vs France). 
+Implementation: There'd be a way to pick all-time World Cups from the homepage, then they can select the two teams to compare from a multiple-select drop-down menu. Then, they can select the query from a select box.
 
 
 '''
