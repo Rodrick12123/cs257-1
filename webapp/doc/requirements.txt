@@ -15,9 +15,10 @@ STORY: A Brazil soccer team fan can get a list of the total number of goals thei
 They could then use this information to compare with another team and find out who was more prolific, all-time or in a certain WC.
 IMPLEMENTATION: One way to do this would be to first have a dropdown list of all the World Cups, from which the user could pick the one they want to make queries about. Then, there could be a dropdown list of all the teams, in which the user can select the team (or perhaps teams?) they want to search information for. Then, a different drop down menu could have a list of different query choices, including the number of goals scored, as well as other options.
 2.
-STORY: Someone may want to see how well a specific team does when they are the host team at a World Cup.
-IMPLEMENTATION: The user can choose a specific World Cup from a drop down menu, then select the host team from a different drop-down menu. They can then have an option to make the query about the host's performance at that World Cup. This will then show how well the specific team did and gives information about their scores, and win lose data.
-3. STORY: A user wants to find out who was the most dominant player in terms of goals scored in a certain WC.
+STORY: Someone may want to see the roster of their team at a given World Cup.
+IMPLEMENTATION: The user can choose a specific World Cup from a drop down menu, then select their team from a different drop-down menu. They can then select the query asking about the roster from a select box to get the answer.
+3. 
+STORY: A user wants to find out who was the most dominant player in terms of goals scored in a certain WC.
 IMPLEMENTATION: We can have a way to choose a specific World Cup (drop-down menu) and then to ask a query about all players (maybe a button?). Then the user can see a list of all the players and the numbers of goals they've scored from greatest to least. There could also be a filter for what year the user wants to look at. Also, perhaps a range filter (top 10, top 20, etc).
 4.
 STORY: A soccer fan can find out whether their team tends to be more dominant, goals-wise, in the first half or the second half of a game, given a specific WC run. This could, for example, allow a fan of team France to see if in the 1998 WC, the team was more a ‘first half’ or ‘second half’ team. 
@@ -29,5 +30,12 @@ IMPLEMENTATION: There would have to be two drop-down menus/search boxes (not exa
 6. 
 STORY: A user wants to know how many times their favorite team (USA) has won a medal at a World Cup 
 IMPLEMENTATION: This would need something to click that says ‘all-time records’ and then have a drop-down menu to choose the specified team. Then, an option to make this query (maybe a button? maybe a drop-down menu?) could be used and the results would be displayed.
+7.
+STORY: Somebody wants to know how many games a player appeared in during a specific World Cup (or all time).
+IMPLEMENTATION: There would be an option to either choose a specific World Cup or all-time (from the homepage), then a drop-down to select the player. Then, there'd be a way to choose the query and get the results (a select box).
+8.
+Story: Someone wants to know the all-time goal differential (goals scored bs goals given up) of their favorite team vs their rival (say, England vs France). 
+Implementation: There'd be a way to pick all-time World Cups from the homepage, then they can select the two teams to compare from two drop-down menus. Then, select the query from a select box.
+
 
 '''
