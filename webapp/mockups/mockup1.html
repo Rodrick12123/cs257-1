@@ -8,7 +8,7 @@
     </head>
 
     <body>
-        <form id = 'myform' onsubmit="valueGetter()">
+        <form>
             <legend>World Cup Data:</legend>
             <h1>
                 Select The World Cup(s) That You Want To Obtain Data From
@@ -78,12 +78,12 @@
             <label for="2014">2014</label><br>
             
             <!-- <button type="submit" onclick="valueGetter">Click this button</button> -->
-            <button type="submit">Click this button</button>
-            
+            <!-- <button type="submit">Click this button</button> -->
+            <button onclick="window.location.href='https://w3docs.com';">Click Here</button>
             <h2 style="color:red" id="error"></h2>
         </form>
-        <script >  
-            function valueGetter() {  
+        <script>  
+            function getter() {  
                 const years = new Array();
                 const years = [];
                 var all = document.getElementById("allc");  
@@ -107,8 +107,8 @@
                 var v18 = document.getElementById("2006");
                 var v19 = document.getElementById("2010");
                 var v20 = document.getElementById("2014");
-                window.location.href="https://www.kaggle.com/abecklas/fifa-world-cup?select=WorldCups.csv";
-                if (all.checked == true && all.checked == false){  
+                alert("Choose sth")
+                if (all.checked == true){  
                     // return document.getElementById("error").innerHTML = "Please mark only one checkbox either Yes or No"; 
                     window.location.href="https://www.kaggle.com/abecklas/fifa-world-cup?select=WorldCups.csv"; 
                 }
@@ -206,18 +206,5 @@
                 }
             }  
         </script>
-        <!-- <div class="dropdown">  
-            <button class="dropbtn"> World Cups</button>  
-            <div class="dropdown-content">  
-            <a href="https://www.javatpoint.com/html-tutorial"> 1930 </a>  
-            <a href="https://www.javatpoint.com/css-tutorial"> 1934 </a>  
-            <a href="https://www.javatpoint.com/javascript-tutorial"> 1938 </a>  
-            </div>  
-        </div>
-        <div>
-            <button type="button" class="block" 
-            onclick="window.location.href = 'https://www.kaggle.com/abecklas/fifa-world-cup?select=WorldCupMatches.csv';">All World Cups
-            </button>
-        </div> -->
     </body>
 </html>
