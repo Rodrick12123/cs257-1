@@ -41,6 +41,5 @@ CREATE TABLE cups (
     totalgoals integer,
     firstplace text,
     secoundplace text,
-    thirdplace
-
+    thirdplace text
 );
