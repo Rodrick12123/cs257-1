@@ -1,6 +1,6 @@
 CREATE TABLE players (
-    id integer,
-    teamid integer,
+    playerid integer,
+    tid integer,
     firstname text,
     lastname text,
     captain text,
@@ -9,7 +9,6 @@ CREATE TABLE players (
 );
 
 CREATE TABLE matches (
-    id integer,
     roundid integer,
     matchid integer,
     time integer,
@@ -28,7 +27,7 @@ CREATE TABLE stadium (
 );
 
 CREATE TABLE teams (
-    id integer,
+    teamid integer,
     coach text,
     teamname text
 );
