@@ -1,11 +1,12 @@
 CREATE TABLE players (
     playerid integer,
-    tid integer,
+    tmid integer,
     firstname text,
     lastname text,
     captain text,
-    starter text
-
+    starter text,
+    pnumber integer,
+    position text
 );
 
 CREATE TABLE matches (
@@ -28,13 +29,15 @@ CREATE TABLE stadium (
 
 CREATE TABLE teams (
     teamid integer,
+    cupid integer,
     coach text,
-    teamname text
+    teamname text,
+    year integer
 );
 
 CREATE TABLE cups (
     cupid integer,
-    year text,
+    year integer,
     loc text,
     attendance text,
     totalgoals integer,
