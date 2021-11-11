@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <title>Links To Mockups</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <title>World Cups</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cups.css') }}" />
         <script type="text/javascript" src="{{ url_for('static', filename='cups.js') }}" ></script>
     </head>
 
     <body>
-        <ol>
-            <li><a href="/mockup1">Mockup 1</a></li>
-            <li><a href="/mockup2">Mockup 2</a></li>
-            <li><a href="/mockup3">Mockup 3</a></li>
-        </ol>
+
+        <div class='m1'>
+
+            <legend>World Cup Data:</legend>
+            <h1 class='head1'>
+                Select The World Cup(s) That You Want To Obtain Data From
+            </h1>
+
+	    <div id="check_boxes_container"></div>
+
+            <h2 style="color:red" id="error"></h2>
+            
+            <button onclick="valGetter()">submit!</button>
+            
+        </div>
     </body>
 </html>
