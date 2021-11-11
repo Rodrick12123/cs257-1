@@ -1,27 +1,49 @@
 // window.onload = initialize;
 
 // function initialize() {
-//     let element = document.getElementById('dataSelect');
-//     if (element) {
-//         element.onchange = onAuthorsSelectionChanged;
-//     }
+//     // let element = document.getElementById('dataSelect');
+//     // if (element) {
+//     //     element.onchange = onAuthorsSelectionChanged;
+//     // }
+    
 // }
 
 function dataSelect(evt) {
     //Figure this out
-    yrs = yearGetter();
-    alert(yrs)
-    if (evt.value === "All team queries" && evt.id === "p3") {
-        teams = 'all'
-        //loadAllTeams()
+    // yrs = yearGetter();
+    // alert(yrs)
+    // retrieve data value
+    let years = localStorage.getItem("year");
+    if(evt.id === "Players"){
+        alert("coming Soon")
+    }
+    if(evt.id === "Teams"){
+        alert("coming Soon")
+    }
+    if(evt.id === "Stats"){
+        alert("coming Soon")
+    }
+    if(evt.id === "p3"){
+        if (evt.value === "All team queries") {
+            teams = 'all'
+            //loadAllTeams()
+            if (evt.value === "All player queries"){
+                //loadAllPlayers(teams);
+            }
+
+        }
     }
     //NEED TO FIGURE OUT HOW TO GET YEARS
-    if (evt.id === "p2" && evt.value === "All team queries") {
-        //loadTeamYear(years)
+    if(evt.id === "p2"){
+        if (evt.value === "All team queries") {
+            teams = 'all'
+            //loadTeamYear(years)
+            if (evt.value === "All player queries"){
+                //loadAllPlayers(teams);
+            }
+        }
     }
-    if (evt.value === "All player queries"){
-        //loadAllPlayers(teams);
-    }
+    
     
     // let element = document.getElementById('data');
     // if (element) {
@@ -145,34 +167,6 @@ function loadAllPlayers(teams) {
     });
 }
 
-// function valGetter() {  
-                
-//     let years = [];
-//     checkboxes = document.getElementsByName('worldcup');
-//     for (var i = 0, n = checkboxes.length; i < n; i++) {
-        
-//         if(checkboxes[i].checked == true){
-//             if(checkboxes[i].value == "all"){
-//                 loadAllTeams();
-//                 // window.location.href="mockup3.html";
-//                 return;
-//             }else{
-//                 val = checkboxes[i].value;
-//                 years.push(val);
-//             }
-//         }
-           
-//     }
-    
-//     if (years.length != 0){
-//         loadTeamYear(years);
-//         //window.location.href="mockup2.html";
-//     }
-//     else{
-//         alert("You Must Print Something")
-//     }
-// }
-
 function valGetter() {
     yrs = yearGetter()
     if(yrs.includes("all")){
@@ -188,7 +182,7 @@ function valGetter() {
 }
 
 function yearGetter() {  
-                
+
     let years = [];
     checkboxes = document.getElementsByName('worldcup');
     for (var i = 0, n = checkboxes.length; i < n; i++) {
@@ -199,6 +193,8 @@ function yearGetter() {
         }
            
     }
+        // save data value
+    localStorage.setItem("year", years);
     return years;
 }
 

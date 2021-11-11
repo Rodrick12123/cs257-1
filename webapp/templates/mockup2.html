@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>World Cup Explorer</title>
-    <link rel="stylesheet" href="cups.css" type="text/css" />
-    <script type="text/javascript" src="cups.js" ></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cups.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='cups.js') }}" ></script>
 </head>
 
 <body>   
@@ -18,11 +18,11 @@
     <div id="menus">
       <div id="team-controls">
 	<div class="dropdown">
-	    <button class="dropbutton">Teams
+	    <button id="Teams" class="dropbutton">Teams
             <i class="fa fa-caret-down"></i>
 	      </button>
 	      <div class="dropdown-content">
-            <a href="#">France</a>
+            <a onclick="dataSelect(this)">France</a>
             <a href="#">Brazil</a>
 	        <a href="#">Germany</a>
 		  </div>
@@ -44,11 +44,12 @@
 
       <div id="player-controls">
 	<div class="dropdown">
-	    <button class="dropbutton">Players
+	    <button id="Players" class="dropbutton">Players
             <i class="fa fa-caret-down"></i>
 	      </button>
 	      <div class="dropdown-content">
-            <a href="#">Zidane, Zinedine</a>
+            <!-- <a href="#">Zidane, Zinedine</a> -->
+            <a onclick="dataSelect(this)">Zidane, Zinedine</a>
             <a href="#">Henry, Thierry</a>
 	        <a href="#">Ronaldo</a>
 		  </div>
@@ -57,7 +58,7 @@
 	<div id="spacer-black"></div>
 	<div id="spacer-white"></div>
 	<div>
-	    <select class="box">
+	    <select id="p2" class="box" onchange="dataSelect(this)">
             <option>Scored how many goals?</option>
             <option>Had how many fouls?</option>
             <option>Made how many appearances?</option>

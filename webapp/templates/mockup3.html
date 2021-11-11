@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>World Cup Explorer</title>
-    <link rel="stylesheet" href="cups.css" type="text/css" />
-    
-    <script type="text/javascript" src="cups.js" ></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cups.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='cups.js') }}" ></script>
 </head>
 
 <body>   
@@ -32,7 +31,7 @@
 	<div id="spacer-black"></div>
 	<div id="spacer-white"></div>
 	<div>
-	      <select id="dataSelect" class="box" onchange="dataSelect(this)">
+	      <select id="p3" class="box" onchange="dataSelect(this)">
             <option>How many wins total?</option>
             <option>Total goals in each World Cup?</option>
             <option>How many gold medals won?</option>
@@ -44,7 +43,7 @@
 
       <div id="player-controls">
 	<div class="dropdown">
-	      <button class="dropbutton">Players
+	      <button id="Players" class="dropbutton">Players
             <i class="fa fa-caret-down"></i>
 	          </button>
 	            <div class="dropdown-content">
@@ -72,7 +71,7 @@
     <div id="menus">
       <div id="compare-controls">
 	<div>
-          <select class="box"  multiple>
+          <select id="Teams" class="box"  multiple>
             <option selected>Select teams</option>
             <option>Uruguay</option>
             <option>Argentina</option>
@@ -88,7 +87,7 @@
         <div id="spacer-white"></div>
 	
 	<div>
-	      <select class="box">
+	      <select id="Stats" class="box">
             <option>Win-loss record?</option>
             <option>Overall goal differential?</option>
             <option selected>All comparison queries</option>

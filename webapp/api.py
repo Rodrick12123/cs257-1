@@ -83,6 +83,7 @@ def get_players():
             http://.../authors/?sort=birth_year
         Returns an empty list if there's any database failure.
     '''
+    
     query = '''SELECT players.playerid, players.tmid, players.firstname, players.lastname, players.captain, players.starter, 
                 teams.teamname, players.pnumber, players.position
                FROM players, teams 
