@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>World Cups</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cups.js') }}" />
+        <script type="text/javascript" src="{{ url_for('static', filename='cups.js') }}"></script>
+    </head>
+
+    <body>
+        <div class='m1'>
+            <legend>World Cup Data:</legend>
+            <h1 class='head1'>
+                Select The World Cup(s) That You Want To Obtain Data From
+            </h1>
+            
+            <input type="checkbox" name="worldcup" id="allc" value="all">
+            <label for="allc">All Cups</label>
+
+            <input type="checkbox" name="worldcup" id="1930" value="1930">
+            <label for="1930">1930</label>
+
+            <input type="checkbox" name="worldcup" id="1934" value="1934">
+            <label for="1934">1934</label>
+
+            <input type="checkbox" name="worldcup" id="1938" value="1938">
+            <label for="1938">1938</label>
+
+            <input type="checkbox" name="worldcup" id="1950" value="1950">
+            <label for="1950">1950</label>
+
+            <input type="checkbox" name="worldcup" id="1954" value="1954">
+            <label for="1954">1954</label>
+
+            <input type="checkbox" name="worldcup" id="1958" value="1958">
+            <label for="1958">1958</label>
+
+            <input type="checkbox" name="worldcup" id="1962" value="1962">
+            <label for="1962">1962</label>
+
+            <input type="checkbox" name="worldcup" id="1966" value="1966">
+            <label for="1966">1966</label>
+
+            <input type="checkbox" name="worldcup" id="1970" value="1970">
+            <label for="1970">1970</label>
+
+            <input type="checkbox" name="worldcup" id="1974" value="1974">
+            <label for="1974">1974</label>
+
+            <input type="checkbox" name="worldcup" id="1978" value="1978">
+            <label for="1978">1978</label>
+
+            <input type="checkbox" name="worldcup" id="1982" value="1982">
+            <label for="1982">1982</label>
+
+            <input type="checkbox" name="worldcup" id="1986" value="1986">
+            <label for="1986">1986</label>
+
+            <input type="checkbox" name="worldcup" id="1990" value="1990">
+            <label for="1990">1990</label>
+
+            <input type="checkbox" name="worldcup" id="1994" value="1994">
+            <label for="1994">1994</label>
+
+            <input type="checkbox" name="worldcup" id="1998" value="1998">
+            <label for="1998">1998</label>
+
+            <input type="checkbox" name="worldcup" id="2002" value="2002">
+            <label for="2002">2002</label>
+
+            <input type="checkbox" name="worldcup" id="2006" value="2006">
+            <label for="2006">2006</label>
+
+            <input type="checkbox" name="worldcup" id="2010" value="2010">
+            <label for="2010">2010</label>
+
+            <input type="checkbox" name="worldcup" id="2014" value="2014">
+            <label for="2014">2014</label><br>
+
+            <h2 style="color:red" id="error"></h2>
+            
+            <button onclick="valGetter()">submit!</button>
+            <!-- <input type = "button" onclick = "valGetter()" class = "submit" /> -->
+            
+            <!-- <button onclick="window.location.href='https://w3docs.com';">Click Here</button> -->
+            <!-- <button type="submit">Click this button</button> -->
+            
+        </div>
+        <!-- <script>
+            function valGetter() {  
+                
+                let years = [];
+                checkboxes = document.getElementsByName('worldcup');
+                for (var i = 0, n = checkboxes.length; i < n; i++) {
+                    
+                    if(checkboxes[i].checked == true){
+                        if(checkboxes[i].value == "all"){
+                            
+                            window.location.href="mockup3.html";
+                            return;
+                        }else{
+                            val = checkboxes[i].value;
+                            years.push(val);
+                        }
+                    }
+                       
+                }
+                
+                if (years.length != 0){
+                    
+                    window.location.href="mockup2.html";
+                }
+                else{
+                    alert("You Must Print Something")
+                }
+            }
+        </script> -->
+    </body>
+</html>
