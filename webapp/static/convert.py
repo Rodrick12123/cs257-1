@@ -66,8 +66,6 @@ def add_match_entry(row, writer):
     match_id = row[17]
 
     if match_id == '':
-        #print('uh oh')
-        #print(row)
         pass
 
     else:
@@ -161,22 +159,15 @@ def process_name_into_parts(full_name):
         if '(' in component and ')' in component: #only actually need one of these checks
             pass #just ignore, will get this information somewhere else
 
-
-#        print(name_components)
-#        print(component)
-
-        if component.isupper():
-            surname = component + ' '
+        elif component.isupper():
+            surname = surname + ' ' + component
         else:
-            given_name = component + ' '
-
-    print(surname)
-    print(given_name)
+            given_name = given_name + ' ' + component
 
 
     #remove the extra spaces after the surname and given_name
-    surname = surname[:-1]
-    given_name = given_name[:-1]
+    #surname = surname[:-1]
+    #given_name = given_name[:-1]
     
     return [surname, given_name]
 
@@ -190,7 +181,7 @@ def add_player_entry(row, writer):
 
     #coach is may not be constant between world cups. will have to change this, but ok for now
     processed_coach_name = process_name_into_parts(row[3])
-    coach = processed_coach_name[0] + ' ' + processed_coach_name[1]
+    coach = processed_coach_name[1] + ' ' + processed_coach_name[0]
 
     if full_name not in players: #not sure there's any other way to distinguish?? but there has to be. there's probably at least a couple of John Smiths that have played
         player_id = len(players) + 1
@@ -223,7 +214,6 @@ def add_players_teams_matches_worldcups_entry(row, writer):
     wc_year = matches[match_id][0] #access the year via the matches dictionary, in order to get world_cup
     world_cup_id = world_cups[wc_year][0]
 
-    print(players[player_full_name])
     player_id = players[player_full_name][0]
     team_id = teams[team_abbreviation][0]
 
