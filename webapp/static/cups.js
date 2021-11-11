@@ -69,10 +69,11 @@ function loadWorldCupCheckBoxes() {
 		for (let k = 0; k < worldcups.length; k++) {
 		    let worldcup = worldcups[k];
 		    world_cup_year = worldcup['wc_year']
+		    world_cup_location = worldcup['wc_location']
 		    checkBoxesBody += '<input type="checkbox" name="worldcup" id="'
-		                  +world_cup_year + '" value="' + world_cup_year + '">\n'
-		                  +'<label for ="' + world_cup_year + '">' + world_cup_year
-			          + '</label>\n'
+			+world_cup_year + '" value="' + world_cup_year + '">\n'
+			+'<label for ="' + world_cup_year + '">' + world_cup_location+' '+world_cup_year
+			+ '</label>\n'
 
 		}
 
