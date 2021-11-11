@@ -7,7 +7,7 @@ import csv
 
 world_cups = {}
 
-world_cups_data_file = open('worldcups.csv')
+world_cups_data_file = open('worldcupsdata.csv')
 world_cups_reader = csv.reader(world_cups_data_file)
 
 world_cups_file = open('worldcups.csv', 'w')
@@ -44,7 +44,7 @@ world_cups_data_file.close()
 
 #USING worldcupmatches.csv                                                                                  
 
-world_cup_matches_data_file = open('worldcupmatches.csv')
+world_cup_matches_data_file = open('worldcupmatchesdata.csv')
 world_cup_matches_reader = csv.reader(world_cup_matches_data_file)
 
 #dictionaries                                                                                                
@@ -133,7 +133,7 @@ world_cup_matches_data_file.close()
 
 #USING worldcupplayers.csv
 
-world_cup_players_data_file = open('worldcupplayers.csv')
+world_cup_players_data_file = open('worldcupplayersdata.csv')
 world_cup_players_reader = csv.reader(world_cup_players_data_file)
 
 players_teams_matches_worldcups_file = open('players_teams_matches_worldcups.csv', 'w')
