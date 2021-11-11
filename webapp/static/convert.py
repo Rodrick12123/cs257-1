@@ -65,7 +65,6 @@ def add_match_entry(row, writer):
 
     match_id = row[17]
 
-
     if match_id == '':
         #print('uh oh')
         #print(row)
@@ -98,8 +97,8 @@ def add_match_entry(row, writer):
         year = row[0]
 
         if match_id not in matches:
-            match_id = len(matches) + 1
             matches[match_id] = [year, date_time, stage, stadium, city, home_team, home_team_score, away_team, away_team_score, win_conditions, attendance, home_team_first_half_goals, home_team_second_half_goals, away_team_first_half_goals, away_team_second_half_goals]
+            
             writer.writerow([match_id, date_time, stage, home_team, home_team_score, away_team, away_team_score, win_conditions, attendance, home_team_first_half_goals, home_team_second_half_goals, away_team_first_half_goals, away_team_second_half_goals])
 
 def add_teams_entry(row, writer): #this will add two team entries at once (so need to change title, else change how this works.....okay for now)
@@ -202,8 +201,8 @@ def process_game_events(game_events_string):
     game_events_components = game_events_string.split(' ')
 
     for component in game_events_components:
-        if component.contain('G'):
-            goals.add(component)
+        if 'G' in component:
+            goals.append(component)
 
     return goals
 
@@ -212,7 +211,7 @@ def add_players_teams_matches_worldcups_entry(row, writer):
     player_full_name = row[6]
     team_abbreviation = row[2]
 
-    match_id = int(row[1])
+    match_id = row[1]
 
     wc_year = matches[match_id][0] #access the year via the matches dictionary, in order to get world_cup
     world_cup_id = world_cups[wc_year][0]
@@ -255,4 +254,4 @@ world_cup_players_data_file.close()
 players_teams_matches_worldcups_file.close()
 
 
-######################################################        
+######################################################      
