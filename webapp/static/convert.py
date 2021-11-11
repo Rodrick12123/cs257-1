@@ -209,8 +209,6 @@ def add_players_teams_matches_worldcups_entry(row, writer):
     #in order to check for repeated data (because there is some in the Kaggle dataset--that's why this is here
     already_added = set()
 
-
-
     player_full_name = row[6]
     team_abbreviation = row[2]
 
@@ -242,7 +240,9 @@ def add_players_teams_matches_worldcups_entry(row, writer):
 
     if len(goals) == 0:
         row_to_add = (player_id, team_id, match_id, world_cup_id, starter, captain, 'Null')
+        
         if row_to_add not in already_added:
+
             writer.writerow(row_to_add)
             already_added.add(row_to_add)
     else:
