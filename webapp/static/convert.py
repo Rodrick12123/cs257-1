@@ -162,10 +162,17 @@ def process_name_into_parts(full_name):
             pass #just ignore, will get this information somewhere else
 
 
+#        print(name_components)
+#        print(component)
+
         if component.isupper():
             surname = component + ' '
         else:
             given_name = component + ' '
+
+    print(surname)
+    print(given_name)
+
 
     #remove the extra spaces after the surname and given_name
     surname = surname[:-1]
@@ -187,7 +194,7 @@ def add_player_entry(row, writer):
 
     if full_name not in players: #not sure there's any other way to distinguish?? but there has to be. there's probably at least a couple of John Smiths that have played
         player_id = len(players) + 1
-        players[full_name] = [surname, given_name, coach]
+        players[full_name] = [player_id, surname, given_name, coach]
         writer.writerow([player_id, surname, given_name, coach])
 
 
@@ -216,6 +223,7 @@ def add_players_teams_matches_worldcups_entry(row, writer):
     wc_year = matches[match_id][0] #access the year via the matches dictionary, in order to get world_cup
     world_cup_id = world_cups[wc_year][0]
 
+    print(players[player_full_name])
     player_id = players[player_full_name][0]
     team_id = teams[team_abbreviation][0]
 
