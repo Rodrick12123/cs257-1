@@ -87,6 +87,7 @@ def get_players():
                 teams.teamname, players.pnumber, players.position
                FROM players, teams 
                WHERE teams.teamid = players.tmid
+               AND teams.year = %s
                ORDER BY teams.teamname'''
 
     # sort_argument = flask.request.args.get('sort')
@@ -100,7 +101,7 @@ def get_players():
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        cursor.execute(query, tuple())
+        cursor.execute(query, teams)
         for row in cursor:
             player = {'plaerid':row[0],
                       'tmid':row[1],
@@ -119,25 +120,3 @@ def get_players():
 
     return json.dumps(player_list)
 
-@api.route('/books/author/<author_id>')
-def get_books_for_author(author_id):
-    query = '''SELECT books.id, books.title, books.publication_year
-               FROM books, authors, books_authors
-               WHERE books.id = books_authors.book_id
-                 AND authors.id = books_authors.author_id
-                 AND authors.id = %s
-               ORDER BY books.publication_year'''
-    team_list = []
-    try:
-        connection = get_connection()
-        cursor = connection.cursor()
-        cursor.execute(query, (author_id,))
-        for row in cursor:
-            book = {'id':row[0], 'title':row[1], 'publication_year':row[2]}
-            team_list.append(book)
-        cursor.close()
-        connection.close()
-    except Exception as e:
-        print(e, file=sys.stderr)
-
-    return json.dumps(team_list)

@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>World Cup Explorer</title>
-    <link rel="stylesheet" href="mockup.css" type="text/css" />
+    <link rel="stylesheet" href="cups.css" type="text/css" />
+    
+    <script type="text/javascript" src="cups.js" ></script>
 </head>
 
 <body>   
@@ -30,7 +32,7 @@
 	<div id="spacer-black"></div>
 	<div id="spacer-white"></div>
 	<div>
-	      <select class="box">
+	      <select id="dataSelect" class="box" onchange="dataSelect(this)">
             <option>How many wins total?</option>
             <option>Total goals in each World Cup?</option>
             <option>How many gold medals won?</option>
@@ -55,7 +57,7 @@
 	<div id="spacer-black"></div>
 	<div id="spacer-white"></div>
 	<div>
-	      <select class="box">
+	      <select id="p3" class="box" onchange="dataSelect(this)">
             <option>Scored how many goals?</option>
             <option>Had how many fouls?</option>
             <option>Made how many appearances?</option>
@@ -97,7 +99,7 @@
     </div>
     
     <p>Results printed below.<p>
-    <div id="results"></div>
-
+    <!-- <div table id="results"></div> -->
+    <div><table id="results"></table></div>
 </body>
 </html>

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>World Cup Explorer</title>
-    <link rel="stylesheet" href="mockup.css" type="text/css" />
+    <link rel="stylesheet" href="cups.css" type="text/css" />
+    <script type="text/javascript" src="cups.js" ></script>
 </head>
 
 <body>   
@@ -30,7 +31,7 @@
 	<div id="spacer-black"></div>
 	<div id="spacer-white"></div>
 	<div>
-	    <select class="box">
+	    <select id="p2" class="box" onchange="dataSelect(this)">
             <option>How many wins?</option>
             <option>Total goals scored?</option>
             <option>Roster?</option>
