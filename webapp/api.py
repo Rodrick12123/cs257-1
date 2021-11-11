@@ -21,14 +21,14 @@ def get_connection():
 
 @api.route('/Allcups/teams/') 
 def get_all_teams():
-    query = '''SELECT coach, teamname, year
+    query = '''SELECT team_abbreviation, team_name
                FROM teams ORDER BY '''
     # sort_argument = flask.request.args.get('sort')
     # if sort_argument == 'birth_year':
     #     query += 'birth_year'
     # else:
     #     query += 'surname, given_name'
-    query += 'teamname'
+    query += 'team_name'
 
     team_list = []
     try:
@@ -36,20 +36,19 @@ def get_all_teams():
         cursor = connection.cursor()
         cursor.execute(query, tuple())
         for row in cursor:
-            team = {  'coach':row[0],
-                      'teamname':row[1],
-                      'year':row[2]}
+            team = {  'team_abbreviation':row[0],
+                      'team_name':row[1]}
             team_list.append(team)
         cursor.close()
         connection.close()
     except Exception as e:
         print(e, file=sys.stderr)
 
-    return json.dumps(player_list)
+    return json.dumps(team_list)
 
 @api.route('/<years>/teams/') 
 def get_teams(years):
-    query = '''SELECT teams.coach, teams.teamname, teams.year
+    query = '''SELECT teams.year, teams.team_abbreviation, teams.year
                FROM cups, teams
                WHERE team.cupid = cups.cupid
                  AND cups.year = %s
@@ -60,7 +59,7 @@ def get_teams(years):
         cursor = connection.cursor()
         cursor.execute(query, (years,))
         for row in cursor:
-            team = {'teamyear':row[2], 'teamname':row[1], 'coach':row[0], 'cupyear':row[3]}
+            team = {'teamyear':row[2], 'team_abbreviation':row[1], 'year':row[0], 'cupyear':row[3]}
             team_list.append(team)
         cursor.close()
         connection.close()
@@ -83,13 +82,13 @@ def get_players():
             http://.../authors/?sort=birth_year
         Returns an empty list if there's any database failure.
     '''
-    
+
     query = '''SELECT players.playerid, players.tmid, players.firstname, players.lastname, players.captain, players.starter, 
-                teams.teamname, players.pnumber, players.position
+                teams.team_abbreviation, players.pnumber, players.position
                FROM players, teams 
                WHERE teams.teamid = players.tmid
                AND teams.year = %s
-               ORDER BY teams.teamname'''
+               ORDER BY teams.team_abbreviation'''
 
     # sort_argument = flask.request.args.get('sort')
     # if sort_argument == 'birth_year':
@@ -110,7 +109,7 @@ def get_players():
                       'lastname':row[3],
                       'captain':row[4],
                       'starter':row[4],
-                      'teamname':row[5],
+                      'team_abbreviation':row[5],
                       'number':row[6],
                       'position':row[7]}
             player_list.append(player)
