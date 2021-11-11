@@ -7,12 +7,16 @@
 //     // }
     
 // }
+function getAPIBaseURL() {
+    let baseURL = window.location.protocol
+                    + '//' + window.location.hostname
+                    + ':' + window.location.port
+                    + '/api';
+    return baseURL;
+}
 
 function dataSelect(evt) {
-    //Figure this out
-    // yrs = yearGetter();
-    // alert(yrs)
-    // retrieve data value
+
     let years = localStorage.getItem("year");
     if(evt.id === "Players"){
         alert("coming Soon")
@@ -24,6 +28,7 @@ function dataSelect(evt) {
         alert("coming Soon")
     }
     if(evt.id === "p3"){
+        
         if (evt.value === "All team queries") {
             teams = 'all'
             //loadAllTeams()
@@ -53,7 +58,7 @@ function dataSelect(evt) {
 
 }
 function loadAllTeams() {
-    window.location.href="mockup3.html";
+    window.location.href="/mockup3";
     let url = getAPIBaseURL() + '/Allcups/teams/';
 
     // Send the request to the teamss API /authors/ endpoint
@@ -90,7 +95,7 @@ function loadAllTeams() {
 }
 
 function loadTeamYear(years) {
-    window.location.href="mockup2.html";
+    window.location.href="/mockup2";
     let url = getAPIBaseURL() + '/<years>/teams/';
 
     // Send the request to the teamss API /authors/ endpoint
@@ -131,7 +136,7 @@ function loadAllPlayers(teams) {
         teams = [1930,1934,1938,1950,1954,1958,1962,1966,
             1970,1974,1978,1982,1986,1990,1994,1998,2002,2006,2010,2014]
     }
-    window.location.href="mockup2.html";
+    window.location.href="/mockup2";
     let url = getAPIBaseURL() + '/<teams>/players/';
 
     // Send the request to the teamss API /authors/ endpoint
@@ -170,6 +175,7 @@ function loadAllPlayers(teams) {
 function valGetter() {
     yrs = yearGetter()
     if(yrs.includes("all")){
+        
         loadAllTeams();
     }else{
         if(yrs.length != 0){
