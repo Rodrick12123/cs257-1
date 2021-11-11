@@ -99,7 +99,7 @@ def add_match_entry(row, writer):
         if match_id not in matches:
             matches[match_id] = [year, date_time, stage, stadium, city, home_team, home_team_score, away_team, away_team_score, win_conditions, attendance, home_team_first_half_goals, home_team_second_half_goals, away_team_first_half_goals, away_team_second_half_goals]
             
-            writer.writerow([match_id, date_time, stage, home_team, home_team_score, away_team, away_team_score, win_conditions, attendance, home_team_first_half_goals, home_team_second_half_goals, away_team_first_half_goals, away_team_second_half_goals])
+            writer.writerow([match_id, date_time, stage, stadium, city, home_team, home_team_score, away_team, away_team_score, win_conditions, attendance, home_team_first_half_goals, home_team_second_half_goals, away_team_first_half_goals, away_team_second_half_goals])
 
 def add_teams_entry(row, writer): #this will add two team entries at once (so need to change title, else change how this works.....okay for now)
     home_team = row[5]
