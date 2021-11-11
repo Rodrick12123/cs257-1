@@ -41,3 +41,13 @@ CREATE TABLE worldcups (
     attendance text,
     totalgoals integer
 );
+
+CREATE TABLE players_teams_matches_worldcups (
+       player_id integer,
+       team_id integer,
+       match_id integer,
+       worldcup_id integer,
+       starter text,
+       captain text,
+       goal text
+);
