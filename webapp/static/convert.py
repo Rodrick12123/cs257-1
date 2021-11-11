@@ -7,7 +7,7 @@ import csv
 
 world_cups = {}
 
-world_cups_data_file = open('worldcupsdata.csv')
+world_cups_data_file = open('worldcups.csv')
 world_cups_reader = csv.reader(world_cups_data_file)
 
 world_cups_file = open('worldcups.csv', 'w')
