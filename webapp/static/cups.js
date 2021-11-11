@@ -1,12 +1,22 @@
-// window.onload = initialize;
+/*
+cups.js
+Rodrick and Thea
+10 November 2021
+*/
 
-// function initialize() {
-//     // let element = document.getElementById('dataSelect');
-//     // if (element) {
-//     //     element.onchange = onAuthorsSelectionChanged;
-//     // }
-    
-// }
+window.onload = initialize;
+
+function initialize() {
+    //loadYearsSelector();
+
+    loadWorldCupCheckBoxes();
+
+    /*    let element = document.getElementById('year_selector');
+    if (element) {
+	element.onchange = onYearsSelectionChanged;
+	} */   
+}
+
 function getAPIBaseURL() {
     let baseURL = window.location.protocol
                     + '//' + window.location.hostname
@@ -14,6 +24,69 @@ function getAPIBaseURL() {
                     + '/api';
     return baseURL;
 }
+
+/*
+
+function loadYearsSelector() {
+    let url = getAPIBaseURL() + '/Allcups/';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(worldcups) {
+	    let selectorBody = '';
+	    for (let k = 0; k < worldcups.length; k++) {
+		let worldcup = worldcups[k];
+		selectorBody += '<option value="' + worldcup['id'] + '">'
+                                + worldcup['wc_location'] + ' ' + worldcup['wc_year']
+		+ '</option>\n';
+	    }
+
+	    let selector = document.getElementById('year_selector');
+	    if (selector) {
+		selector.innerHTML = selectorBody;
+	    }
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	});
+}
+*/
+
+
+
+function loadWorldCupCheckBoxes() {
+    let url = getAPIBaseURL() + '/Allcups/';
+
+    fetch(url, {method: 'get'})
+
+	.then((response) => response.json())
+
+	.then(function(worldcups) {
+		let checkBoxesBody = '';
+		for (let k = 0; k < worldcups.length; k++) {
+		    let worldcup = worldcups[k];
+		    world_cup_year = worldcup['wc_year']
+		    checkBoxesBody += '<input type="checkbox" name="worldcup" id="'
+		                  +world_cup_year + '" value="' + world_cup_year + '">\n'
+		                  +'<label for ="' + world_cup_year + '">' + world_cup_year
+			          + '</label>\n'
+
+		}
+
+		let boxes = document.getElementById('check_boxes_container');
+		if (boxes) {
+		    boxes.innerHTML = checkBoxesBody;
+		}
+	    })
+
+        .catch(function(error) {
+                console.log(error);
+	    });
+}
+
 
 function dataSelect(evt) {
 
