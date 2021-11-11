@@ -58,9 +58,9 @@ def get_all_worldcups():
         for row in cursor:
             wc = {  'wc_year':row[0],
                     'wc_location':row[1]}
-            team_list.append(wc)
-            cursor.close()
-            connection.close()
+            wc_list.append(wc)
+        cursor.close()
+        connection.close()
     except Exception as e:
         print(e, file=sys.stderr)
 
