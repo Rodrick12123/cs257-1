@@ -21,14 +21,14 @@ def get_connection():
 
 @api.route('/Allcups/teams/') 
 def get_all_teams():
-    query = '''SELECT teams.team_name FROM teams ORDER BY teams.team_name;'''
+    query = '''SELECT teams.team_abbreviation, teams.team_name FROM teams ORDER BY teams.team_name;'''
 
     # sort_argument = flask.request.args.get('sort')
     # if sort_argument == 'birth_year':
     #     query += 'birth_year'
     # else:
     #     query += 'surname, given_name'
-    query += 'team_name'
+    #query += 'team_name'
 
     team_list = []
     try:
