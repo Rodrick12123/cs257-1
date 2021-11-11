@@ -1,47 +1,42 @@
 CREATE TABLE players (
-    playerid integer,
-    tmid integer,
-    firstname text,
-    lastname text,
-    captain text,
-    starter text,
-    pnumber integer,
-    position text
+    id integer,
+    surname text,
+    given_name text,
+    coach text
 );
 
 CREATE TABLE matches (
-    roundid integer,
-    matchid integer,
-    time integer,
+    id integer,
+    date_time text,
     stage text,
-    homename text,
-    awayname text,
-    homescore text,
-    awayteam text,
-    wincond text
-);
-
-CREATE TABLE stadium (
-    matchid integer,
-    stadiumname text,
-    city text
+    stadium text,
+    city text,
+    home_team text,
+    home_score integer,
+    away_team text,
+    away_score integer,
+    win_conditions text,
+    attendance text,
+    home_first_half_goals integer,
+    home_second_half_goals integer,
+    away_first_half_goals integer,
+    away_second_half_goals integer
+    
 );
 
 CREATE TABLE teams (
-    teamid integer,
-    cupid integer,
-    coach text,
-    teamname text,
-    year integer
+    id integer,
+    team_abbreviation text,
+    team_name text
 );
 
-CREATE TABLE cups (
-    cupid integer,
+CREATE TABLE worldcups (
+    id integer,
     year integer,
-    loc text,
-    attendance text,
-    totalgoals integer,
+    location text,
     firstplace text,
     secoundplace text,
-    thirdplace text
-);
+    thirdplace text,
+    fourthplace text,
+    attendance text,
+    totalgoals integer
