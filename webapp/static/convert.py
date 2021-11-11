@@ -33,8 +33,8 @@ for row in world_cups_reader:
 
     if year not in world_cups:
         wc_id = len(world_cups) + 1
-        world_cups[year] = [wc_id, year, country, first, second, third, fourth, attendance] #maybe assign these values? like 'wc_id':wc_id? return to this 
-        world_cups_writer.writerow([wc_id, year, country, first, second, third, fourth, attendance])
+        world_cups[year] = [wc_id, year, country, first, second, third, fourth, attendance, goals_scored] #maybe assign these values? like 'wc_id':wc_id? return to this 
+        world_cups_writer.writerow([wc_id, year, country, first, second, third, fourth, attendance, goals_scored])
 
 world_cups_file.close()
 world_cups_data_file.close()
@@ -75,22 +75,22 @@ def add_match_entry(row, writer):
         date_time = row[1]
         stage = row[2]
         home_team = row[5]
-        home_team_score = row[6]
+        home_team_score = int(row[6])
         away_team = row[8]
-        away_team_score = row[7]
+        away_team_score = int(row[7])
         win_conditions = row[9] #mostly empty, if not, regards extra time
         attendance = row[10]
         
     #first-half performance
-        home_team_first_half_goals = row[11]
-        away_team_first_half_goals = row[12]
+        home_team_first_half_goals = int(row[11])
+        away_team_first_half_goals = int(row[12])
         
     #second-half performance
         
     #checking for issue with weird data at the end....
         
-        home_team_second_half_goals = str(int(home_team_score) - int(home_team_first_half_goals))
-        away_team_second_half_goals = str(int(away_team_score) - int(away_team_first_half_goals))
+        home_team_second_half_goals = home_team_score - home_team_first_half_goals
+        away_team_second_half_goals = away_team_score - away_team_first_half_goals
 
         stadium = row[3]
         city = row[4]
