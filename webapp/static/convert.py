@@ -241,15 +241,15 @@ def add_players_teams_matches_worldcups_entry(row, writer):
     goals = process_game_events(row[8])
 
     if len(goals) == 0:
-        row_to_add = [player_id, team_id, match_id, world_cup_id, starter, captain, 'Null']
+        row_to_add = (player_id, team_id, match_id, world_cup_id, starter, captain, 'Null')
         if row_to_add not in already_added:
             writer.writerow(row_to_add)
             already_added.add(row_to_add)
     else:
         for goal in goals:
-            row_to_add = [player_id, team_id, match_id, world_cup_id, starter, captain, goal]
+            row_to_add = (player_id, team_id, match_id, world_cup_id, starter, captain, goal)
             if row_to_add not in already_added:
-                writer.writerow([player_id, team_id, match_id, world_cup_id, starter, captain, goal])
+                writer.writerow(row_to_add)
                 already_added.add(row_to_add)
 
 heading_row = next(world_cup_players_reader)
