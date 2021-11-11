@@ -40,3 +40,4 @@ CREATE TABLE worldcups (
     fourthplace text,
     attendance text,
     totalgoals integer
+);
