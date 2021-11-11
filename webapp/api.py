@@ -46,6 +46,27 @@ def get_all_teams():
 
     return json.dumps(team_list)
 
+@api.route('/Allcups/')
+def get_all_worldcups():
+    query = '''SELECT worldcups.year, worldcups.location FROM worldcups ORDER BY worldcups.year;'''
+
+    wc_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, tuple())
+        for row in cursor:
+            wc = {  'wc_year':row[0],
+                    'wc_location':row[1]}
+            team_list.append(wc)
+            cursor.close()
+            connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(wc_list)
+
+
 @api.route('/<years>/teams/') 
 def get_teams(years):
     query = '''SELECT teams.year, teams.team_abbreviation, teams.year
