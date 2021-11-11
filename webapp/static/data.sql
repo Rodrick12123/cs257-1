@@ -46781,9 +46781,9 @@ COPY public.teams (id, team_abbreviation, team_name) FROM stdin;
 54	CAN	Canada
 55	IRQ	Iraq
 56	DEN	Denmark
-57	UAE	rn">United Arab Emirates
+57	UAE	United Arab Emirates
 58	CRC	Costa Rica
-59	IRL	rn">Republic of Ireland
+59	IRL	Republic of Ireland
 60	KSA	Saudi Arabia
 61	RUS	Russia
 62	GRE	Greece
@@ -46796,9 +46796,9 @@ COPY public.teams (id, team_abbreviation, team_name) FROM stdin;
 69	SVN	Slovenia
 70	ECU	Ecuador
 71	CHN	China PR
-72	TRI	rn">Trinidad and Tobago
+72	TRI	Trinidad and Tobago
 73	CIV	C�te d'Ivoire
-74	SCG	rn">Serbia and Montenegro
+74	SCG	Serbia and Montenegro
 75	ANG	Angola
 76	CZE	Czech Republic
 77	GHA	Ghana
@@ -46806,7 +46806,7 @@ COPY public.teams (id, team_abbreviation, team_name) FROM stdin;
 79	UKR	Ukraine
 80	SRB	Serbia
 81	SVK	Slovakia
-82	BIH	rn">Bosnia and Herzegovina
+82	BIH	Bosnia and Herzegovina
 83		
 \.
 

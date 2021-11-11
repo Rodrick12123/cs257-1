@@ -99,10 +99,16 @@ def add_match_entry(row, writer):
             
             writer.writerow([match_id, date_time, stage, stadium, city, home_team, home_team_score, away_team, away_team_score, win_conditions, attendance, home_team_first_half_goals, home_team_second_half_goals, away_team_first_half_goals, away_team_second_half_goals])
 
+
+def process_team_name(team_name):
+    if 'rn">' in team_name:
+        team_name = team_name[4:]
+    return team_name
+
 def add_teams_entry(row, writer): #this will add two team entries at once (so need to change title, else change how this works.....okay for now)
-    home_team = row[5]
+    home_team = process_team_name(row[5])
     home_team_abbreviation = row[18]
-    away_team = row[8]
+    away_team = process_team_name(row[8])
     away_team_abbreviation = row[19]
 
     if home_team_abbreviation not in teams:
