@@ -7,14 +7,8 @@ Rodrick and Thea
 window.onload = initialize;
 
 function initialize() {
-    //loadYearsSelector();
 
     loadWorldCupCheckBoxes();
-
-    /*    let element = document.getElementById('year_selector');
-    if (element) {
-	element.onchange = onYearsSelectionChanged;
-	} */   
 }
 
 function getAPIBaseURL() {
@@ -81,7 +75,7 @@ function dataSelect(evt) {
 
         }
     }
-    //NEED TO FIGURE OUT HOW TO GET YEARS
+
     if(evt.id === "p2"){
         if (evt.value === "All team queries") {
             teams = 'all'
@@ -91,18 +85,11 @@ function dataSelect(evt) {
             }
         }
     }
-    
-    
-    // let element = document.getElementById('data');
-    // if (element) {
-    //     alert('hello');
-    //     //element.onchange = onAuthorsSelectionChanged;
-    // }
 
 }
 function loadAllTeams() {
     
-    window.location.href="/mockup3";
+    
     let url = getAPIBaseURL() + '/Allcups/teams/';
 
     // Send the request to the teamss API /authors/ endpoint
@@ -118,11 +105,11 @@ function loadAllTeams() {
         // Add the <option> elements to the <select> element
         let tableBody = '';
         for (let k = 0; k < teams.length; k++) {
-            let teams = teams[k];
+            let team = teams[k];
             
             tableBody += '<tr>'
-                            + '<td>' + teams['team_name'] + '</td>'
-                            + '<td>' + teams['team_abbreviation'] + '</td>'
+                            + '<td>' + team['team_name'] + '</td>'
+                            + '<td>' + team['team_abbreviation'] + '</td>'
                             + '</tr>\n';
         }
 
@@ -131,7 +118,7 @@ function loadAllTeams() {
             res.innerHTML = tableBody;
         }
     })
-
+    
     // Log the error if anything went wrong during the fetch.
     .catch(function(error) {
         console.log(error);
@@ -139,7 +126,7 @@ function loadAllTeams() {
 }
 
 function loadTeamYear(years) {
-    window.location.href="/mockup2";
+    window.location.href="/SpecificCups";
     let url = getAPIBaseURL() + '/<years>/teams/';
 
     // Send the request to the teamss API /authors/ endpoint
@@ -148,7 +135,7 @@ function loadTeamYear(years) {
     // When the results come back, transform them from a JSON string into
     // a Javascript object (in this case, a list of author dictionaries).
     .then((response) => response.json())
-
+    
     // Once you have your list of author dictionaries, use it to build
     // an HTML table displaying the author names and lifespan.
     .then(function(teams) {
@@ -168,7 +155,7 @@ function loadTeamYear(years) {
             res.innerHTML = tableBody;
         }
     })
-
+    
     // Log the error if anything went wrong during the fetch.
     .catch(function(error) {
         console.log(error);
@@ -176,11 +163,11 @@ function loadTeamYear(years) {
 }
 
 function loadAllPlayers(teams) {
-    if(teams == 'all'){
-        teams = [1930,1934,1938,1950,1954,1958,1962,1966,
-            1970,1974,1978,1982,1986,1990,1994,1998,2002,2006,2010,2014]
-    }
-    window.location.href="/mockup2";
+    // if(teams == 'all'){
+    //     teams = [1930,1934,1938,1950,1954,1958,1962,1966,
+    //         1970,1974,1978,1982,1986,1990,1994,1998,2002,2006,2010,2014]
+    // }
+    window.location.href="/SpecificCups";
     let url = getAPIBaseURL() + '/<teams>/players/';
 
     // Send the request to the teamss API /authors/ endpoint
@@ -219,7 +206,8 @@ function loadAllPlayers(teams) {
 function valGetter() {
     yrs = yearGetter()
     if(yrs.includes("all")){
-        
+        //Put links here
+        window.location.href="/AllCups";
         loadAllTeams();
     }else{
         if(yrs.length != 0){

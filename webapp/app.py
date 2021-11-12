@@ -17,13 +17,13 @@ def home():
 def page1():
     return flask.render_template('mockup1.html')
 
-@app.route('/mockup2')
+@app.route('/SpecificCups')
 def page2():
-    return flask.render_template('mockup2.html')
+    return flask.render_template('SpecificCups.html')
 
-@app.route('/mockup3')
+@app.route('/AllCups')
 def page3():
-    return flask.render_template('mockup3.html')
+    return flask.render_template('AllCups.html')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Flask applications')
