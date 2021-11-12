@@ -104,8 +104,9 @@ function dataSelect(evt) {
     if(evt.id === "p3"){
         
         if (evt.value === "All team queries") {
+            
             teams = 'all'
-            //loadAllTeams()
+            loadAllTeams()
             if (evt.value === "All player queries"){
                 //loadAllPlayers(teams);
             }
@@ -132,6 +133,7 @@ function dataSelect(evt) {
 
 }
 function loadAllTeams() {
+    
     window.location.href="/mockup3";
     let url = getAPIBaseURL() + '/Allcups/teams/';
 
@@ -141,18 +143,18 @@ function loadAllTeams() {
     // When the results come back, transform them from a JSON string into
     // a Javascript object (in this case, a list of author dictionaries).
     .then((response) => response.json())
-
+    
     // Once you have your list of author dictionaries, use it to build
     // an HTML table displaying the author names and lifespan.
     .then(function(teams) {
         // Add the <option> elements to the <select> element
         let tableBody = '';
         for (let k = 0; k < teams.length; k++) {
-            let teams = teamss[k];
+            let teams = teams[k];
+            
             tableBody += '<tr>'
-                            + '<td>' + teams['coach'] + '</td>'
-                            + '<td>' + teams['teamname'] + '</td>'
-                            + '<td>' + teams['year'] + '</td>'
+                            + '<td>' + teams['team_name'] + '</td>'
+                            + '<td>' + teams['team_abbreviation'] + '</td>'
                             + '</tr>\n';
         }
 
@@ -185,10 +187,10 @@ function loadTeamYear(years) {
         // Add the <option> elements to the <select> element
         let tableBody = '';
         for (let k = 0; k < teams.length; k++) {
-            let teams = teamss[k];
+            let teams = teams[k];
             tableBody += '<tr>'
                             + '<td>' + teams['coach'] + '</td>'
-                            + '<td>' + teams['teamname'] + '</td>'
+                            + '<td>' + teams['team_name'] + '</td>'
                             + '<td>' + teams['year'] + '</td>'
                             + '</tr>\n';
         }
@@ -229,7 +231,7 @@ function loadAllPlayers(teams) {
             let teams = teamss[k];
             tableBody += '<tr>'
                             + '<td>' + teams['coach'] + '</td>'
-                            + '<td>' + teams['teamname'] + '</td>'
+                            + '<td>' + teams['team_name'] + '</td>'
                             + '<td>' + teams['year'] + '</td>'
                             + '</tr>\n';
         }

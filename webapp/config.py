@@ -1,3 +1,3 @@
 user='rodrick'
-password=''
-database='worldcups'
+password='Lankford1'
+database='worldcup'
