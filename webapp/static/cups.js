@@ -126,7 +126,7 @@ function loadAllTeams() {
 }
 
 function loadTeamYear(years) {
-    window.location.href="/SpecificCups";
+    
     let url = getAPIBaseURL() + '/<years>/teams/';
 
     // Send the request to the teamss API /authors/ endpoint
@@ -142,11 +142,10 @@ function loadTeamYear(years) {
         // Add the <option> elements to the <select> element
         let tableBody = '';
         for (let k = 0; k < teams.length; k++) {
-            let teams = teams[k];
+            let team = teams[k];
             tableBody += '<tr>'
-                            + '<td>' + teams['coach'] + '</td>'
                             + '<td>' + teams['team_name'] + '</td>'
-                            + '<td>' + teams['year'] + '</td>'
+                            + '<td>' + teams['team_abbreviation'] + '</td>'
                             + '</tr>\n';
         }
 
@@ -211,6 +210,8 @@ function valGetter() {
         loadAllTeams();
     }else{
         if(yrs.length != 0){
+            window.location.href="/SpecificCups";
+
             loadTeamYear(yrs)
         }
         else{
