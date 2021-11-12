@@ -25,37 +25,6 @@ function getAPIBaseURL() {
     return baseURL;
 }
 
-/*
-
-function loadYearsSelector() {
-    let url = getAPIBaseURL() + '/Allcups/';
-
-    fetch(url, {method: 'get'})
-
-    .then((response) => response.json())
-
-    .then(function(worldcups) {
-	    let selectorBody = '';
-	    for (let k = 0; k < worldcups.length; k++) {
-		let worldcup = worldcups[k];
-		selectorBody += '<option value="' + worldcup['id'] + '">'
-                                + worldcup['wc_location'] + ' ' + worldcup['wc_year']
-		+ '</option>\n';
-	    }
-
-	    let selector = document.getElementById('year_selector');
-	    if (selector) {
-		selector.innerHTML = selectorBody;
-	    }
-	})
-
-	.catch(function(error) {
-		console.log(error);
-	});
-}
-*/
-
-
 
 function loadWorldCupCheckBoxes() {
     let url = getAPIBaseURL() + '/Allcups/';
@@ -87,7 +56,6 @@ function loadWorldCupCheckBoxes() {
                 console.log(error);
 	    });
 }
-
 
 function dataSelect(evt) {
 
