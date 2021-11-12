@@ -1,6 +1,8 @@
 ''' 
 File Converter
 '''
+#Rodrick and Thea
+
 import csv
 
 #USING worldcups.csv
