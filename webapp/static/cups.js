@@ -127,8 +127,8 @@ function loadAllTeams() {
 
 function loadTeamYear(years) {
     
-    let url = getAPIBaseURL() + '/<years>/teams/';
-
+    // let url = getAPIBaseURL() + '/<years>/teams/';
+    let url = getAPIBaseURL() + '/' + years + '/teams/';
     // Send the request to the teamss API /authors/ endpoint
     fetch(url, {method: 'get'})
 

@@ -72,6 +72,7 @@ def get_all_worldcups():
 
 @api.route('/<years>/teams/') 
 def get_teams(years):
+    #must figure how this out 
     print(years)
     query = '''SELECT DISTINCT teams.team_abbreviation, teams.team_name, worldcups.year
                FROM worldcups, teams, players_teams_matches_worldcups
