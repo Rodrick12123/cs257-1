@@ -8,11 +8,13 @@ window.onload = initialize;
 
 function initialize() {
 
-    loadWorldCupCheckBoxes();
-
-    
+    loadWorldCupCheckBoxes();    
 
     loadTeamsSelector();
+
+    //    loadWorldCupsSelector();
+     
+    loadPageTitle();
 
     let element = document.getElementById('team_selector');
     if (element) {
@@ -30,6 +32,14 @@ function getAPIBaseURL() {
                     + '/api';
     return baseURL;
 }
+
+function getBaseURL() {
+let baseURL = window.location.protocol
+                    + '//' + window.location.hostname
+                    + ':' + window.location.port
+                    + '/';
+    return baseURL;
+}    
 
 
 function loadWorldCupCheckBoxes() {
@@ -77,7 +87,7 @@ function loadTeamsSelector() {
 		//going to need to put 'id' as a return of the query, ok for now
 		selectorBody += '<option value="' + team['id'] + '">'
                                 + team['team_name'] + ' (' + team['team_abbreviation'] +')'
-		                + '</option>\n';
+		                + '</option>/n';
 	    }
 
 	    let selector = document.getElementById('team_selector');
@@ -93,31 +103,49 @@ function loadTeamsSelector() {
 
 function onTeamsSelectionChanged() {
     let teamID = this.value;
-    let url = getAPIBaseURL() + '/books/author/' + teamID;
+    let url = getBaseURL() + 'AllCups/Team?team=' + teamID;
+   
+    window.location = url;
+}
+
+function getParam(param){
+    return new URLSearchParams(window.location.search).get(param);
+}
+
+
+function loadPageTitle() {
+    if (getParam('team') != '') {
+
+    let url = getAPIBaseURL() + '/Allcups/teams/';
 
     fetch(url, {method: 'get'})
 
-	.then((response) => response.json())
+    .then((response) => response.json())
 
-	.then(function(books) { //what is this query going to ask??????
-		let tableBody = '';
-		for (let k = 0; k < books.length; k++) {
-		    let book = books[k];
-            tableBody += '<tr>'
-                            + '<td>' + book['title'] + '</td>'
-                            + '<td>' + book['publication_year'] + '</td>'
-		+ '</tr>\n';
+    .then(function(teams) {
+	    let titleBody = '';
+	    for (let k = 0; k < teams.length; k++) {
+		let team = teams[k];
+		if (team['id'] == getParam('team')){
+		titleBody += team['team_name'] + ' - All World Cups';
 		}
+	    }
 
-    let booksTable = document.getElementById('books_table');
-    if (booksTable) {
-	booksTable.innerHTML = tableBody;
-    }
-	    })
 
+	    let title = document.getElementById('page-title');
+	    if (title) {
+		title.innerHTML = titleBody;
+	    }
+	})
+	
 	.catch(function(error) {
 		console.log(error);
 	    });
+}
+
+
+
+
 }
 
 
