@@ -9,6 +9,18 @@ window.onload = initialize;
 function initialize() {
 
     loadWorldCupCheckBoxes();
+
+    
+
+    loadTeamsSelector();
+
+    let element = document.getElementById('team_selector');
+    if (element) {
+        element.onchange = onTeamsSelectionChanged;
+    }
+    
+
+
 }
 
 function getAPIBaseURL() {
@@ -50,6 +62,64 @@ function loadWorldCupCheckBoxes() {
                 console.log(error);
 	    });
 }
+
+function loadTeamsSelector() {
+    let url = getAPIBaseURL() + '/Allcups/teams/';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(teams) {
+	    let selectorBody = '';
+	    for (let k = 0; k < teams.length; k++) {
+		let team = teams[k];
+		//going to need to put 'id' as a return of the query, ok for now
+		selectorBody += '<option value="' + team['id'] + '">'
+                                + team['team_name'] + ' (' + team['team_abbreviation'] +')'
+		                + '</option>\n';
+	    }
+
+	    let selector = document.getElementById('team_selector');
+	    if (selector) {
+		selector.innerHTML = selectorBody;
+	    }
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+
+function onTeamsSelectionChanged() {
+    let teamID = this.value;
+    let url = getAPIBaseURL() + '/books/author/' + teamID;
+
+    fetch(url, {method: 'get'})
+
+	.then((response) => response.json())
+
+	.then(function(books) { //what is this query going to ask??????
+		let tableBody = '';
+		for (let k = 0; k < books.length; k++) {
+		    let book = books[k];
+            tableBody += '<tr>'
+                            + '<td>' + book['title'] + '</td>'
+                            + '<td>' + book['publication_year'] + '</td>'
+		+ '</tr>\n';
+		}
+
+    let booksTable = document.getElementById('books_table');
+    if (booksTable) {
+	booksTable.innerHTML = tableBody;
+    }
+	    })
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+
 
 function dataSelect(evt) {
 
