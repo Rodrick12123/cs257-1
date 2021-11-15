@@ -1,0 +1,41 @@
+<!--Rodrick and Thea-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>World Cup Explorer</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cups.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='cups.js') }}" ></script>
+</head>
+
+<body>   
+
+    <ul class="horizontal-navbar">
+        <li><a href="/">Home</a></li>
+    </ul>
+ 
+    <h3>1998 World Cup</h3> 
+ 
+    <div id="menu">
+      <div>
+	<select id="team_selector" class="box" onchange="dataSelect(this)"></select>
+      </div>
+      <div id="spacer-white"></div>
+      <div id="spacer-black"></div>
+      <div id="spacer-white"></div>
+      <div>
+	<select id="p2" class="box" onchange="dataSelect(this)">
+          <option>Podium finishers</option>
+          <option>Top 10 highest scorers (from any team)</option>
+          <option>Attendance</option>
+	  <option>Results of each match played</option>
+          <option selected>All queries</option>
+	</select>
+      </div>
+    </div>
+    
+    <div id="results">Results</div>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!--Rodrick and Thea-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <title>World Cups</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cups.css') }}" />
+        <script type="text/javascript" src="{{ url_for('static', filename='cups.js') }}" ></script>
+    </head>
+
+    <body>
+
+        <div class='m1'>
+
+            <legend>World Cup Data:</legend>
+            <h1 class='head1'>
+                Select The World Cup(s) That You Want To Obtain Data From
+            </h1>
+
+	    <input type="checkbox" name="worldcup" id="allc" value="all">
+	    <label for="allc">All Cups</label>  
+	    
+	    <div id="check_boxes_container"></div>
+
+            <h2 style="color:red" id="error"></h2>
+            
+            <button onclick="valGetter()">submit!</button>
+            
+        </div>
+    </body>
+</html>
