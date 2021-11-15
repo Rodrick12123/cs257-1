@@ -25,6 +25,11 @@ def page2():
 def page3():
     return flask.render_template('AllCups.html')
 
+@app.route('/AllCups/Team')
+def page4():
+    return flask.render_template('OneTeamAllCups.html')
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Flask applications')
     parser.add_argument('host', help='the host to run on')
