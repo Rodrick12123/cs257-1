@@ -24,7 +24,11 @@ def get_all_teams():
     
     query = '''SELECT teams.team_abbreviation, teams.team_name 
                 FROM teams ORDER BY teams.team_name;'''
-
+    # mostG = flask.request.args.get('scores')
+    # if mostG == 'top':
+    #     query = '''SELECT teams.team_abbreviation, teams.team_name, players_teams_matches_worldcups.goal 
+    #             FROM teams, players_teams_matches_worldcups
+    #              ORDER BY players_teams_matches_worldcups.goal;'''
     # sort_argument = flask.request.args.get('sort')
     # if sort_argument == 'birth_year':
     #     query += 'birth_year'
@@ -73,21 +77,28 @@ def get_all_worldcups():
 @api.route('/<years>/teams/') 
 def get_teams(years):
     #must figure how this out 
-    print(years)
+    yrs = years.split(",")
+    ymap = map(int, yrs)
+    ylist = list(ymap)
+    
     query = '''SELECT DISTINCT teams.team_abbreviation, teams.team_name, worldcups.year
                FROM worldcups, teams, players_teams_matches_worldcups
                WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
-                 AND worldcups.year = %s
                ORDER BY worldcups.year'''
     team_list = []
+    #yrs.sort()
+    print(ylist)
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        cursor.execute(query, (years,))
+        cursor.execute(query, )
+        # cursor.execute(query, (years,))
         for row in cursor:
-            team = {'teamyear':row[2], 'team_abbreviation':row[0], 'team_name':row[1]}
-            team_list.append(team)
+            if (row[2] in ylist):
+                
+                team = {'teamyear':row[2], 'team_abbreviation':row[0], 'team_name':row[1]}
+                team_list.append(team)
         cursor.close()
         connection.close()
     except Exception as e:
@@ -112,7 +123,6 @@ def get_players():
                 teams.team_abbreviation, players.pnumber, players.position
                FROM players, teams 
                WHERE teams.teamid = players.tmid
-               AND teams.year = %s
                ORDER BY teams.team_abbreviation'''
 
     # sort_argument = flask.request.args.get('sort')
@@ -126,18 +136,19 @@ def get_players():
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        cursor.execute(query, teams)
+        cursor.execute(query,)
         for row in cursor:
-            player = {'plaerid':row[0],
-                      'tmid':row[1],
-                      'firstname':row[2],
-                      'lastname':row[3],
-                      'captain':row[4],
-                      'starter':row[4],
-                      'team_abbreviation':row[5],
-                      'number':row[6],
-                      'position':row[7]}
-            player_list.append(player)
+            if(row[5] in teams):
+                player = {'plaerid':row[0],
+                        'tmid':row[1],
+                        'firstname':row[2],
+                        'lastname':row[3],
+                        'captain':row[4],
+                        'starter':row[4],
+                        'team_abbreviation':row[5],
+                        'number':row[6],
+                        'position':row[7]}
+                player_list.append(player)
         cursor.close()
         connection.close()
     except Exception as e:
@@ -145,3 +156,54 @@ def get_players():
 
     return json.dumps(player_list)
 
+@api.route('/teams/gold/') 
+def get_gold():
+    
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace
+                FROM teams, worldcups 
+                WHERE players_teams_matches_worldcups.team_id = teams.id
+                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
+                ORDER BY teams.team_name;'''
+    team_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, tuple())
+        for row in cursor:
+            if( worldcups.firstplace == teams.team_name):
+                team = {'Abbreviation':row[0],
+                        'Team Name':row[1],
+                        'Worldcup':row[2]}
+                team_list.append(team)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(team_list)
+
+@api.route('/topscores') 
+def get_gold():
+    
+    query = '''SELECT players.surname, players.given_name, players.coach
+                FROM players, worldcups 
+                WHERE players_teams_matches_worldcups.team_id = teams.id
+                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
+                ORDER BY teams.team_name;'''
+    team_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, tuple())
+        for row in cursor:
+            if( worldcups.firstplace == teams.team_name):
+                team = {'Abbreviation':row[0],
+                        'Team Name':row[1],
+                        'Worldcup':row[2]}
+                team_list.append(team)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(team_list)

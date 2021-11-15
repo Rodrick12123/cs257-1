@@ -12,12 +12,12 @@ function initialize() {
 
     
 
-    loadTeamsSelector();
+    // loadTeamsSelector();
 
-    let element = document.getElementById('team_selector');
-    if (element) {
-        element.onchange = onTeamsSelectionChanged;
-    }
+    // let element = document.getElementById('team_selector');
+    // if (element) {
+    //     element.onchange = onTeamsSelectionChanged;
+    // }
     
 
 
@@ -122,7 +122,7 @@ function onTeamsSelectionChanged() {
 
 
 function dataSelect(evt) {
-
+    
     let years = localStorage.getItem("year");
     if(evt.id === "Players"){
         alert("coming Soon")
@@ -171,7 +171,9 @@ function loadAllTeams() {
     
     // Once you have your list of author dictionaries, use it to build
     // an HTML table displaying the author names and lifespan.
+    
     .then(function(teams) {
+        
         // Add the <option> elements to the <select> element
         let tableBody = '';
         for (let k = 0; k < teams.length; k++) {
@@ -210,12 +212,14 @@ function loadTeamYear(years) {
     // an HTML table displaying the author names and lifespan.
     .then(function(teams) {
         // Add the <option> elements to the <select> element
+        
         let tableBody = '';
         for (let k = 0; k < teams.length; k++) {
             let team = teams[k];
             tableBody += '<tr>'
-                            + '<td>' + teams['team_name'] + '</td>'
-                            + '<td>' + teams['team_abbreviation'] + '</td>'
+                            + '<td>' + team['teamyear'] + '</td>'
+                            + '<td>' + team['team_abbreviation'] + '</td>'
+                            + '<td>' + team['team_name'] + '</td>'
                             + '</tr>\n';
         }
 
