@@ -1,0 +1,33 @@
+<!--Rodrick and Thea-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>World Cup Explorer</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cups.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='cups.js') }}" ></script>
+</head>
+
+<body>   
+
+    <ul class="horizontal-navbar">
+        <li><a href="/">Home</a></li>
+    </ul>
+ 
+    <h3>All Time - Pogba</h3> 
+ 
+    <div id="menu">
+	<select id="p2" class="box" onchange="dataSelect(this)">
+          <option>List of World Cups competed in</option>
+          <option>Total goals scored</option>
+          <option>Total number of games started</option>
+          <option selected>All player queries</option>
+	</select>
+      </div>
+    </div>
+    
+    <div id="results">Results</div>
+
+</body>
+</html>
