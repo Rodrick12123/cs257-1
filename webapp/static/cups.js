@@ -48,7 +48,7 @@ function loadWorldCupCheckBoxes() {
 		    checkBoxesBody += '<input type="checkbox" name="worldcup" id="'
 			+world_cup_year + '" value="' + world_cup_year + '">\n'
 			+'<label for ="' + world_cup_year + '">' + world_cup_location+' '+world_cup_year
-			+ '</label>\n'
+			+ '</label><br>'
 
 		}
 

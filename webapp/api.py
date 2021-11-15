@@ -22,7 +22,7 @@ def get_connection():
 @api.route('/Allcups/teams/') 
 def get_all_teams():
     
-    query = '''SELECT teams.team_abbreviation, teams.team_name 
+    query = '''SELECT teams.team_abbreviation, teams.team_name, teams.id 
                 FROM teams ORDER BY teams.team_name;'''
 
     # sort_argument = flask.request.args.get('sort')
@@ -39,7 +39,8 @@ def get_all_teams():
         cursor.execute(query, tuple())
         for row in cursor:
             team = {  'team_abbreviation':row[0],
-                      'team_name':row[1]}
+                      'team_name':row[1],
+                      'id':row[2]}
             team_list.append(team)
         cursor.close()
         connection.close()

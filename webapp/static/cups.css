@@ -14,7 +14,7 @@
   background: rgb(255, 255, 255);
   border: 5px solid rgb(0, 0, 0);
   text-align: center;
-  font-size: 45px;
+  font-size: 20px;
   width: 99.25%;
   height: 98.25%;
   position:absolute;
@@ -109,9 +109,9 @@
 }
 
 #menus {
-    height: 50px;
-    width: 100%;
-    padding-bottom: 10px;
+    height: auto;
+    width: auto;
+    padding-bottom: 50px;
 }
 
 #team-controls {
@@ -150,7 +150,7 @@
 }
 #spacer-black {
   width:2px;
-  height:50px;
+  height:30px;
   background-color:black;
   float:left;
 }
