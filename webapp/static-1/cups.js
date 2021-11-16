@@ -139,7 +139,8 @@ function getParam(param){
 
 
 function loadPageTitle() {
-    if (getParam('team') != '' && getParam('year') == '') {
+
+    if (getParam('team') != '' && getParam('year') == null) {
 
     let url = getAPIBaseURL() + '/Allcups/teams/';
 
@@ -167,6 +168,8 @@ function loadPageTitle() {
 		console.log(error);
 	    });
 }
+
+
 
    if (getParam('team') != '' && getParam('year') != '') {
 
@@ -196,7 +199,6 @@ function loadPageTitle() {
 		console.log(error);
 	    });
 }
-
 
 
 
