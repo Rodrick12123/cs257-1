@@ -363,7 +363,6 @@ function dataSelect(evt) {
         
         if (evt.value === "All team queries") {
 
-            teams = 'all'
             loadAllTeams()
 
         }
@@ -380,7 +379,7 @@ function dataSelect(evt) {
 
     if(evt.id === "p2"){
         if (evt.value === "Teams that won gold medals") {
-            teams = 'all'
+            alert(years)
             
             loadGoldMedals(years)
         }
@@ -425,7 +424,7 @@ function loadGoldMedals(years=Null){
         
         // Add the <option> elements to the <select> element
         let tableBody = '';
-        for (let k = 1; k < teams.length; k++) {
+        for (let k = 0; k < teams.length; k++) {
             let team = teams[k];
             // <td><input type="checkbox" name="brand">Apple</td>
         

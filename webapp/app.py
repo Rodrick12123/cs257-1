@@ -19,7 +19,7 @@ def page1():
 
 @app.route('/SpecificCups')
 def page2():
-    return flask.render_template('SpecificCups.html')
+    return flask.render_template('SpecificCups.html', results='Results')
 
 @app.route('/AllCups')
 def page3():

@@ -159,17 +159,16 @@ def get_gold():
         cursor = connection.cursor()
         cursor.execute(query,)
         for row in cursor:
-            if(row[2] not in yr):
-                
-                if(len(ylist) > 0):
-                    
-                    if(row[2] in ylist):
-                    
+            if(row[2] not in yr):             
+                if(len(ylist) > 0):               
+                    if(row[2] in ylist):                   
                         if( row[3] == row[1]):
+                            print(row[3])
                             team = {'Abbreviation':row[0],
                                     'Team Name':row[1],
                                     'Worldcup':row[2]}
                             team_list.append(team)
+
                             yr.append(row[2])
                 else:
                     if( row[3] == row[1]):
