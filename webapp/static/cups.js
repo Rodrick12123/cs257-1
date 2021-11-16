@@ -92,14 +92,14 @@ function loadTeamsSelector() {
     .then((response) => response.json())
 
     .then(function(teams) {
-	    let selectorBody = '';
+	    let selectorBody = '<option selected>Countries</option>';
 	    for (let k = 0; k < teams.length; k++) {
 		let team = teams[k];
-		//going to need to put 'id' as a return of the query, ok for now
+		if (team['team_name'] != '') {
 		selectorBody += '<option value="' + team['id'] + '">'
                                 + team['team_name'] + ' (' + team['team_abbreviation'] +')'
 		                + '</option>/n';
-	    }
+		}}
 	    let selector = document.getElementById('team_selector');
 	    if (selector) {
 		selector.innerHTML = selectorBody;
@@ -202,7 +202,7 @@ function loadWorldCupsSelector() {
     .then((response) => response.json())
 
     .then(function(worldcups) {
-	    let selectorBody = '';
+	    let selectorBody = '<option selected>World Cups</option>';
 	    for (let k = 0; k < worldcups.length; k++) {
 		let worldcup = worldcups[k];
 		//going to need to put 'id' as a return of the query, ok for now
@@ -245,7 +245,7 @@ function loadPlayersSelector() {
     .then((response) => response.json())
 
     .then(function(players) {
-	    let selectorBody = '';
+	    let selectorBody = '<option selected>Players</option>';
 	    for (let k = 0; k < players.length; k++) {
 		let player = players[k];
 		//going to need to put 'id' as a return of the query, ok for now
