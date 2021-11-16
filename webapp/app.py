@@ -29,6 +29,9 @@ def page3():
 def page4():
     return flask.render_template('OneTeamAllCups.html')
 
+@app.route('/help/')
+def help():
+    return flask.render_template('help.html')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Flask applications')
