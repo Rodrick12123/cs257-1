@@ -16,6 +16,7 @@ FEATURES NOT YET WORKING:
 - Help button in navbar takes you to api/help right now, but will take you to better instructions/something more helpful later
 - Queries to get the amount of medals a team has needs to be fixed
 - The query that loads all the cups a specified team participated needs to be fixed (broke in merge).
+- titles for pages also broke
 
 Other notes:
 - realize that carrying variables in the url is not particularly security-friendly, will be keeping in mind for revision
