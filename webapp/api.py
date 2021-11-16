@@ -19,6 +19,11 @@ def get_connection():
                             user=config.user,
                             password=config.password)
 
+@api.route('/help')
+def get_help():
+    print('help')
+    #not exactly sure what goes in here
+
 @api.route('/Allcups/teams/') 
 def get_all_teams():
     
