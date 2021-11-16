@@ -14,6 +14,8 @@ function initialize() {
 
     loadWorldCupsSelector();
 
+    loadSpecificTeamsSelector();
+
     loadPlayersSelector();
 
     //    loadWorldCupsSelector();
@@ -29,10 +31,14 @@ function initialize() {
     if (wc_element) {
         wc_element.onchange = onWorldCupsSelectionChanged;
     }
+    /*
+    let specific_team_element = document.getElementById('specific_team_selector');
+    if (specific_team_element) {
+        specific_team_element.onchange = onSpecificTeamsSelectionChanged;
+    }
+    */
 
-
-    
-
+  
 
 }
 
@@ -188,6 +194,49 @@ function loadPageTitle() {
 
 
 }
+
+
+
+
+function loadSpecificTeamsSelector() {
+
+    //need to get <year> from home page when sending to this page
+    let url = getAPIBaseURL() + '/<year>/teams/';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(teams) {
+	    let selectorBody = '<option selected>Countries</option>';
+	    for (let k = 0; k < teams.length; k++) {
+		let team = teams[k];
+		if (team['team_name'] != '') {
+		selectorBody += '<option value="' + team['id'] + '">'
+                                + team['team_name'] + ' (' + team['team_abbreviation'] +')'
+		                + '</option>/n';
+		}}
+	    let selector = document.getElementById('team_selector');
+	    if (selector) {
+		selector.innerHTML = selectorBody;
+	    }
+
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+
+/*
+function onSpecificTeamsSelectionChanged() {
+    let teamID = this.value;
+    let url = getBaseURL() + 'AllCups/Team?team=' + teamID;
+   
+    window.location = url;
+}
+*/
+
 
 
 
