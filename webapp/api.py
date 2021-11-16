@@ -197,7 +197,7 @@ def get_all_teams():
     # else:
     #     query += 'surname, given_name'
     #query += 'team_name'
-
+    
     team_list = []
     try:
         connection = get_connection()

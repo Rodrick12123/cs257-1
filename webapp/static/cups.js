@@ -10,12 +10,12 @@ function initialize() {
 
     loadWorldCupCheckBoxes();    
 
-    // loadTeamsSelector();
+    loadTeamsSelector();
 
-    // let element = document.getElementById('team_selector');
-    // if (element) {
-    //     element.onchange = onTeamsSelectionChanged;
-    // }
+    let element = document.getElementById('team_selector');
+    if (element) {
+        element.onchange = onTeamsSelectionChanged;
+    }
     
 
     let wc_element = document.getElementById('world_cup_selector');
