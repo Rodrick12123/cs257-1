@@ -29,6 +29,10 @@ def page3():
 def page4():
     return flask.render_template('OneTeamAllCups.html')
 
+@app.route('/SpecificCups/Team')
+def page5():
+    return flask.render_template('OneTeamOneCup.html')
+
 @app.route('/help/')
 def help():
     return flask.render_template('help.html')

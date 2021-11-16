@@ -14,14 +14,23 @@ function initialize() {
 
     loadWorldCupsSelector();
 
+    loadPlayersSelector();
+
     //    loadWorldCupsSelector();
      
     loadPageTitle();
 
-    let element = document.getElementById('team_selector');
-    if (element) {
-        element.onchange = onTeamsSelectionChanged;
+    let team_element = document.getElementById('team_selector');
+    if (team_element) {
+        team_element.onchange = onTeamsSelectionChanged;
     }
+
+    let wc_element = document.getElementById('world_cup_selector');
+    if (wc_element) {
+        wc_element.onchange = onWorldCupsSelectionChanged;
+    }
+
+
     
 
 
@@ -116,7 +125,7 @@ function getParam(param){
 
 
 function loadPageTitle() {
-    if (getParam('team') != '') {
+    if (getParam('team') != '' && getParam('year') == '') {
 
     let url = getAPIBaseURL() + '/Allcups/teams/';
 
@@ -144,6 +153,36 @@ function loadPageTitle() {
 		console.log(error);
 	    });
 }
+
+   if (getParam('team') != '' && getParam('year') != '') {
+
+       let url = getAPIBaseURL() + '/'+getParam('year')+'/teams/';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(teams) {
+	    let titleBody = '';
+	    for (let k = 0; k < teams.length; k++) {
+		let team = teams[k];
+		if (team['id'] == getParam('team') && team['id'] == getParam('year')){
+		titleBody += team['team_name'] + ' in the '+team['id']+' World Cup';
+		}
+	    }
+
+
+	    let title = document.getElementById('page-title');
+	    if (title) {
+		title.innerHTML = titleBody;
+	    }
+	})
+	
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+
 
 
 
@@ -183,6 +222,50 @@ function loadWorldCupsSelector() {
 	    });
 }
 }
+
+
+function onWorldCupsSelectionChanged() {
+    let worldcupID = this.value;
+    let teamID = getParam('team');
+    let url = getBaseURL() + 'SpecificCups/Team?year='+ worldcupID+'&team='+teamID;
+   
+    window.location = url;
+}
+
+
+
+function loadPlayersSelector() {
+
+    if (getParam('team') != '' && getParam('wc') != '') {
+
+	let url = getAPIBaseURL() + '/'+getParam('year')+'/'+getParam('team')+'/roster';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(players) {
+	    let selectorBody = '';
+	    for (let k = 0; k < players.length; k++) {
+		let player = players[k];
+		//going to need to put 'id' as a return of the query, ok for now
+		selectorBody += '<option value="' + player['id'] + '">'
+                                + player['surname'] + ', ' + player['given_name']
+		                + '</option>/n';
+	    }
+
+	    let selector = document.getElementById('player_selector');
+	    if (selector) {
+		selector.innerHTML = selectorBody;
+	    }
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+}
+
 
 
 

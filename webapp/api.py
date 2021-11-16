@@ -74,7 +74,7 @@ def get_all_worldcups():
 @api.route('/<years>/teams/') 
 def get_teams(years):
     print(years)
-    query = '''SELECT DISTINCT teams.team_abbreviation, teams.team_name, worldcups.year
+    query = '''SELECT DISTINCT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.id
                FROM worldcups, teams, players_teams_matches_worldcups
                WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
@@ -86,7 +86,7 @@ def get_teams(years):
         cursor = connection.cursor()
         cursor.execute(query, (years,))
         for row in cursor:
-            team = {'teamyear':row[2], 'team_abbreviation':row[0], 'team_name':row[1]}
+            team = {'teamyear':row[2], 'team_abbreviation':row[0], 'team_name':row[1], 'id':row[3]}
             team_list.append(team)
         cursor.close()
         connection.close()
