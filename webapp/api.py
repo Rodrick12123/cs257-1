@@ -21,6 +21,7 @@ def get_connection():
 
 @api.route('/help')
 def get_help():
+<<<<<<< HEAD
     print('help')
     #not exactly sure what goes in here
 #need to edit
@@ -129,11 +130,30 @@ def get_medals():
                     for t in team_list:
                         if t['Team Name'] == tname:
                             t['Medals'] += 1
+=======
+    return flask.render_template('help.html')
+
+@api.route('/Allcups/attendance')
+def get_attendance():
+    
+    query = '''SELECT worldcups.attendance, worldcups.year 
+                FROM worldcups ORDER BY worldcups.year;'''
+    attendance_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, tuple())
+        for row in cursor:
+            wc = {  'attendance':row[0],
+                      'year':row[1]}
+            attendance_list.append(wc)
+>>>>>>> 9a17d2501cefd65476bd208188f21f3278202411
         cursor.close()
         connection.close()
     except Exception as e:
         print(e, file=sys.stderr)
 
+<<<<<<< HEAD
     return json.dumps(team_list)
 
 @api.route('/gold/teams/') 
@@ -184,6 +204,11 @@ def get_gold():
         print(e, file=sys.stderr)
 
     return json.dumps(team_list)
+=======
+    return json.dumps(attendance_list)
+
+
+>>>>>>> 9a17d2501cefd65476bd208188f21f3278202411
 
 @api.route('/Allcups/teams/') 
 def get_all_teams():
@@ -218,7 +243,7 @@ def get_all_teams():
 @api.route('/Allcups/')
 def get_all_worldcups():
     
-    query = '''SELECT worldcups.year, worldcups.location FROM worldcups ORDER BY worldcups.year;'''
+    query = '''SELECT worldcups.year, worldcups.location, worldcups.id FROM worldcups ORDER BY worldcups.year;'''
 
     wc_list = []
     try:
@@ -229,7 +254,8 @@ def get_all_worldcups():
         for row in cursor:
             
             wc = {  'wc_year':row[0],
-                    'wc_location':row[1]}
+                    'wc_location':row[1],
+                    'wc_id':row[2]}
             wc_list.append(wc)
         cursor.close()
         connection.close()
@@ -301,9 +327,14 @@ def get_players(year, team):
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
                  AND players_teams_matches_worldcups.player_id = players.id
                      AND teams.id = %s
+<<<<<<< HEAD
                  
 
                ORDER BY players.surname;'''
+=======
+                 AND worldcups.id = %s
+               ORDER BY players.surname, players.given_name;'''
+>>>>>>> 9a17d2501cefd65476bd208188f21f3278202411
     player_list = []
     try:
         connection = get_connection()

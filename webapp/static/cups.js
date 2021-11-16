@@ -27,8 +27,16 @@ function initialize() {
     if (specific_team_element) {
         specific_team_element.onchange = onSpecificTeamsSelectionChanged;
     }
-    */
+   
 
+    
+
+    let wc_queries = document.getElementById('p2');
+    if (wc_queries) {
+	wc_queries.onchange = onWCQueriesSelectionChanged;
+    }
+    
+    */
   
 
 }
@@ -188,7 +196,33 @@ function loadPageTitle() {
 }
 
 
+function onWCQueriesSelectionChanged() {
 
+    let url = getAPIBaseURL() + 'Allcups/attendance';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(attendances) {
+	    let resultsBody = '<table><tr><th>World Cup</th><th>Attendance</th>';
+	    for (let k = 0; k < attendances.length; k++) {
+		let attendance = attendances[k];
+		resultsBody += '<tr><td>'+attendance['year']+'</td><td>'
+		    + attendance['attendance'] +'</td>';
+		}
+	    let results = document.getElementById('results');
+	    if (results) {
+		results.innerHTML = selectorBody;
+	    }
+
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+
+}
 
 function loadSpecificTeamsSelector() {
 
@@ -542,7 +576,7 @@ function valGetter() {
         loadAllTeams();
     }else{
         if(yrs.length != 0){
-            window.location.href="/SpecificCups";
+            window.location.href="/SpecificCups?year="+yrs;
 
             loadTeamYear(yrs)
         }
