@@ -123,6 +123,32 @@ ORDER BY worldcups.year;'''
 
     return json.dumps(wc_list)
 
+@api.route('/<year>/<team>/roster') 
+def get_players(year, team):
+    print(year)
+    print(team)
+    query = '''SELECT DISTINCT players.surname, players.given_name, players.id
+               FROM worldcups, teams, players_teams_matches_worldcups, players
+               WHERE players_teams_matches_worldcups.team_id = teams.id
+                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
+                 AND players_teams_matches_worldcups.player_id = players.id                     AND teams.id = %s
+                 AND worldcups.id = %s
+               ORDER BY players.surname'''
+    player_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, (team, year))
+        for row in cursor:
+            player = {'surname':row[0], 'given_name':row[1], 'id':row[2]}
+            player_list.append(player)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(player_list)
+
 
 
 
@@ -133,7 +159,7 @@ ORDER BY worldcups.year;'''
 
 
 @api.route('/<teams>/players/') 
-def get_players():
+def get_players1():
     ''' Returns a list of all the authors in our database. See
         get_author_by_id below for description of the author
         resource representation.
