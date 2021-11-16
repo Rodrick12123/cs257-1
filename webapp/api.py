@@ -21,10 +21,9 @@ def get_connection():
 
 @api.route('/help')
 def get_help():
-    print('help')
-    #need to figure this out
+    return flask.render_template('help.html')
 
-@api.route('/attendance')
+@api.route('/Allcups/attendance')
 def get_attendance():
     
     query = '''SELECT worldcups.attendance, worldcups.year 
@@ -80,7 +79,7 @@ def get_all_teams():
 @api.route('/Allcups/')
 def get_all_worldcups():
     
-    query = '''SELECT worldcups.year, worldcups.location FROM worldcups ORDER BY worldcups.year;'''
+    query = '''SELECT worldcups.year, worldcups.location, worldcups.id FROM worldcups ORDER BY worldcups.year;'''
 
     wc_list = []
     try:
@@ -89,7 +88,8 @@ def get_all_worldcups():
         cursor.execute(query, tuple())
         for row in cursor:
             wc = {  'wc_year':row[0],
-                    'wc_location':row[1]}
+                    'wc_location':row[1],
+                    'wc_id':row[2]}
             wc_list.append(wc)
         cursor.close()
         connection.close()
@@ -162,7 +162,7 @@ def get_players(year, team):
                  AND players_teams_matches_worldcups.player_id = players.id
                      AND teams.id = %s
                  AND worldcups.id = %s
-               ORDER BY players.surname;'''
+               ORDER BY players.surname, players.given_name;'''
     player_list = []
     try:
         connection = get_connection()

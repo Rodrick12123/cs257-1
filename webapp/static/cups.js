@@ -208,7 +208,7 @@ function loadPageTitle() {
 
 function onWCQueriesSelectionChanged() {
 
-    let url = getAPIBaseURL() + '/attendance';
+    let url = getAPIBaseURL() + 'Allcups/attendance';
 
     fetch(url, {method: 'get'})
 
