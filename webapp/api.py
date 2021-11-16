@@ -72,13 +72,13 @@ def get_all_worldcups():
 
 
 @api.route('/<years>/teams/') 
-def get_teams(years):
+def get_teams_by_year(years):
     print(years)
-    query = '''SELECT DISTINCT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.id
+    query = '''SELECT DISTINCT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.id, teams.id
                FROM worldcups, teams, players_teams_matches_worldcups
                WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
-                 AND worldcups.year = %s
+                 AND worldcups.id = %s
                ORDER BY worldcups.year'''
     team_list = []
     try:
@@ -86,7 +86,7 @@ def get_teams(years):
         cursor = connection.cursor()
         cursor.execute(query, (years,))
         for row in cursor:
-            team = {'teamyear':row[2], 'team_abbreviation':row[0], 'team_name':row[1], 'id':row[3]}
+            team = {'year':row[2], 'team_abbreviation':row[0], 'team_name':row[1], 'wc_id':row[3], 'team_id':row[4]}
             team_list.append(team)
         cursor.close()
         connection.close()
@@ -131,9 +131,10 @@ def get_players(year, team):
                FROM worldcups, teams, players_teams_matches_worldcups, players
                WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
-                 AND players_teams_matches_worldcups.player_id = players.id                     AND teams.id = %s
+                 AND players_teams_matches_worldcups.player_id = players.id
+                     AND teams.id = %s
                  AND worldcups.id = %s
-               ORDER BY players.surname'''
+               ORDER BY players.surname;'''
     player_list = []
     try:
         connection = get_connection()

@@ -166,8 +166,8 @@ function loadPageTitle() {
 	    let titleBody = '';
 	    for (let k = 0; k < teams.length; k++) {
 		let team = teams[k];
-		if (team['id'] == getParam('team') && team['id'] == getParam('year')){
-		titleBody += team['team_name'] + ' in the '+team['id']+' World Cup';
+		if (team['team_id'] == getParam('team') && team['wc_id'] == getParam('year')){
+		titleBody += team['team_name'] + ' in the '+team['year']+' World Cup';
 		}
 	    }
 
