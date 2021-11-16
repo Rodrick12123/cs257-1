@@ -24,14 +24,11 @@
                 Select The World Cup(s) That You Want To Obtain Data From
             </h1>
 
-	    <input type="checkbox" name="worldcup" id="allc" value="all">
+	    <input type="checkbox" name="worldcup" id="allc" value="all" onclick="checkAll()">
 	    <label for="allc">All Cups</label>  
 	    
 	    <div id="check_boxes_container"></div>
-
-            <h2 style="color:red" id="error"></h2>
-            
-            <button onclick="valGetter()">submit!</button>
+        <button onclick="valGetter()">submit!</button>
             
         </div>
     </body>

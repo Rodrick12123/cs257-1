@@ -57,6 +57,19 @@ let baseURL = window.location.protocol
     return baseURL;
 }    
 
+function checkAll() {
+    var boxes = document.getElementsByName('worldcup');
+    for (var i=0;i<boxes.length;i++) {
+        if (boxes[i].type == "checkbox" ) {
+            if(boxes[i].checked == false){
+                boxes[i].checked = true;
+            }else{
+                boxes[i].checked = false;
+            }
+            
+        }
+    }
+}
 
 function loadWorldCupCheckBoxes() {
     
@@ -374,14 +387,18 @@ function dataSelect(evt) {
         if (evt.value === "Teams that won gold medals"){
             loadGoldMedals()
         }
+        if (evt.value === "Number of Medals Teams Won"){
+            loadMedalCount()
+        }
     }
 
 
     if(evt.id === "p2"){
-        if (evt.value === "Teams that won gold medals") {
-            alert(years)
-            
+        if (evt.value === "Teams that won gold medals") {            
             loadGoldMedals(years)
+        }
+        if (evt.value === "Number of Medals Teams Won"){
+            loadMedalCount(years)
         }
     }
 
@@ -405,6 +422,53 @@ function teamGetter() {
     localStorage.setItem("teams", teams);
     return teams;
 }
+
+function loadMedalCount(years=Null) {
+    let url = getAPIBaseURL() + '/medals?years=' + years;
+    
+    // Send the request to the teamss API /authors/ endpoint
+    fetch(url, {method: 'get'})
+
+    // When the results come back, transform them from a JSON string into
+    // a Javascript object (in this case, a list of author dictionaries).
+    .then((response) => response.json())
+    
+    // Once you have your list of author dictionaries, use it to build
+    // an HTML table displaying the author names and lifespan.
+    
+    .then(function(teams) {
+        
+        // Add the <option> elements to the <select> element
+        let tableBody = '';
+        tableBody = '<tr>'
+                    + '<TH>'+ 'Worldcup' +'</TH>'
+                    + '<TH>'+ 'Team Name' +'</TH>'
+                    + '<TH>'+ 'Number Of Medals' +'</TH>'
+                    + '</tr>\n';
+        for (let k = 0; k < teams.length; k++) {
+            let team = teams[k];
+            // <td><input type="checkbox" name="brand">Apple</td>
+        
+            tableBody +=   
+                            '<tr ALIGN="CENTER">'
+                            + '<td>' + team['Worldcup'] + '</td>'
+                            + '<td>' + team['Team Name'] + '</td>'
+                            + '<td>' + team['Medals'] + '</td>'
+                            + '</tr>\n';
+        }
+
+        let res = document.getElementById('results');
+        if (res) {
+            res.innerHTML = tableBody;
+        }
+    })
+    
+    // Log the error if anything went wrong during the fetch.
+    .catch(function(error) {
+        console.log(error);
+    });
+}
+
 function loadGoldMedals(years=Null){
     
 
@@ -424,11 +488,16 @@ function loadGoldMedals(years=Null){
         
         // Add the <option> elements to the <select> element
         let tableBody = '';
+        tableBody = '<tr>'
+                    + '<TH>'+ 'Abbreviation' +'</TH>'
+                    + '<TH>'+ 'Team Name' +'</TH>'
+                    + '<TH>'+ 'Worldcups' +'</TH>'
+                    + '</tr>\n';
         for (let k = 0; k < teams.length; k++) {
             let team = teams[k];
             // <td><input type="checkbox" name="brand">Apple</td>
-        
-            tableBody += '<tr>'
+            
+            tableBody +=    '<tr ALIGN="CENTER">'
                             + '<td>' + team['Abbreviation'] + '</td>'
                             + '<td>' + team['Team Name'] + '</td>'
                             + '<td>' + team['Worldcup'] + '</td>'
@@ -569,7 +638,8 @@ function loadTeamCups(teams) {
 
 function valGetter() {
     yrs = yearGetter()
-    if(yrs.includes("all")){
+    let cLength = localStorage.getItem("checkLength");
+    if((yrs.length +1) == cLength){
         //Put links here
         window.location.href="/AllCups";
         loadAllTeams();
@@ -597,8 +667,11 @@ function yearGetter() {
         }
            
     }
+    
         // save data value
     localStorage.setItem("year", years);
+    localStorage.setItem("checkLength", checkboxes.length);
+    
     return years;
 }
 

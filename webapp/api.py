@@ -59,75 +59,85 @@ def get_cups(team):
 @api.route('/medals') 
 def get_medals():
     
-    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace, worldcups.secoundplace
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace, worldcups.secoundplace,
                 worldcups.thirdplace, worldcups.fourthplace
-                FROM worldcups, players_teams_matches_worldcups
+                FROM worldcups, players_teams_matches_worldcups, teams
                 WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
                 ORDER BY worldcups.year;'''
     team_list = []
     year_list = []
+
+    years = flask.request.args.get('years')
+    ylist = []
+    if (years):
+        yrs = years.split(",")
+        ylist = [int(i) for i in yrs]
+        print(ylist)
+        
     try:
         connection = get_connection()
         cursor = connection.cursor()
         cursor.execute(query,)
         for row in cursor:
-            tvals = [value for elem in team_list
-                      for value in elem.values()]
-            if ( row[1] not in tvals):
-                team = {
-                        'Team Name':row[1],
-                        'Worldcup':row[2],
-                        'Medals':0}
-                team_list.append(team)
-            tvals = [value for elem in team_list
-                      for value in elem.values()]
-            if( row[2] not in year_list):
-                year_list.append(row[2])
-                if(row[3] not in tvals):
+            
+            if(row[2] in ylist):
+                tvals = [value for elem in team_list
+                        for value in elem.values()]
+                if ( row[1] not in tvals):
                     team = {
-                            'Team Name':row[3],
+                            'Team Name':row[1],
                             'Worldcup':row[2],
-                            'Medals':1}
+                            'Medals':0}
                     team_list.append(team)
-                else:
-                    tname = row[3]
-                    for t in team_list:
-                        if t['Team Name'] == tname:
-                            t['Medals'] += 1
-                if(row[4] not in tvals):
-                    team = {
-                            'Team Name':row[4],
-                            'Worldcup':row[2],
-                            'Medals':1}
-                    team_list.append(team)
-                else:
-                    tname = row[4]
-                    for t in team_list:
-                        if t['Team Name'] == tname:
-                            t['Medals'] += 1
-                if(row[5] not in tvals):
-                    team = {
-                            'Team Name':row[5],
-                            'Worldcup':row[2],
-                            'Medals':1}
-                    team_list.append(team)
-                else:
-                    tname = row[5]
-                    for t in team_list:
-                        if t['Team Name'] == tname:
-                            t['Medals'] += 1
-                if(row[6] not in tvals):
-                    team = {
-                            'Team Name':row[6],
-                            'Worldcup':row[2],
-                            'Medals':1}
-                    team_list.append(team)
-                else:
-                    tname = row[6]
-                    for t in team_list:
-                        if t['Team Name'] == tname:
-                            t['Medals'] += 1
+                tvals = [value for elem in team_list
+                        for value in elem.values()]
+                if( row[2] not in year_list):
+                    year_list.append(row[2])
+                    if(row[3] not in tvals):
+                        team = {
+                                'Team Name':row[3],
+                                'Worldcup':row[2],
+                                'Medals':1}
+                        team_list.append(team)
+                    else:
+                        tname = row[3]
+                        for t in team_list:
+                            if t['Team Name'] == tname:
+                                t['Medals'] += 1
+                    if(row[4] not in tvals):
+                        team = {
+                                'Team Name':row[4],
+                                'Worldcup':row[2],
+                                'Medals':1}
+                        team_list.append(team)
+                    else:
+                        tname = row[4]
+                        for t in team_list:
+                            if t['Team Name'] == tname:
+                                t['Medals'] += 1
+                    if(row[5] not in tvals):
+                        team = {
+                                'Team Name':row[5],
+                                'Worldcup':row[2],
+                                'Medals':1}
+                        team_list.append(team)
+                    else:
+                        tname = row[5]
+                        for t in team_list:
+                            if t['Team Name'] == tname:
+                                t['Medals'] += 1
+                    if(row[6] not in tvals):
+                        team = {
+                                'Team Name':row[6],
+                                'Worldcup':row[2],
+                                'Medals':1}
+                        team_list.append(team)
+                    else:
+                        tname = row[6]
+                        for t in team_list:
+                            if t['Team Name'] == tname:
+                                t['Medals'] += 1
         cursor.close()
         connection.close()
     except Exception as e:
@@ -145,38 +155,28 @@ def get_gold():
                 ORDER BY worldcups.year;'''
     team_list = []
     years = flask.request.args.get('years')
-    # yrs = years.split(",")
     tlist =[]
     ylist = []
     yr = []
     if (years):
         yrs = years.split(",")
-        if("all" not in yrs):
-            ylist = [int(i) for i in yrs]
-            print(ylist)
+
+        ylist = [int(i) for i in yrs]
     try:
         connection = get_connection()
         cursor = connection.cursor()
         cursor.execute(query,)
         for row in cursor:
-            if(row[2] not in yr):             
-                if(len(ylist) > 0):               
-                    if(row[2] in ylist):                   
-                        if( row[3] == row[1]):
-                            print(row[3])
-                            team = {'Abbreviation':row[0],
-                                    'Team Name':row[1],
-                                    'Worldcup':row[2]}
-                            team_list.append(team)
-
-                            yr.append(row[2])
-                else:
+            if(row[2] not in yr):                         
+                if(row[2] in ylist):                   
                     if( row[3] == row[1]):
-                            team = {'Abbreviation':row[0],
-                                    'Team Name':row[1],
-                                    'Worldcup':row[2]}
-                            team_list.append(team)
-                            yr.append(row[2])
+                        team = {'Abbreviation':row[0],
+                                'Team Name':row[1],
+                                'Worldcup':row[2]}
+                        team_list.append(team)
+
+                        yr.append(row[2])
+                
         cursor.close()
         connection.close()
     except Exception as e:
