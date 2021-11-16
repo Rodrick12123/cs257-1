@@ -1,88 +1,98 @@
-REQUEST: /<'year'>/<'team'>/roster
-<br>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie API reference</title>
+</head>
+<body>
+    <pre>REQUEST: /{year}/{team}/roster
+
 GET parameters
     year & team (both necessary, no default) -- return only players whose
         were on a given team in a given WC
-<br>
+
 RESPONSE: a JSON list of dictionaries, each of which represents one
 player, sorted alphabetically by last name (and sorted alphabetically
 by first name when last names are equal). Each dictionary in this
 list will have the following fields.
-<br>
+
    surname -- (TEXT) the player's last or family name
    given_name -- (TEXT) the author's given name
    id -- (INTEGER) the player's id
-<br>
+
 EXAMPLE(S):
     /15/11/roster
     (the 15 is in reference to Bolivia (can find from /Allcups/teams/) and the 11 is the 1994 World Cup (can find from /Allcups/))
-<br>
+
 [{"surname": " BALDIVIESO", "given_name": " Julio", "id": 4335}, {"surname": " BORJA", "given_name": " Carlos", "id": 4325}, {"surname": " CASTILLO", "given_name": " Ramiro", "id": 4354}, {"surname": " CRISTALDO", "given_name": " Luis", "id": 4329}, {"surname": " ETCHEVERRY", "given_name": " Marco", "id": 4342}, {"surname": " MELGAR", "given_name": " Milton", "id": 4326}, {"surname": " MORENO", "given_name": " Jaime", "id": 4343}...]
-<br>
-REQUEST: /<'years'>/teams/
-<br>
+
+REQUEST: /{years}/teams/
+
 GET parameters
       years (necessary, no default) -- the id of the World Cup (which you can look up with /Allcups/) that you want a list of teams from
-<br>
+
 RESPONSE: a JSON list of dictionaries, each of which represents one
 team in a user-given World Cup. Each dictionary in this
 list will have the following fields.
-<br>
+
    year -- (INTEGER) the year of the world cup
    team_abbreviation -- (TEXT) 3-letter abbreviation of country
    team_name -- (TEXT) country name
    wc_id -- (INTEGER) the id of the world cup
    team_id -- (INTEGER) the id of the team
-<br>
+
 EXAMPLE(S):
     /1/teams/
   (1 refers to the first world cup held, Uruguay 1930)
-<br>
+
 [{"year": 1930, "team_abbreviation": "BEL", "team_name": "Belgium", "wc_id": 1, "team_id": 4}, {"year": 1930, "team_abbreviation": "PER", "team_name": "Peru", "wc_id": 1, "team_id": 8}, {"year": 1930, "team_abbreviation": "PAR", "team_name": "Paraguay", "wc_id": 1, "team_id": 12} ...]
-<br>
-REQUEST: /Allcups/<'team'>/cups/
-<br>
+
+REQUEST: /Allcups/{team}/cups/
+
 GET parameters
     team (necessary, no default) -- return only all the World Cups
         that a specific team played in
-<br>
+
 RESPONSE: a JSON list of dictionaries, each of which represents one
 World Cup, sorted by year.Each dictionary in this
 list will have the following fields.
-<br>
+
    wc_year -- (INTEGER) the year of the WC
    wc_location -- (TEXT) location of the WC
    wc_id -- (INTEGER) WC id
-<br>
+
 EXAMPLE(S):
     /Allcups/3/cups/
     (3 refers to Sweden, can look that up in /Allcups/teams/)
-<br>
+
 [{"wc_year": 1934, "wc_location": "Italy", "id": 2}, {"wc_year": 1938, "wc_location": "France", "id": 3}, {"wc_year": 1950, "wc_location": "Brazil", "id": 4}, {"wc_year": 1958, "wc_location": "Sweden", "id": 6}, {"wc_year": 1970, "wc_location": "Mexico", "id": 9}, ...]
-<br>
+
 REQUEST: /Allcups/attendance
-<br>
+
 RESPONSE: a JSON list of dictionaries, each of which represents one
 World Cup, sorted by year. Each dictionary in this
 list will have the following fields.
-<br>
+
    year -- (INTEGER) the year each World Cup was help
    attendance -- (TEXT) the amount of people present at each World Cup
-<br>
+
 REQUEST: /Allcups/teams/
-<br>
+
 RESPONSE: a JSON list of dictionaries, each of which represents one
 team that has competed in a World Cup, sorted alphabetically. Each dictionary in this
 list will have the following fields.
-<br>
+
    team_abbreviation -- (TEXT) the 3-letter abbreviation of the country
    team_name -- (TEXT) country name
    teams_id -- (TEXT) the id of the team (from db)
-<br>
+
 REQUEST: /Allcups/
-<br>
+
 RESPONSE: a JSON list of dictionaries, each of which represents one
 World Cup, sorted by year. 
-<br>
+
    year -- (INTEGER) year it was held
    location -- (TEXT) location it was held
+
+</pre>
+</body>
+</html>
