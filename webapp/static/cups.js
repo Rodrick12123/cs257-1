@@ -76,20 +76,24 @@ function loadWorldCupCheckBoxes() {
 }
 
 function loadTeamsSelector() {
-    let url = getAPIBaseURL() + '/Allcups/teams/cups';
+    let url = getAPIBaseURL() + '/Allcups/teams/';
 
     fetch(url, {method: 'get'})
 
     .then((response) => response.json())
 
-    .then(function(worldcups) {
+    .then(function(teams) {
 	    let selectorBody = '';
-	    for (let k = 0; k < worldcups.length; k++) {
-		let worldcup = worldcups[k];
+	    for (let k = 0; k < teams.length; k++) {
+		let team = teams[k];
 		//going to need to put 'id' as a return of the query, ok for now
-		selectorBody += '<option value="' + worldcup['id'] + '">'
-                                + worldcup['wc_location'] + ' ' + worldcup['wc_year'] +')'
+		selectorBody += '<option value="' + team['id'] + '">'
+                                + team['team_name'] + ' (' + team['team_abbreviation'] +')'
 		                + '</option>/n';
+	    }
+	    let selector = document.getElementById('team_selector');
+	    if (selector) {
+		selector.innerHTML = selectorBody;
 	    }
 
 	})
@@ -149,7 +153,10 @@ function loadPageTitle() {
 
 
 function loadWorldCupsSelector() {
-    let url = getAPIBaseURL() + '/Allcups/teams/cups';
+
+    if (getParam('team') != '') {
+
+	let url = getAPIBaseURL() + '/Allcups/'+getParam('team')+'/cups';
 
     fetch(url, {method: 'get'})
 
@@ -161,7 +168,7 @@ function loadWorldCupsSelector() {
 		let worldcup = worldcups[k];
 		//going to need to put 'id' as a return of the query, ok for now
 		selectorBody += '<option value="' + worldcup['id'] + '">'
-                                + worldcup['wc_location'] + ' ' + worldcup['wc_year'] +')'
+                                + worldcup['wc_location'] + ' ' + worldcup['wc_year']
 		                + '</option>/n';
 	    }
 
@@ -174,6 +181,7 @@ function loadWorldCupsSelector() {
 	.catch(function(error) {
 		console.log(error);
 	    });
+}
 }
 
 
