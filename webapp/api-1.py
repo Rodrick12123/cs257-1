@@ -54,7 +54,7 @@ def get_all_teams():
 
 @api.route('/Allcups/')
 def get_all_worldcups():
-    
+    print('yes')
     query = '''SELECT worldcups.year, worldcups.location FROM worldcups ORDER BY worldcups.year;'''
 
     wc_list = []

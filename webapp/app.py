@@ -24,8 +24,9 @@ def page2():
 @app.route('/AllCups')
 def page3():
     return flask.render_template('AllCups.html', results='Results')
+    
 @app.route('/CupsParticipated')
-def page4():
+def page6():
     return flask.render_template('CupsParticipated.html', results='Cups Participated')
 
 @app.route('/AllCups/Team')

@@ -23,6 +23,167 @@ def get_connection():
 def get_help():
     print('help')
     #not exactly sure what goes in here
+#need to edit
+@api.route('/cups/<team>') 
+def get_cups(team):
+    tms = team.split(",")
+    print(tms)
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace
+                FROM teams, worldcups, players_teams_matches_worldcups
+                WHERE players_teams_matches_worldcups.team_id = teams.id
+                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
+                 
+                ORDER BY worldcups.year;'''
+    
+    team_list = []
+    ylist =[]
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query,)
+        for row in cursor:
+            if ( row[1] in tms):
+                
+                if( row[2] not in ylist):
+                    team = {
+                        'Team Name':row[1],
+                        'Worldcup':row[2]
+                    }
+                    ylist.append(row[2])
+                    team_list.append(team)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+#need to edit
+@api.route('/medals') 
+def get_medals():
+    
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace, worldcups.secoundplace
+                worldcups.thirdplace, worldcups.fourthplace
+                FROM worldcups, players_teams_matches_worldcups
+                WHERE players_teams_matches_worldcups.team_id = teams.id
+                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
+                ORDER BY worldcups.year;'''
+    team_list = []
+    year_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query,)
+        for row in cursor:
+            tvals = [value for elem in team_list
+                      for value in elem.values()]
+            if ( row[1] not in tvals):
+                team = {
+                        'Team Name':row[1],
+                        'Worldcup':row[2],
+                        'Medals':0}
+                team_list.append(team)
+            tvals = [value for elem in team_list
+                      for value in elem.values()]
+            if( row[2] not in year_list):
+                year_list.append(row[2])
+                if(worldcups.firstplace not in tvals):
+                    team = {
+                            'Team Name':row[3],
+                            'Worldcup':row[2],
+                            'Medals':1}
+                    team_list.append(team)
+                else:
+                    tname = row[3]
+                    for t in team_list:
+                        if t['Team Name'] == tname:
+                            t['Medals'] += 1
+                if(worldcups.secoundplace not in tvals):
+                    team = {
+                            'Team Name':row[4],
+                            'Worldcup':row[2],
+                            'Medals':1}
+                    team_list.append(team)
+                else:
+                    tname = row[4]
+                    for t in team_list:
+                        if t['Team Name'] == tname:
+                            t['Medals'] += 1
+                if(worldcups.thirdplace not in tvals):
+                    team = {
+                            'Team Name':row[5],
+                            'Worldcup':row[2],
+                            'Medals':1}
+                    team_list.append(team)
+                else:
+                    tname = row[5]
+                    for t in team_list:
+                        if t['Team Name'] == tname:
+                            t['Medals'] += 1
+                if(worldcups.fourthplace not in tvals):
+                    team = {
+                            'Team Name':row[6],
+                            'Worldcup':row[2],
+                            'Medals':1}
+                    team_list.append(team)
+                else:
+                    tname = row[6]
+                    for t in team_list:
+                        if t['Team Name'] == tname:
+                            t['Medals'] += 1
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(team_list)
+
+@api.route('/gold/teams/') 
+def get_gold():
+    
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace
+                FROM teams, worldcups, players_teams_matches_worldcups
+                WHERE players_teams_matches_worldcups.team_id = teams.id
+                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
+                ORDER BY worldcups.year;'''
+    team_list = []
+    years = flask.request.args.get('years')
+    # yrs = years.split(",")
+    tlist =[]
+    ylist = []
+    yr = []
+    if (years):
+        yrs = years.split(",")
+        if("all" not in yrs):
+            ylist = [int(i) for i in yrs]
+            print(ylist)
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query,)
+        for row in cursor:
+            if(row[2] not in yr):
+                if(len(ylist) > 0):
+                    
+                    if(row[2] in ylist):
+                        
+                        if( row[3] == row[1]):
+                            team = {'Abbreviation':row[0],
+                                    'Team Name':row[1],
+                                    'Worldcup':row[2]}
+                            team_list.append(team)
+                            yr.append(row[2])
+                else:
+                    if( row[3] == row[1]):
+                            team = {'Abbreviation':row[0],
+                                    'Team Name':row[1],
+                                    'Worldcup':row[2]}
+                            team_list.append(team)
+                            yr.append(row[2])
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(team_list)
 
 @api.route('/Allcups/teams/') 
 def get_all_teams():
@@ -64,7 +225,9 @@ def get_all_worldcups():
         connection = get_connection()
         cursor = connection.cursor()
         cursor.execute(query, tuple())
+        
         for row in cursor:
+            
             wc = {  'wc_year':row[0],
                     'wc_location':row[1]}
             wc_list.append(wc)
@@ -78,12 +241,12 @@ def get_all_worldcups():
 
 @api.route('/<years>/teams/') 
 def get_teams_by_year(years):
-    print(years)
+    # print(years)
     query = '''SELECT DISTINCT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.id, teams.id
                FROM worldcups, teams, players_teams_matches_worldcups
                WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
-                 AND worldcups.id = %s
+                 
                ORDER BY worldcups.year'''
     team_list = []
     try:
@@ -130,15 +293,16 @@ ORDER BY worldcups.year;'''
 
 @api.route('/<year>/<team>/roster') 
 def get_players(year, team):
-    print(year)
-    print(team)
+    # print(year)
+    # print(team)
     query = '''SELECT DISTINCT players.surname, players.given_name, players.id
                FROM worldcups, teams, players_teams_matches_worldcups, players
                WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
                  AND players_teams_matches_worldcups.player_id = players.id
                      AND teams.id = %s
-                 AND worldcups.id = %s
+                 
+
                ORDER BY players.surname;'''
     player_list = []
     try:
