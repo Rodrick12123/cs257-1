@@ -8,18 +8,45 @@ window.onload = initialize;
 
 function initialize() {
 
-    loadWorldCupCheckBoxes();
-
-    
+    loadWorldCupCheckBoxes();    
 
     // loadTeamsSelector();
 
+<<<<<<< HEAD:webapp/static-1/cups.js
     // let element = document.getElementById('team_selector');
     // if (element) {
     //     element.onchange = onTeamsSelectionChanged;
     // }
     
+=======
+    loadWorldCupsSelector();
 
+    loadSpecificTeamsSelector();
+
+    loadPlayersSelector();
+
+    //    loadWorldCupsSelector();
+     
+    loadPageTitle();
+
+    let team_element = document.getElementById('team_selector');
+    if (team_element) {
+        team_element.onchange = onTeamsSelectionChanged;
+    }
+>>>>>>> 2afec43b0e8ebef792e6b88e653acbd4e558c51c:webapp/static/cups.js
+
+    let wc_element = document.getElementById('world_cup_selector');
+    if (wc_element) {
+        wc_element.onchange = onWorldCupsSelectionChanged;
+    }
+    /*
+    let specific_team_element = document.getElementById('specific_team_selector');
+    if (specific_team_element) {
+        specific_team_element.onchange = onSpecificTeamsSelectionChanged;
+    }
+    */
+
+  
 
 }
 
@@ -30,6 +57,14 @@ function getAPIBaseURL() {
                     + '/api';
     return baseURL;
 }
+
+function getBaseURL() {
+let baseURL = window.location.protocol
+                    + '//' + window.location.hostname
+                    + ':' + window.location.port
+                    + '/';
+    return baseURL;
+}    
 
 
 function loadWorldCupCheckBoxes() {
@@ -48,7 +83,7 @@ function loadWorldCupCheckBoxes() {
 		    checkBoxesBody += '<input type="checkbox" name="worldcup" id="'
 			+world_cup_year + '" value="' + world_cup_year + '">\n'
 			+'<label for ="' + world_cup_year + '">' + world_cup_location+' '+world_cup_year
-			+ '</label>\n'
+			+ '</label><br>'
 
 		}
 
@@ -71,19 +106,19 @@ function loadTeamsSelector() {
     .then((response) => response.json())
 
     .then(function(teams) {
-	    let selectorBody = '';
+	    let selectorBody = '<option selected>Countries</option>';
 	    for (let k = 0; k < teams.length; k++) {
 		let team = teams[k];
-		//going to need to put 'id' as a return of the query, ok for now
+		if (team['team_name'] != '') {
 		selectorBody += '<option value="' + team['id'] + '">'
                                 + team['team_name'] + ' (' + team['team_abbreviation'] +')'
-		                + '</option>\n';
-	    }
-
+		                + '</option>/n';
+		}}
 	    let selector = document.getElementById('team_selector');
 	    if (selector) {
 		selector.innerHTML = selectorBody;
 	    }
+
 	})
 
 	.catch(function(error) {
@@ -93,32 +128,205 @@ function loadTeamsSelector() {
 
 function onTeamsSelectionChanged() {
     let teamID = this.value;
-    let url = getAPIBaseURL() + '/books/author/' + teamID;
+    let url = getBaseURL() + 'AllCups/Team?team=' + teamID;
+   
+    window.location = url;
+}
+
+function getParam(param){
+    return new URLSearchParams(window.location.search).get(param);
+}
+
+
+function loadPageTitle() {
+    if (getParam('team') != '' && getParam('year') == '') {
+
+    let url = getAPIBaseURL() + '/Allcups/teams/';
 
     fetch(url, {method: 'get'})
 
-	.then((response) => response.json())
+    .then((response) => response.json())
 
-	.then(function(books) { //what is this query going to ask??????
-		let tableBody = '';
-		for (let k = 0; k < books.length; k++) {
-		    let book = books[k];
-            tableBody += '<tr>'
-                            + '<td>' + book['title'] + '</td>'
-                            + '<td>' + book['publication_year'] + '</td>'
-		+ '</tr>\n';
+    .then(function(teams) {
+	    let titleBody = '';
+	    for (let k = 0; k < teams.length; k++) {
+		let team = teams[k];
+		if (team['id'] == getParam('team')){
+		titleBody += team['team_name'] + ' - All World Cups';
 		}
+	    }
 
-    let booksTable = document.getElementById('books_table');
-    if (booksTable) {
-	booksTable.innerHTML = tableBody;
-    }
-	    })
+
+	    let title = document.getElementById('page-title');
+	    if (title) {
+		title.innerHTML = titleBody;
+	    }
+	})
+	
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+
+   if (getParam('team') != '' && getParam('year') != '') {
+
+       let url = getAPIBaseURL() + '/'+getParam('year')+'/teams/';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(teams) {
+	    let titleBody = '';
+	    for (let k = 0; k < teams.length; k++) {
+		let team = teams[k];
+		if (team['team_id'] == getParam('team') && team['wc_id'] == getParam('year')){
+		titleBody += team['team_name'] + ' in the '+team['year']+' World Cup';
+		}
+	    }
+
+
+	    let title = document.getElementById('page-title');
+	    if (title) {
+		title.innerHTML = titleBody;
+	    }
+	})
+	
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+
+
+
+
+
+}
+
+
+
+
+function loadSpecificTeamsSelector() {
+
+    //need to get <year> from home page when sending to this page
+    let url = getAPIBaseURL() + '/<year>/teams/';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(teams) {
+	    let selectorBody = '<option selected>Countries</option>';
+	    for (let k = 0; k < teams.length; k++) {
+		let team = teams[k];
+		if (team['team_name'] != '') {
+		selectorBody += '<option value="' + team['id'] + '">'
+                                + team['team_name'] + ' (' + team['team_abbreviation'] +')'
+		                + '</option>/n';
+		}}
+	    let selector = document.getElementById('team_selector');
+	    if (selector) {
+		selector.innerHTML = selectorBody;
+	    }
+
+	})
 
 	.catch(function(error) {
 		console.log(error);
 	    });
 }
+
+/*
+function onSpecificTeamsSelectionChanged() {
+    let teamID = this.value;
+    let url = getBaseURL() + 'AllCups/Team?team=' + teamID;
+   
+    window.location = url;
+}
+*/
+
+
+
+
+function loadWorldCupsSelector() {
+
+    if (getParam('team') != '') {
+
+	let url = getAPIBaseURL() + '/Allcups/'+getParam('team')+'/cups';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(worldcups) {
+	    let selectorBody = '<option selected>World Cups</option>';
+	    for (let k = 0; k < worldcups.length; k++) {
+		let worldcup = worldcups[k];
+		//going to need to put 'id' as a return of the query, ok for now
+		selectorBody += '<option value="' + worldcup['id'] + '">'
+                                + worldcup['wc_location'] + ' ' + worldcup['wc_year']
+		                + '</option>/n';
+	    }
+
+	    let selector = document.getElementById('world_cup_selector');
+	    if (selector) {
+		selector.innerHTML = selectorBody;
+	    }
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+}
+
+
+function onWorldCupsSelectionChanged() {
+    let worldcupID = this.value;
+    let teamID = getParam('team');
+    let url = getBaseURL() + 'SpecificCups/Team?year='+ worldcupID+'&team='+teamID;
+   
+    window.location = url;
+}
+
+
+
+function loadPlayersSelector() {
+
+    if (getParam('team') != '' && getParam('wc') != '') {
+
+	let url = getAPIBaseURL() + '/'+getParam('year')+'/'+getParam('team')+'/roster';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(players) {
+	    let selectorBody = '<option selected>Players</option>';
+	    for (let k = 0; k < players.length; k++) {
+		let player = players[k];
+		//going to need to put 'id' as a return of the query, ok for now
+		selectorBody += '<option value="' + player['id'] + '">'
+                                + player['surname'] + ', ' + player['given_name']
+		                + '</option>/n';
+	    }
+
+	    let selector = document.getElementById('player_selector');
+	    if (selector) {
+		selector.innerHTML = selectorBody;
+	    }
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+}
+
+
+
+
+
 
 
 function dataSelect(evt) {

@@ -28,6 +28,18 @@ def page3():
 def page4():
     return flask.render_template('CupsParticipated.html', results='Cups Participated')
 
+@app.route('/AllCups/Team')
+def page4():
+    return flask.render_template('OneTeamAllCups.html')
+
+@app.route('/SpecificCups/Team')
+def page5():
+    return flask.render_template('OneTeamOneCup.html')
+
+@app.route('/help/')
+def help():
+    return flask.render_template('help.html')
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Flask applications')
     parser.add_argument('host', help='the host to run on')
