@@ -22,7 +22,30 @@ def get_connection():
 @api.route('/help')
 def get_help():
     print('help')
-    #not exactly sure what goes in here
+    #need to figure this out
+
+@api.route('/attendance')
+def get_attendance():
+    
+    query = '''SELECT worldcups.attendance, worldcups.year 
+                FROM worldcups ORDER BY worldcups.year;'''
+    attendance_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, tuple())
+        for row in cursor:
+            wc = {  'attendance':row[0],
+                      'year':row[1]}
+            attendance_list.append(wc)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(attendance_list)
+
+
 
 @api.route('/Allcups/teams/') 
 def get_all_teams():
