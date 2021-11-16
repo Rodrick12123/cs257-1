@@ -161,10 +161,11 @@ def get_gold():
         cursor.execute(query,)
         for row in cursor:
             if(row[2] not in yr):
+                
                 if(len(ylist) > 0):
                     
                     if(row[2] in ylist):
-                        
+                    
                         if( row[3] == row[1]):
                             team = {'Abbreviation':row[0],
                                     'Team Name':row[1],

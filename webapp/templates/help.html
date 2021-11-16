@@ -93,6 +93,27 @@ World Cup, sorted by year.
    year -- (INTEGER) year it was held
    location -- (TEXT) location it was held
 
+   REQUEST: /gold/teams/
+
+   GET parameters
+         years (optional, no default) -- the years of the world cups (which you search for at the homepage). Allows you to see teams from specific years
+   
+   RESPONSE: a JSON list of dictionaries, each of which represents one
+   team in a user-given World Cup. Each team displayed in the results table represents a team whos
+   got a gold medal in the specified year(s). Each dictionary in this
+   list will have the following fields.
+   
+      Worldcup -- (INTEGER) the year of the world cup
+      Abbreviation -- (TEXT) 3-letter abbreviation of country
+      Team Name -- (TEXT) country name
+
+   EXAMPLE(S):
+       /gold/teams/?years=1938
+     (1930 is the World Cup year)
+   
+   [{"Worldcup": 1930, "Abbreviation": "BEL", "Team Name": "Belgium"]
+   
+
 </pre>
 </body>
 </html>
