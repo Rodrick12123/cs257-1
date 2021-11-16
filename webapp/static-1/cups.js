@@ -136,32 +136,57 @@ function dataSelect(evt) {
     if(evt.id === "p3"){
         
         if (evt.value === "All team queries") {
-            
+
             teams = 'all'
             loadAllTeams()
             if (evt.value === "All player queries"){
-                //loadAllPlayers(teams);
+                //loadTeamCups(teams);
             }
 
         }
+        if (evt.name === "tselct"){
+            // window.location.href="/CupsParticipated";
+            tms = teamGetter()
+            loadTeamCups(tms)
+        }
     }
+
 
     if(evt.id === "p2"){
         if (evt.value === "All team queries") {
             teams = 'all'
             //loadTeamYear(years)
             if (evt.value === "All player queries"){
-                //loadAllPlayers(teams);
+                //loadTeamCups(teams);
             }
         }
     }
 
 }
+
+function teamGetter() {
+    let teams = [];
+    
+    checkboxes = document.getElementsByName('team');
+    for (var i = 0, n = checkboxes.length; i < n; i++) {
+        
+        if(checkboxes[i].checked == true){
+
+            val = checkboxes[i].value;
+            
+            teams.push(val);
+        }
+           
+    }
+        // save data value
+    localStorage.setItem("teams", teams);
+    return teams;
+}
 function loadAllTeams() {
     
     
     let url = getAPIBaseURL() + '/Allcups/teams/';
-
+    
     // Send the request to the teamss API /authors/ endpoint
     fetch(url, {method: 'get'})
 
@@ -176,12 +201,19 @@ function loadAllTeams() {
         
         // Add the <option> elements to the <select> element
         let tableBody = '';
-        for (let k = 0; k < teams.length; k++) {
+        for (let k = 1; k < teams.length; k++) {
             let team = teams[k];
-            
+            // <td><input type="checkbox" name="brand">Apple</td>
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = 'car';
+            checkbox.name = 'interest';
+            checkbox.value = 'car';
             tableBody += '<tr>'
                             + '<td>' + team['team_name'] + '</td>'
                             + '<td>' + team['team_abbreviation'] + '</td>'
+                            + '<td>' + '<input type="checkbox" name="team"  id="'
+                            + team['team_abbreviation'] + '" value="' + team['team_name'] + '">'+ '<td>'
                             + '</tr>\n';
         }
 
@@ -217,6 +249,7 @@ function loadTeamYear(years) {
         for (let k = 0; k < teams.length; k++) {
             let team = teams[k];
             tableBody += '<tr>'
+                    
                             + '<td>' + team['teamyear'] + '</td>'
                             + '<td>' + team['team_abbreviation'] + '</td>'
                             + '<td>' + team['team_name'] + '</td>'
@@ -235,32 +268,29 @@ function loadTeamYear(years) {
     });
 }
 
-function loadAllPlayers(teams) {
-    // if(teams == 'all'){
-    //     teams = [1930,1934,1938,1950,1954,1958,1962,1966,
-    //         1970,1974,1978,1982,1986,1990,1994,1998,2002,2006,2010,2014]
-    // }
-    window.location.href="/SpecificCups";
-    let url = getAPIBaseURL() + '/<teams>/players/';
-
+function loadTeamCups(teams) {
+    
+    let url = getAPIBaseURL() + '/cups/' + teams;
     // Send the request to the teamss API /authors/ endpoint
     fetch(url, {method: 'get'})
 
     // When the results come back, transform them from a JSON string into
     // a Javascript object (in this case, a list of author dictionaries).
     .then((response) => response.json())
-
+    
     // Once you have your list of author dictionaries, use it to build
     // an HTML table displaying the author names and lifespan.
     .then(function(teams) {
         // Add the <option> elements to the <select> element
+        
         let tableBody = '';
         for (let k = 0; k < teams.length; k++) {
-            let teams = teamss[k];
+            let team = teams[k];
             tableBody += '<tr>'
-                            + '<td>' + teams['coach'] + '</td>'
-                            + '<td>' + teams['team_name'] + '</td>'
-                            + '<td>' + teams['year'] + '</td>'
+                            + '<th>' + "World Cups"+'</th>'
+                            + '<td>' + team['Worldcup'] + '</td>'
+                            + '<th>' + "Team Name"+'</th>'
+                            + '<td>' + team['Team Name'] + '</td>'
                             + '</tr>\n';
         }
 
@@ -269,7 +299,7 @@ function loadAllPlayers(teams) {
             res.innerHTML = tableBody;
         }
     })
-
+    
     // Log the error if anything went wrong during the fetch.
     .catch(function(error) {
         console.log(error);
