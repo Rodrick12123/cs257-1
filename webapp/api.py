@@ -21,8 +21,7 @@ def get_connection():
 
 @api.route('/help')
 def get_help():
-    print('help')
-    #not exactly sure what goes in here
+    return flask.render_template('help.html')
 #need to edit
 @api.route('/cups/<team>') 
 def get_cups(team):
