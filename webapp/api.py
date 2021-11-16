@@ -96,6 +96,42 @@ def get_teams(years):
     return json.dumps(team_list)
 
 
+@api.route('/Allcups/<team>/cups/')
+def get_team_worldcups(team):
+
+    query = '''SELECT DISTINCT worldcups.year, worldcups.location, worldcups.id 
+FROM worldcups, teams, players_teams_matches_worldcups 
+WHERE players_teams_matches_worldcups.worldcup_id = worldcups.id
+AND players_teams_matches_worldcups.team_id = teams.id
+AND teams.id = %s
+ORDER BY worldcups.year;'''
+
+    wc_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, (team,))
+        for row in cursor:
+            wc = {  'wc_year':row[0],
+                    'wc_location':row[1],
+                    'id':row[2]}
+            wc_list.append(wc)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(wc_list)
+
+
+
+
+
+
+
+
+
+
 @api.route('/<teams>/players/') 
 def get_players():
     ''' Returns a list of all the authors in our database. See

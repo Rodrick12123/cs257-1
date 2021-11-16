@@ -12,6 +12,8 @@ function initialize() {
 
     loadTeamsSelector();
 
+    loadWorldCupsSelector();
+
     //    loadWorldCupsSelector();
      
     loadPageTitle();
@@ -74,26 +76,22 @@ function loadWorldCupCheckBoxes() {
 }
 
 function loadTeamsSelector() {
-    let url = getAPIBaseURL() + '/Allcups/teams/';
+    let url = getAPIBaseURL() + '/Allcups/teams/cups';
 
     fetch(url, {method: 'get'})
 
     .then((response) => response.json())
 
-    .then(function(teams) {
+    .then(function(worldcups) {
 	    let selectorBody = '';
-	    for (let k = 0; k < teams.length; k++) {
-		let team = teams[k];
+	    for (let k = 0; k < worldcups.length; k++) {
+		let worldcup = worldcups[k];
 		//going to need to put 'id' as a return of the query, ok for now
-		selectorBody += '<option value="' + team['id'] + '">'
-                                + team['team_name'] + ' (' + team['team_abbreviation'] +')'
+		selectorBody += '<option value="' + worldcup['id'] + '">'
+                                + worldcup['wc_location'] + ' ' + worldcup['wc_year'] +')'
 		                + '</option>/n';
 	    }
 
-	    let selector = document.getElementById('team_selector');
-	    if (selector) {
-		selector.innerHTML = selectorBody;
-	    }
 	})
 
 	.catch(function(error) {
@@ -147,6 +145,40 @@ function loadPageTitle() {
 
 
 }
+
+
+
+function loadWorldCupsSelector() {
+    let url = getAPIBaseURL() + '/Allcups/teams/cups';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(worldcups) {
+	    let selectorBody = '';
+	    for (let k = 0; k < worldcups.length; k++) {
+		let worldcup = worldcups[k];
+		//going to need to put 'id' as a return of the query, ok for now
+		selectorBody += '<option value="' + worldcup['id'] + '">'
+                                + worldcup['wc_location'] + ' ' + worldcup['wc_year'] +')'
+		                + '</option>/n';
+	    }
+
+	    let selector = document.getElementById('world_cup_selector');
+	    if (selector) {
+		selector.innerHTML = selectorBody;
+	    }
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+
+
+
+
 
 
 function dataSelect(evt) {
