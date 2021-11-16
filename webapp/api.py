@@ -21,7 +21,6 @@ def get_connection():
 
 @api.route('/help')
 def get_help():
-<<<<<<< HEAD
     print('help')
     #not exactly sure what goes in here
 #need to edit
@@ -86,7 +85,7 @@ def get_medals():
                       for value in elem.values()]
             if( row[2] not in year_list):
                 year_list.append(row[2])
-                if(worldcups.firstplace not in tvals):
+                if(row[3] not in tvals):
                     team = {
                             'Team Name':row[3],
                             'Worldcup':row[2],
@@ -97,7 +96,7 @@ def get_medals():
                     for t in team_list:
                         if t['Team Name'] == tname:
                             t['Medals'] += 1
-                if(worldcups.secoundplace not in tvals):
+                if(row[4] not in tvals):
                     team = {
                             'Team Name':row[4],
                             'Worldcup':row[2],
@@ -108,7 +107,7 @@ def get_medals():
                     for t in team_list:
                         if t['Team Name'] == tname:
                             t['Medals'] += 1
-                if(worldcups.thirdplace not in tvals):
+                if(row[5] not in tvals):
                     team = {
                             'Team Name':row[5],
                             'Worldcup':row[2],
@@ -119,7 +118,7 @@ def get_medals():
                     for t in team_list:
                         if t['Team Name'] == tname:
                             t['Medals'] += 1
-                if(worldcups.fourthplace not in tvals):
+                if(row[6] not in tvals):
                     team = {
                             'Team Name':row[6],
                             'Worldcup':row[2],
@@ -130,30 +129,11 @@ def get_medals():
                     for t in team_list:
                         if t['Team Name'] == tname:
                             t['Medals'] += 1
-=======
-    return flask.render_template('help.html')
-
-@api.route('/Allcups/attendance')
-def get_attendance():
-    
-    query = '''SELECT worldcups.attendance, worldcups.year 
-                FROM worldcups ORDER BY worldcups.year;'''
-    attendance_list = []
-    try:
-        connection = get_connection()
-        cursor = connection.cursor()
-        cursor.execute(query, tuple())
-        for row in cursor:
-            wc = {  'attendance':row[0],
-                      'year':row[1]}
-            attendance_list.append(wc)
->>>>>>> 9a17d2501cefd65476bd208188f21f3278202411
         cursor.close()
         connection.close()
     except Exception as e:
         print(e, file=sys.stderr)
 
-<<<<<<< HEAD
     return json.dumps(team_list)
 
 @api.route('/gold/teams/') 
@@ -204,11 +184,6 @@ def get_gold():
         print(e, file=sys.stderr)
 
     return json.dumps(team_list)
-=======
-    return json.dumps(attendance_list)
-
-
->>>>>>> 9a17d2501cefd65476bd208188f21f3278202411
 
 @api.route('/Allcups/teams/') 
 def get_all_teams():
@@ -327,14 +302,9 @@ def get_players(year, team):
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
                  AND players_teams_matches_worldcups.player_id = players.id
                      AND teams.id = %s
-<<<<<<< HEAD
                  
 
                ORDER BY players.surname;'''
-=======
-                 AND worldcups.id = %s
-               ORDER BY players.surname, players.given_name;'''
->>>>>>> 9a17d2501cefd65476bd208188f21f3278202411
     player_list = []
     try:
         connection = get_connection()

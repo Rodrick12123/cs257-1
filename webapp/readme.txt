@@ -8,9 +8,11 @@ FEATURES CURRENTLY WORKING:
 - On team's All Time Page, World Cups that the team competed in load into dropdown
 - Can choose a World Cup and that takes you to a page about the specific team in a specific World Cup (where the team's roster loads into a dropdown)
 - Home button in nav bar takes you to home page
-- 
+- Queries for "Teams that won gold medals" are working endpoints
 
 FEATURES NOT YET WORKING:
 - Cannot yet ask queries specific to the page through the select box (most api endpoints are written, but they don't display anything yet)
 - From home page to a specific World Cup page, the latter does not load right 
 - Help button in navbar takes you to api/help right now, but will take you to better instructions/something more helpful later
+- Queries to get the amount of medals a team has needs to be fixed
+- The query that loads all the cups a specified team participated needs to be implemented.
