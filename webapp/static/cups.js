@@ -202,7 +202,51 @@ function onTeamsSelectionChanged() {
 
 
 function loadPageTitle() {
-    if (getParam('team') != '' && getParam('year') == '') {
+
+
+
+   if (getParam('team') == null && getParam('year') != null) {
+
+       let url = getAPIBaseURL() + '/Allcups/';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(years) {
+
+	    let titleBody = '';
+
+	    if (!getParam('year').include('all')) {
+
+	    for (let k = 0; k < years.length; k++) {
+		let year = years[k];
+		if (year['id'] == getParam('year')){
+		titleBody += year['year'] + ' ' +year['location']+' World Cup';
+		}
+	    }
+	    }
+	    else {
+		titleBody = "All World Cups";
+	    }
+
+	    let title = document.getElementById('page-title');
+	    if (title) {
+		title.innerHTML = titleBody;
+	    }
+	})
+	
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+
+
+
+
+
+
+    if (getParam('team') != null && getParam('year') == null) {
 
     let url = getAPIBaseURL() + '/Allcups/teams/';
 
@@ -231,7 +275,7 @@ function loadPageTitle() {
 	    });
 }
 
-   if (getParam('team') != '' && getParam('year') != '') {
+   if (getParam('team') != null && getParam('year') != null) {
 
        let url = getAPIBaseURL() + '/'+getParam('year')+'/teams/';
 
