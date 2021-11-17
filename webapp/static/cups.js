@@ -216,19 +216,23 @@ function loadPageTitle() {
     .then(function(years) {
 
 	    let titleBody = '';
+	    
+	    allyears = getParam('year').split(',');
 
-	    if (!getParam('year').include('all')) {
 
+	    if ('all' in allyears) {
+		titleBody = "all world cups";
+	    }
+	    else {
+		    
 	    for (let k = 0; k < years.length; k++) {
 		let year = years[k];
-		if (year['id'] == getParam('year')){
-		titleBody += year['year'] + ' ' +year['location']+' World Cup';
+		if (year in allyears){
+		titleBody += year + ' ' +year['location']+' World Cup';
 		}
 	    }
 	    }
-	    else {
-		titleBody = "All World Cups";
-	    }
+	    
 
 	    let title = document.getElementById('page-title');
 	    if (title) {
