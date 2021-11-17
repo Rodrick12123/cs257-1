@@ -301,6 +301,7 @@ def get_players(year, team):
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
                  AND players_teams_matches_worldcups.player_id = players.id
                      AND teams.id = %s
+                AND worldcups.id = %s
                  
 
                ORDER BY players.surname;'''
@@ -377,3 +378,22 @@ def get_players1():
 
     return json.dumps(player_list)
 
+@api.route('/Allcups/attendance')
+def get_attendance():
+
+    query = '''SELECT worldcups.attendance, worldcups.year 
+                FROM worldcups ORDER BY worldcups.year;'''
+    attendance_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, tuple())
+        for row in cursor:
+            wc = {  'attendance':row[0],
+                      'year':row[1]}
+            attendance_list.append(wc)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+    return json.dumps(attendance_list)
