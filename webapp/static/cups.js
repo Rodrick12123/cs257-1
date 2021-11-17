@@ -13,13 +13,13 @@ function initialize() {
     loadTeamsSelector();
     
     loadWorldCupsSelector();
-    /*
-    loadSpecificTeamsSelector();
+    
+    //loadSpecificTeamsSelector();
     
     loadPlayersSelector();
 
     loadPageTitle();
-    */
+    
 
     let element = document.getElementById('team_selector');
     if (element) {
@@ -382,7 +382,7 @@ function onWorldCupsSelectionChanged() {
 
 function loadPlayersSelector() {
 
-    if (getParam('team') != '' && getParam('wc') != '') {
+    if (getParam('team') != null && getParam('year') != null) {
 
 	let url = getAPIBaseURL() + '/'+getParam('year')+'/'+getParam('team')+'/roster';
 
