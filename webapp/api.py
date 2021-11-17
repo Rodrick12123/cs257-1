@@ -246,7 +246,7 @@ def get_teams_by_year(years):
                FROM worldcups, teams, players_teams_matches_worldcups
                WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
-                 
+                 AND worldcups.year = %s
                ORDER BY worldcups.year'''
     team_list = []
     try:
