@@ -1,0 +1,42 @@
+<!--Rodrick and Thea-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>World Cup Explorer</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cups.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='cups.js') }}" ></script>
+</head>
+
+<body>   
+
+    <ul class="horizontal-navbar">
+        <li><a href="/">Home</a></li>
+    </ul>
+ 
+    <h3 id="page-title"></h3> 
+ 
+    <div id="menu">
+      <div>
+	<select id="player_selector" class="box" onchange="dataSelect(this)"></select>
+      </div>
+      <div id="spacer-white"></div>
+      <div id="spacer-black"></div>
+      <div id="spacer-white"></div>
+      <div>
+	<select id="p2" class="box" onchange="dataSelect(this)">
+          <option>Who is the coach?</option>
+          <option>What medal won, if any?</option>
+          <option>Top 3 highest scoring players in this World Cup</option>
+	  <option>How many wins?</option>
+	  <option>List of all results</option>
+          <option selected>All team queries</option>
+	</select>
+      </div>
+    </div>
+    
+    <div id="results">Results</div>
+
+</body>
+</html>
