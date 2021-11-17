@@ -439,7 +439,7 @@ function loadPlayersSelector() {
     .then((response) => response.json())
 
     .then(function(players) {
-	    let selectorBody = '<option selected>Players</option>';
+	    let selectorBody = '<option selected>Roster</option>';
 	    for (let k = 0; k < players.length; k++) {
 		let player = players[k];
 		//going to need to put 'id' as a return of the query, ok for now
