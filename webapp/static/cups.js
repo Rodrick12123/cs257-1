@@ -11,6 +11,15 @@ function initialize() {
     loadWorldCupCheckBoxes();    
 
     loadTeamsSelector();
+    
+    loadWorldCupsSelector();
+    /*
+    loadSpecificTeamsSelector();
+    
+    loadPlayersSelector();
+
+    loadPageTitle();
+    */
 
     let element = document.getElementById('team_selector');
     if (element) {
@@ -22,11 +31,13 @@ function initialize() {
     if (wc_element) {
         wc_element.onchange = onWorldCupsSelectionChanged;
     }
+    
     /*
     let specific_team_element = document.getElementById('specific_team_selector');
     if (specific_team_element) {
         specific_team_element.onchange = onSpecificTeamsSelectionChanged;
     }
+    
    
 
     
@@ -57,19 +68,25 @@ let baseURL = window.location.protocol
     return baseURL;
 }    
 
+function getParam(param){
+    return new URLSearchParams(window.location.search).get(param);
+}
+
 function checkAll() {
     var boxes = document.getElementsByName('worldcup');
+    currentState = boxes[0].checked;
     for (var i=0;i<boxes.length;i++) {
         if (boxes[i].type == "checkbox" ) {
-            if(boxes[i].checked == false){
+	    
+            if(currentState){
                 boxes[i].checked = true;
-            }else{
+            }else
                 boxes[i].checked = false;
             }
-            
-        }
     }
-}
+}   
+	    
+ 
 
 function loadWorldCupCheckBoxes() {
     
@@ -104,7 +121,11 @@ function loadWorldCupCheckBoxes() {
 }
 
 function loadTeamsSelector() {
-    let url = getAPIBaseURL() + '/Allcups/teams/';
+    if (getParam('year') != null) {
+
+    if (getParam('year').includes('all')) {
+
+	let url = getAPIBaseURL() + '/Allcups/teams/';
 
     fetch(url, {method: 'get'})
 
@@ -129,6 +150,46 @@ function loadTeamsSelector() {
 	.catch(function(error) {
 		console.log(error);
 	    });
+    
+    }
+
+    else {
+	allyears = getParam('year').split(',');
+	for (i = 0; i < allyears.length; i++) {
+	
+	    year = allyears[i];
+		let url = getAPIBaseURL() + '/' + year + '/teams/';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(teams) {
+	    let selectorBody = '<option selected>Countries</option>';
+	    for (let k = 0; k < teams.length; k++) {
+		let team = teams[k];
+		if (team['team_name'] != '') {
+		selectorBody += '<option value="' + team['team_id'] + '">'
+                                + team['year'] + ' ' + team['team_name'] + ' (' + team['team_abbreviation'] +')'
+		                + '</option>/n';
+		}}
+	
+	    let selector = document.getElementById('team_selector');
+	    if (selector) {
+		selector.innerHTML += selectorBody;
+	    }
+
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+    }
+    
+	    }
+
+    }
+
 }
 
 function onTeamsSelectionChanged() {
@@ -138,9 +199,6 @@ function onTeamsSelectionChanged() {
     window.location = url;
 }
 
-function getParam(param){
-    return new URLSearchParams(window.location.search).get(param);
-}
 
 
 function loadPageTitle() {
