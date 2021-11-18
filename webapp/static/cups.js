@@ -10,17 +10,20 @@ function initialize() {
 
     loadWorldCupCheckBoxes();    
 
-    loadTeamsSelector();
+    //loadTeamsSelector();
     
-    loadWorldCupsSelector();
+    //loadWorldCupsSelector();
     
     //loadSpecificTeamsSelector();
     
-    loadPlayersSelector();
+    //loadPlayersSelector();
 
     loadPageTitle();
+
+    //loadTeamYear();
     
 
+    /*
     let element = document.getElementById('team_selector');
     if (element) {
         element.onchange = onTeamsSelectionChanged;
@@ -31,6 +34,7 @@ function initialize() {
     if (wc_element) {
         wc_element.onchange = onWorldCupsSelectionChanged;
     }
+    */
     
     /*
     let specific_team_element = document.getElementById('specific_team_selector');
@@ -194,7 +198,7 @@ function loadTeamsSelector() {
 
 function onTeamsSelectionChanged() {
     let teamID = this.value;
-    let url = getBaseURL() + 'AllCups/Team?team=' + teamID;
+    let url = getBaseURL() + 'ManyCups/Team?team=' + teamID;
    
     window.location = url;
 }
@@ -202,7 +206,6 @@ function onTeamsSelectionChanged() {
 
 
 function loadPageTitle() {
-
 
 
    if (getParam('team') == null && getParam('year') != null) {
@@ -213,25 +216,33 @@ function loadPageTitle() {
 
     .then((response) => response.json())
 
-    .then(function(years) {
+    .then(function(worldcups) {
 
 	    let titleBody = '';
 	    
 	    allyears = getParam('year').split(',');
 
-
-	    if ('all' in allyears) {
-		titleBody = "all world cups";
+	    if (allyears.length == 21) {
+		titleBody = "All World Cups (1930-2014)";
 	    }
 	    else {
-		    
-	    for (let k = 0; k < years.length; k++) {
-		let year = years[k];
-		if (year in allyears){
-		titleBody += year + ' ' +year['location']+' World Cup';
-		}
+		done = 0;
+	    for (let k = 0; k < worldcups.length; k++) {
+		let worldcup = worldcups[k];
+
+		if (allyears.includes(worldcup['wc_year'].toString())){
+		  titleBody += worldcup['wc_location'] + ' ' +worldcup['wc_year'];
+		  if (done < allyears.length - 1) {
+		  titleBody += ' - '; 
+		  }
+		  done ++;
+		  }
 	    }
 	    }
+
+	    //remove extra characters at end of title
+	    //figure out how to do dot character
+	    //	    titleBody = titleBody[:-3];
 	    
 
 	    let title = document.getElementById('page-title');
@@ -244,6 +255,8 @@ function loadPageTitle() {
 		console.log(error);
 	    });
 }
+
+
 
 
 
@@ -667,6 +680,9 @@ function loadAllTeams() {
 
 function loadTeamYear(years) {
     
+
+    //years = getParam('year');
+
     // let url = getAPIBaseURL() + '/<years>/teams/';
     let url = getAPIBaseURL() + '/' + years + '/teams/';
     // Send the request to the teamss API /authors/ endpoint
@@ -746,20 +762,25 @@ function valGetter() {
     yrs = yearGetter()
     let cLength = localStorage.getItem("checkLength");
 
-    if((yrs.length) == cLength){
-        //Put links here
-        window.location.href="/AllCups";
-        loadAllTeams();
-    }else{
-        if(yrs.length != 0){
-            window.location.href="/SpecificCups?year="+yrs;
+    // if((yrs.length) == cLength){
+    //     //Put links here
+    //     window.location.href="/AllCups";
+    //     loadAllTeams();
+    // }else{
+    if(yrs.length == 1){
+        window.location.href="/OneCup?year="+yrs;
 
-            loadTeamYear(yrs)
-        }
-        else{
-            alert("You Must Print Something")
-        }
+        loadTeamYear(yrs)
+    }else if(yrs.length != 0){
+        window.location.href="/ManyCups?year="+yrs;
+
+        loadTeamYear(yrs)
+    }else{
+        alert("You Must Print Something")
     }
+    // }
+    
+    
 }
 
 function yearGetter() {  

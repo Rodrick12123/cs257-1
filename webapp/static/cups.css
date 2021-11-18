@@ -114,6 +114,18 @@
     padding-bottom: 50px;
 }
 
+
+#medals {
+	height: 100px;
+	width: 300px;
+	padding-bottom: 20px;
+	background-color: blue;
+}
+
+
+
+
+
 #team-controls {
    
     width: 350px;

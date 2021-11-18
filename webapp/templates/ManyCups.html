@@ -18,10 +18,45 @@
  
     <h3 id="page-title"></h3> 
  
+    <div id="menu-panel">
+      <select id="gold_selector" class="box" onchange="dataSelect(this)">
+	<option>Golds</option>
+      </select>
+      <select id="silver_selector" class="box" onchange="dataSelect(this)">
+	<option>Silvers</option>
+      </select>
+      <select id="bronze_selector" class="box" onchange="dataSelect(this)">
+	<option>Bronzes</option>
+      </select>
+      <select id="attendance_selector" class="box" onchange="dataSelect(this)">
+	<option>Attendances</option>
+      </select>
+      <select id="team_selector" class="box" onchange="dataSelect(this)">
+	<option>Teams</option>
+      </select>
+
+
+      <!--these will take you to the SpecificCup page-->
+      <select id="world_cup_selector" class="box" onchange="dataSelect(this)">
+	<option>World Cups</option>
+      </select>
+
+      <button id="goal-scorers">Top 10 Goal Scorers</button>
+      
+      <!--based on team selection in team_selector dropdown
+	  (if a team is selected, just shows games that the
+	  team played in. Maybe can show the results of two
+	  teams against each other? See if that's possible.-->
+      <button id="match-results">Match results</button>
+
+
+
+    <!--
     <div id="menu">
       <div>
 	<select id="team_selector" class="box" onchange="dataSelect(this)"></select>
       </div>
+
       <div id="spacer-white"></div>
       <div id="spacer-black"></div>
       <div id="spacer-white"></div>
@@ -35,7 +70,7 @@
 	</select>
       </div>
     </div>
-    
+    -->
     <p>Results printed below.<p>
     <div><table id="results"></table></div>
     

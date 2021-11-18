@@ -13,26 +13,14 @@ app.register_blueprint(api.api, url_prefix='/api')
 def home():
     return flask.render_template('index.html')
 
-@app.route('/mockup1')
-def page1():
-    return flask.render_template('mockup1.html')
-
-@app.route('/SpecificCups')
+@app.route('/SpecificCup')
 def page2():
-    return flask.render_template('SpecificCups.html', results='Results')
+    return flask.render_template('OneCup.html', results='Results')
 
-@app.route('/AllCups')
+@app.route('/ManyCups')
 def page3():
-    return flask.render_template('AllCups.html', results='Results')
+    return flask.render_template('ManyCups.html', results='Results')
     
-@app.route('/AllCups/Team')
-def page4():
-    return flask.render_template('OneTeamAllCups.html')
-
-@app.route('/SpecificCups/Team')
-def page5():
-    return flask.render_template('OneTeamOneCup.html')
-
 @app.route('/help/')
 def help():
     return flask.render_template('help.html')
