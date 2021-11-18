@@ -24,7 +24,7 @@ def get_help():
     return flask.render_template('help.html')
 #need to edit
 @api.route('/<worldcup>/<team>/matches') 
-def get_matches(team):
+def get_matches(team,worldcup):
     tms = team.split(",")
     ylist = []
     yrs = worldcup.split(",")
@@ -335,6 +335,10 @@ ORDER BY worldcups.year;'''
 def get_players(year, team):
     # print(year)
     # print(team)
+    # tms = team.split(",")
+    # ylist = []
+    # yrs = year.split(",")
+    # ylist = [int(i) for i in yrs]
     query = '''SELECT DISTINCT players.surname, players.given_name, players.id
                FROM worldcups, teams, players_teams_matches_worldcups, players
                WHERE players_teams_matches_worldcups.team_id = teams.id
@@ -351,6 +355,7 @@ def get_players(year, team):
         cursor = connection.cursor()
         cursor.execute(query, (team, year))
         for row in cursor:
+            # if ( (row[1] in tms) and (row[2] in ylist) ):
             player = {'surname':row[0], 'given_name':row[1], 'id':row[2]}
             player_list.append(player)
         cursor.close()

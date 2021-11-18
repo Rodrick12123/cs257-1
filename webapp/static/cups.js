@@ -541,7 +541,53 @@ function teamGetter() {
     localStorage.setItem("teams", teams);
     return teams;
 }
+function loadMatches(years, teams) {
+    let url = getAPIBaseURL() + '/' + years + '/' + teams + '/matches';
+    
+    // Send the request to the teamss API /authors/ endpoint
+    fetch(url, {method: 'get'})
 
+    // When the results come back, transform them from a JSON string into
+    // a Javascript object (in this case, a list of author dictionaries).
+    .then((response) => response.json())
+    
+    // Once you have your list of author dictionaries, use it to build
+    // an HTML table displaying the author names and lifespan.
+    
+    .then(function(teams) {
+        
+        // Add the <option> elements to the <select> element
+        let tableBody = '';
+        tableBody = '<tr>'
+                    + '<TH>'+ 'Worldcup' +'</TH>'
+                    + '<TH>'+ 'Team Name' +'</TH>'
+                    + '<TH>'+ 'Abbreviation' +'</TH>'
+                    + '<TH>'+ 'Match' +'</TH>'
+                    + '</tr>\n';
+        for (let k = 0; k < teams.length; k++) {
+            let team = teams[k];
+            // <td><input type="checkbox" name="brand">Apple</td>
+        
+            tableBody +=   
+                            '<tr ALIGN="CENTER">'
+                            + '<td>' + team['Worldcup'] + '</td>'
+                            + '<td>' + team['Team Name'] + '</td>'
+                            + '<td>' + team['Abbreviation'] + '</td>'
+                            + '<td>' + team['Match'] + '</td>'
+                            + '</tr>\n';
+        }
+
+        let res = document.getElementById('results');
+        if (res) {
+            res.innerHTML = tableBody;
+        }
+    })
+    
+    // Log the error if anything went wrong during the fetch.
+    .catch(function(error) {
+        console.log(error);
+    });
+}
 function loadMedalCount(years=Null) {
     let url = getAPIBaseURL() + '/medals?years=' + years;
     
