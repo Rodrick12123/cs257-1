@@ -19,7 +19,7 @@ def get_connection():
                             user=config.user,
                             password=config.password)
 
-@api.route('/help')
+@api.route('/help/')
 def get_help():
     return flask.render_template('help.html')
 #need to edit
