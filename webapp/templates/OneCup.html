@@ -1,0 +1,67 @@
+<!--Rodrick and Thea-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>World Cup Explorer</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cups.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='cups.js') }}" ></script>
+</head>
+
+<body>   
+
+    <ul class="horizontal-navbar">
+        <li><a href="/">Home</a></li>
+	<li><a href="/help">Help</a></li>
+    </ul>
+ 
+    <h3 id="page-title"></h3> 
+ 
+    <div id="stats-div"></div>
+
+    <div id="menu-panel">
+      <select id="team_selector" class="box" onchange="dataSelect(this)">
+	<option>Teams</option>
+      </select>
+      <button id="roster" onchange="something">Roster</button>
+      <!--match results will return all results if a team isn't chosen, otherwise
+	  it will return only the games that the given team played in-->
+      <button id="match-results">Match Results</button>
+      <button id="goal-scorers">Top 10 Goal Scorers</button>
+
+    </div>
+
+    <div id="teams-div"></div>
+
+
+
+
+
+    
+
+
+    <div id="menu">
+      <div>
+<!--	<select id="team_selector" class="box" onchange="dataSelect(this)"></select>
+      </div>
+      <div id="spacer-white"></div>
+      <div id="spacer-black"></div>
+      <div id="spacer-white"></div>
+      <div>
+	<select id="p2" class="box" onchange="dataSelect(this)">
+          <option>Number of Medals Teams Won</option>
+          <option>Top 10 highest scorers (from any team)</option>
+          <option>Attendance</option>
+	  <option>Results of each match played</option>
+          <option selected>Teams that won gold medals</option>
+	</select>
+      </div>
+    </div>
+    -->
+    <p>Results printed below.<p>
+    <div><table id="results"></table></div>
+    
+
+</body>
+</html>
