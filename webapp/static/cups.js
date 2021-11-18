@@ -639,7 +639,8 @@ function loadTeamCups(teams) {
 function valGetter() {
     yrs = yearGetter()
     let cLength = localStorage.getItem("checkLength");
-    if((yrs.length +1) == cLength){
+
+    if((yrs.length) == cLength){
         //Put links here
         window.location.href="/AllCups";
         loadAllTeams();
