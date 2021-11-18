@@ -23,6 +23,42 @@ def get_connection():
 def get_help():
     return flask.render_template('help.html')
 #need to edit
+@api.route('/<worldcup>/<team>/matches') 
+def get_matches(team):
+    tms = team.split(",")
+    ylist = []
+    yrs = worldcup.split(",")
+    ylist = [int(i) for i in yrs]
+    print(tms)
+    print(ylist)
+    #how do we want to identify matches...
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, matches.id
+                FROM teams, worldcups, players_teams_matches_worldcups, matches
+                WHERE players_teams_matches_worldcups.team_id = teams.id
+                AND players_teams_matches_worldcups.worldcup_id = worldcups.id
+                AND players_teams_matches_worldcups.match_id = matches.id
+                ORDER BY teams.team_name;'''
+    
+    team_list = []
+    ylist =[]
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query,)
+        for row in cursor:
+            if ( (row[1] in tms) and (row[2] in ylist) ):
+                team = {
+                    'Team Name':row[1],
+                    'Abbreviation':row[0],
+                    'Worldcup':row[2],
+                    'Match':row[3]
+                }
+                    
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
 @api.route('/cups/<team>') 
 def get_cups(team):
     tms = team.split(",")
@@ -243,11 +279,13 @@ def get_all_worldcups():
 @api.route('/<years>/teams/') 
 def get_teams_by_year(years):
     # print(years)
+    ylist = []
+    yrs = years.split(',')
+    ylist = [int(i) for i in yrs]
     query = '''SELECT DISTINCT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.id, teams.id
                FROM worldcups, teams, players_teams_matches_worldcups
                WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
-                 AND worldcups.year = %s
                ORDER BY worldcups.year'''
     team_list = []
     try:
@@ -255,8 +293,9 @@ def get_teams_by_year(years):
         cursor = connection.cursor()
         cursor.execute(query, (years,))
         for row in cursor:
-            team = {'year':row[2], 'team_abbreviation':row[0], 'team_name':row[1], 'wc_id':row[3], 'team_id':row[4]}
-            team_list.append(team)
+            if (row[2] in ylist):
+                team = {'year':row[2], 'team_abbreviation':row[0], 'team_name':row[1], 'wc_id':row[3], 'team_id':row[4]}
+                team_list.append(team)
         cursor.close()
         connection.close()
     except Exception as e:

@@ -20,7 +20,11 @@ def page2():
 @app.route('/ManyCups')
 def page3():
     return flask.render_template('ManyCups.html', results='Results')
-    
+
+@app.route('/OneCup')
+def page4():
+    return flask.render_template('OneCup.html', results='Results')
+
 @app.route('/help/')
 def help():
     return flask.render_template('help.html')

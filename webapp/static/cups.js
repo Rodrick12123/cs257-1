@@ -222,7 +222,7 @@ function loadPageTitle() {
 	    
 	    allyears = getParam('year').split(',');
 
-	    if (allyears.length == 21) {
+	    if (allyears.length == 20) {
 		titleBody = "All World Cups (1930-2014)";
 	    }
 	    else {
@@ -761,7 +761,12 @@ function loadTeamCups(teams) {
 function valGetter() {
     yrs = yearGetter()
     let cLength = localStorage.getItem("checkLength");
-
+    
+    // if(yrs[0] == "all"){
+    //     alert(yrs[0])
+    //     yrs.remove(0)
+    //     alert(yrs)
+    // }
     // if((yrs.length) == cLength){
     //     //Put links here
     //     window.location.href="/AllCups";
@@ -791,7 +796,9 @@ function yearGetter() {
         
         if(checkboxes[i].checked == true){
             val = checkboxes[i].value;
-            years.push(val);
+            if(val != "all"){
+                years.push(val);
+            }
         }
            
     }
