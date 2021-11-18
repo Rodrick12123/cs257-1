@@ -480,8 +480,8 @@ function dataSelect(evt) {
     }
     if(evt.id === "p3"){
         
-        if (evt.value === "All team queries") {
-
+        if (evt.value === "All WC queries") {
+            alert('yes')
             loadAllTeams()
 
         }
