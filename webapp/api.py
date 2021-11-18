@@ -184,6 +184,7 @@ def get_gold():
 
     return json.dumps(team_list)
 
+
 @api.route('/Allcups/teams/') 
 def get_all_teams():
     
