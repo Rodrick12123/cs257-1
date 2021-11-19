@@ -23,9 +23,16 @@ def get_connection():
 def get_help():
     return flask.render_template('help.html')
 #need to edit
-@api.route('/<worldcup>/<team>/matches') 
+@api.route('/<worldcup>/matches') 
 def get_matches(team,worldcup):
     tms = team.split(",")
+    teams = flask.request.args.get('teams')
+    
+    if (teams):
+        tms = teams.split(",") 
+    else:  
+        tms = []
+        tms.append('all')
     ylist = []
     yrs = worldcup.split(",")
     ylist = [int(i) for i in yrs]
@@ -46,13 +53,14 @@ def get_matches(team,worldcup):
         cursor = connection.cursor()
         cursor.execute(query,)
         for row in cursor:
-            if ( (row[1] in tms) and (row[2] in ylist) ):
-                team = {
-                    'Team Name':row[1],
-                    'Abbreviation':row[0],
-                    'Worldcup':row[2],
-                    'Match':row[3]
-                }
+            if ( (row[1] in tms) or ('all' in tms)): 
+                if(row[2] in ylist):
+                    team = {
+                        'Team Name':row[1],
+                        'Abbreviation':row[0],
+                        'Worldcup':row[2],
+                        'Match':row[3]
+                    }
                     
         cursor.close()
         connection.close()
@@ -174,6 +182,80 @@ def get_medals():
                         for t in team_list:
                             if t['Team Name'] == tname:
                                 t['Medals'] += 1
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(team_list)
+
+@api.route('/silver/teams/') 
+def get_gold():
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.thirdplace
+                FROM teams, worldcups, players_teams_matches_worldcups
+                WHERE players_teams_matches_worldcups.team_id = teams.id
+                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
+                ORDER BY worldcups.year;'''
+    team_list = []
+    years = flask.request.args.get('years')
+    tlist =[]
+    ylist = []
+    yr = []
+    if (years):
+        yrs = years.split(",")
+        ylist = [int(i) for i in yrs]
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query,)
+        for row in cursor:
+            if(row[2] not in yr):                         
+                if(row[2] in ylist):                   
+                    if( row[3] == row[1]):
+                        team = {'Abbreviation':row[0],
+                                'Team Name':row[1],
+                                'Worldcup':row[2]}
+                        team_list.append(team)
+
+                        yr.append(row[2])
+                
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(team_list)
+
+@api.route('/silver/teams/') 
+def get_gold():
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.secoundplace
+                FROM teams, worldcups, players_teams_matches_worldcups
+                WHERE players_teams_matches_worldcups.team_id = teams.id
+                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
+                ORDER BY worldcups.year;'''
+    team_list = []
+    years = flask.request.args.get('years')
+    tlist =[]
+    ylist = []
+    yr = []
+    if (years):
+        yrs = years.split(",")
+        ylist = [int(i) for i in yrs]
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query,)
+        for row in cursor:
+            if(row[2] not in yr):                         
+                if(row[2] in ylist):                   
+                    if( row[3] == row[1]):
+                        team = {'Abbreviation':row[0],
+                                'Team Name':row[1],
+                                'Worldcup':row[2]}
+                        team_list.append(team)
+
+                        yr.append(row[2])
+                
         cursor.close()
         connection.close()
     except Exception as e:
