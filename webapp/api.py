@@ -190,8 +190,8 @@ def get_medals():
     return json.dumps(team_list)
 
 @api.route('/silver/teams/') 
-def get_gold():
-    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.thirdplace
+def get_silver():
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.secondplace
                 FROM teams, worldcups, players_teams_matches_worldcups
                 WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
@@ -226,9 +226,9 @@ def get_gold():
 
     return json.dumps(team_list)
 
-@api.route('/silver/teams/') 
-def get_gold():
-    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.secoundplace
+@api.route('/bronze/teams/') 
+def get_bronze():
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.thirdplace
                 FROM teams, worldcups, players_teams_matches_worldcups
                 WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
@@ -332,6 +332,36 @@ def get_all_teams():
         print(e, file=sys.stderr)
 
     return json.dumps(team_list)
+
+
+@api.route('/medals/<year>/') 
+def get_all_medals(year):
+    
+    query = '''SELECT DISTINCT worldcups.year, worldcups.firstplace, worldcups.secoundplace, worldcups.thirdplace, worldcups.id
+                FROM worldcups
+                WHERE worldcups.year = %s
+                ORDER BY worldcups.year;'''
+    medal_list = []
+    try:
+        
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, (year,))
+        for row in cursor:
+            podium = {'year':row[0],  'wc_id':row[4], 'firstplace':row[1], 'secondplace':row[2], 'thirdplace':row[3]}
+            medal_list.append(podium)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(medal_list)
+
+
+
+
+
+
 
 @api.route('/Allcups/')
 def get_all_worldcups():

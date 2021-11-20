@@ -10,7 +10,9 @@ function initialize() {
 
     loadWorldCupCheckBoxes();    
 
-    //loadTeamsSelector();
+    loadTeamsSelector();
+
+    displayStats();
     
     //loadWorldCupsSelector();
     
@@ -23,13 +25,13 @@ function initialize() {
     //loadTeamYear();
     
 
-    /*
+    
     let element = document.getElementById('team_selector');
     if (element) {
         element.onchange = onTeamsSelectionChanged;
     }
     
-
+    /*
     let wc_element = document.getElementById('world_cup_selector');
     if (wc_element) {
         wc_element.onchange = onWorldCupsSelectionChanged;
@@ -198,9 +200,12 @@ function loadTeamsSelector() {
 
 function onTeamsSelectionChanged() {
     let teamID = this.value;
-    let url = getBaseURL() + 'ManyCups/Team?team=' + teamID;
-   
-    window.location = url;
+    /*
+    let url = getBaseURL() + 'OneCup?year='+getParam('year')+'&team=' + teamID;
+    */
+    var team_selected = teamID;
+
+    //window.location = url;
 }
 
 
@@ -208,7 +213,7 @@ function onTeamsSelectionChanged() {
 function loadPageTitle() {
 
 
-   if (getParam('team') == null && getParam('year') != null) {
+   if (getParam('year') != null) {
 
        let url = getAPIBaseURL() + '/Allcups/';
 
@@ -291,7 +296,7 @@ function loadPageTitle() {
 		console.log(error);
 	    });
 }
-
+    /*
    if (getParam('team') != null && getParam('year') != null) {
 
        let url = getAPIBaseURL() + '/'+getParam('year')+'/teams/';
@@ -320,12 +325,52 @@ function loadPageTitle() {
 		console.log(error);
 	    });
 }
+    */
 
 
 
 
 
 }
+
+
+function displayStats() {
+    let url = getAPIBaseURL() + '/medals/'+getParam('year')+'/';
+
+    fetch(url, {method: 'get'})
+
+	.then((response) => response.json())
+
+	.then(function(medals) {
+		let medalsBody = '';
+		for (let k = 0; k < medals.length; k++) {
+		    let medal = medals[k];
+		    first = medal['firstplace'];
+		    second = medal['secondplace'];
+		    third = medal['thirdplace'];
+		    medalsBody += '<tr>' + 
+			          '<td>' + first + '</td>'
+			          + '<td>' + second+'</td>'
+			          + '<td>'+third+'</td>'
+			          + '</tr>';
+
+		}
+
+		let table = document.getElementById('medals_table');
+		if (table) {
+		    table.innerHTML += medalsBody;
+		}
+	    })
+
+        .catch(function(error) {
+                console.log(error);
+	    });
+}
+
+
+
+
+
 
 
 function onWCQueriesSelectionChanged() {

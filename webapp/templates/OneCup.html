@@ -18,17 +18,24 @@
  
     <h3 id="page-title"></h3> 
  
-    <div id="stats-div"></div>
+    <div id="stats-div">
+      <table id="medals_table">
+	<th>
+	  <td>Gold</td>
+	  <td>Silver</td>
+	  <td>Bronze</td>
+	</th>
+
+    </div>
 
     <div id="menu-panel">
-      <select id="team_selector" class="box" onchange="dataSelect(this)">
-	<option>Teams</option>
-      </select>
+      <select id="team_selector" class="box" onchange="dataSelect(this)"></select>
       <button id="roster" onchange="something">Roster</button>
       <!--match results will return all results if a team isn't chosen, otherwise
 	  it will return only the games that the given team played in-->
       <button id="match-results">Match Results</button>
       <button id="goal-scorers">Top 10 Goal Scorers</button>
+
 
     </div>
 
