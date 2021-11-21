@@ -483,24 +483,33 @@ def get_players(year, team):
 
 
 @api.route('/allmatches/<year>')
-def get_all_matches(year):
+def get_team_matches(year):
 
     query = '''SELECT DISTINCT  matches.id, matches.date_time, matches.stage, matches.stadium,
            matches.city, matches.home_team, matches.home_score, matches.away_team, 
            matches.away_score, matches.home_first_half_goals, 
            matches.home_second_half_goals, matches.away_first_half_goals, 
            matches.away_second_half_goals
-           FROM matches, worldcups, players_teams_matches_worldcups 
+           FROM matches, worldcups, players_teams_matches_worldcups, teams 
            WHERE matches.id = players_teams_matches_worldcups.match_id
            AND worldcups.id = players_teams_matches_worldcups.worldcup_id
-           AND worldcups.year = %s
-           ORDER BY matches.date_time;'''
+           AND worldcups.year = %s'''
+
+    team = flask.request.args.get('team') #this is the team id
+
+    if team is not None:
+        query += ''' AND (matches.home_team = %s OR matches.away_team = %s)'''
+
+    query += ''' ORDER BY matches.date_time;'''
     
     match_list = []
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        cursor.execute(query, (year,))
+        if team is not None:
+            cursor.execute(query, (year, team, team))
+        else:
+            cursor.execute(query, (year,))
         for row in cursor:
             match = {'match_id':row[0],
                       'date':row[1],
