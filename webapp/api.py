@@ -457,7 +457,7 @@ def get_players(year, team):
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
                  AND players_teams_matches_worldcups.player_id = players.id
                      AND teams.id = %s
-                AND worldcups.id = %s
+                AND worldcups.year = %s
                  
 
                ORDER BY players.surname;'''

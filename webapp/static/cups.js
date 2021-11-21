@@ -54,6 +54,12 @@ function initialize() {
     }
     
     */
+    /*
+    let roster_button = document.getElementById('roster');
+    if (roster_button) {
+	roster_button.onchange = onRosterButtonPressed;
+    }
+    */
   
 
 }
@@ -203,7 +209,7 @@ function onTeamsSelectionChanged() {
     /*
     let url = getBaseURL() + 'OneCup?year='+getParam('year')+'&team=' + teamID;
     */
-    var team_selected = teamID;
+    window.team_selected = teamID;
 
     //window.location = url;
 }
@@ -366,6 +372,46 @@ function displayStats() {
                 console.log(error);
 	    });
 }
+
+
+
+
+function onRosterButtonPressed() {
+   if (window.team_selected != null) {
+
+	let url = getAPIBaseURL() + '/'+getParam('year')+'/'+window.team_selected+'/roster';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(players) {
+	    let rosterBody = '';
+	    for (let k = 0; k < players.length; k++) {
+		let player = players[k];
+		//going to need to put 'id' as a return of the query, ok for now
+		rosterBody += '<tr><td>'
+                                + player['surname'] + ', ' + player['given_name']
+		                + '</td></tr>';
+	    }
+
+	    let results = document.getElementById('results');
+	    if (results) {
+		results.innerHTML = rosterBody;
+	    }
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+
+else {
+    alert('choose something');
+}
+
+}
+
 
 
 
