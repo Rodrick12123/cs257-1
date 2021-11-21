@@ -128,72 +128,35 @@ function loadWorldCupCheckBoxes() {
 
 function loadTeamsSelector() {
     if (getParam('year') != null) {
+        allyears = getParam('year').split(',');
+        let url = getAPIBaseURL() + '/' + allyears + '/teams/';
 
-    if (getParam('year').includes('all')) {
+        fetch(url, {method: 'get'})
 
-	let url = getAPIBaseURL() + '/Allcups/teams/';
+        .then((response) => response.json())
 
-    fetch(url, {method: 'get'})
+        .then(function(teams) {
+            let selectorBody = '<option selected>Teams</option>';
+            for (let k = 0; k < teams.length; k++) {
+            let team = teams[k];
+            if (team['team_name'] != '') {
+                selectorBody += '<option value="' + team['team_id'] + '">'
+                                        + team['team_name'] + ' (' + team['team_abbreviation'] +')'
+                                + '</option>/n';
+                }
+            }
+        
+            let selector = document.getElementById('team_selector');
+            if (selector) {
+            selector.innerHTML += selectorBody;
+            }
 
-    .then((response) => response.json())
+        })
 
-    .then(function(teams) {
-	    let selectorBody = '<option selected>Countries</option>';
-	    for (let k = 0; k < teams.length; k++) {
-		let team = teams[k];
-		if (team['team_name'] != '') {
-		selectorBody += '<option value="' + team['id'] + '">'
-                                + team['team_name'] + ' (' + team['team_abbreviation'] +')'
-		                + '</option>/n';
-		}}
-	    let selector = document.getElementById('team_selector');
-	    if (selector) {
-		selector.innerHTML = selectorBody;
-	    }
-
-	})
-
-	.catch(function(error) {
-		console.log(error);
-	    });
-    
-    }
-
-    else {
-	allyears = getParam('year').split(',');
-	for (i = 0; i < allyears.length; i++) {
-	
-	    year = allyears[i];
-		let url = getAPIBaseURL() + '/' + year + '/teams/';
-
-    fetch(url, {method: 'get'})
-
-    .then((response) => response.json())
-
-    .then(function(teams) {
-	    let selectorBody = '<option selected>Countries</option>';
-	    for (let k = 0; k < teams.length; k++) {
-		let team = teams[k];
-		if (team['team_name'] != '') {
-		selectorBody += '<option value="' + team['team_id'] + '">'
-                                + team['year'] + ' ' + team['team_name'] + ' (' + team['team_abbreviation'] +')'
-		                + '</option>/n';
-		}}
-	
-	    let selector = document.getElementById('team_selector');
-	    if (selector) {
-		selector.innerHTML += selectorBody;
-	    }
-
-	})
-
-	.catch(function(error) {
-		console.log(error);
-	    });
-    }
-    
-	    }
-
+        .catch(function(error) {
+            console.log(error);
+        });
+        
     }
 
 }
@@ -525,9 +488,9 @@ function loadPlayersSelector() {
 
 
 function dataSelect(evt) {
-    
+    alert("evt.id")
     let years = localStorage.getItem("year");
-    if(evt.id === "Players"){
+    if(evt.id === "team_selector"){
         alert("coming Soon")
     }
     if(evt.id === "Teams"){

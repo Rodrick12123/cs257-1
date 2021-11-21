@@ -336,10 +336,11 @@ def get_all_teams():
 
 @api.route('/medals/<year>/') 
 def get_all_medals(year):
-    
+    ylist = []
+    yrs = year.split(',')
+    ylist = [int(i) for i in yrs]
     query = '''SELECT DISTINCT worldcups.year, worldcups.firstplace, worldcups.secoundplace, worldcups.thirdplace, worldcups.id
                 FROM worldcups
-                WHERE worldcups.year = %s
                 ORDER BY worldcups.year;'''
     medal_list = []
     try:
@@ -348,8 +349,9 @@ def get_all_medals(year):
         cursor = connection.cursor()
         cursor.execute(query, (year,))
         for row in cursor:
-            podium = {'year':row[0],  'wc_id':row[4], 'firstplace':row[1], 'secondplace':row[2], 'thirdplace':row[3]}
-            medal_list.append(podium)
+            if(row[0] in ylist):
+                podium = {'year':row[0],  'wc_id':row[4], 'firstplace':row[1], 'secondplace':row[2], 'thirdplace':row[3]}
+                medal_list.append(podium)
         cursor.close()
         connection.close()
     except Exception as e:
@@ -400,14 +402,17 @@ def get_teams_by_year(years):
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
                ORDER BY worldcups.year'''
     team_list = []
+    tms = []
     try:
         connection = get_connection()
         cursor = connection.cursor()
         cursor.execute(query, (years,))
         for row in cursor:
-            if (row[2] in ylist):
+            
+            if ((row[2] in ylist) and (row[0] not in tms)):
                 team = {'year':row[2], 'team_abbreviation':row[0], 'team_name':row[1], 'wc_id':row[3], 'team_id':row[4]}
                 team_list.append(team)
+                tms.append(row[0])
         cursor.close()
         connection.close()
     except Exception as e:
