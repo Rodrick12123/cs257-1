@@ -20,11 +20,11 @@
  
     <div id="stats-div">
       <table id="medals_table">
-	<th>
-	  <td>Gold</td>
-	  <td>Silver</td>
-	  <td>Bronze</td>
-	</th>
+	<tr>
+	  <th>Gold</th>
+	  <th>Silver</th>
+	  <th>Bronze</th>
+	</tr>
 
     </div>
 
@@ -33,7 +33,7 @@
       <button id="roster" onclick="onRosterButtonPressed()">Roster</button>
       <!--match results will return all results if a team isn't chosen, otherwise
 	  it will return only the games that the given team played in-->
-      <button id="match-results">Match Results</button>
+      <button id="match-results" onclick="onMatchResultsButtonPressed()">Match Results</button>
       <button id="goal-scorers">Top 10 Goal Scorers</button>
 
 
