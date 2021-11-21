@@ -540,8 +540,10 @@ def get_team_matches(year):
         print(e, file=sys.stderr)
     return json.dumps(match_list)
 
-@api.route('/allmatches/<year>/<player>')
-def get_player_goals(player):
+@api.route('/allmatches/goals')
+def get_goals():
+
+    #year, team, and player are options
 
     query = '''SELECT DISTINCT players.surname, players.given_name, COUNT(players_teams_matches_worldcups.goal)
            FROM matches, worldcups, players_teams_matches_worldcups, players, teams 
@@ -553,43 +555,64 @@ def get_player_goals(player):
            AND players.id = %s
            AND players_teams_matches_worldcups.goal LIKE '%G%'
            GROUP BY players.surname, players.given_name
-           ORDER BY COUNT(players_teams_matches_worldcups.goal);'''
+           ORDER BY COUNT(players_teams_matches_worldcups.goal) DESC;'''
+
+    query = '''SELECT DISTINCT players.id, players.surname, players.given_name, COUNT(players_teams_matches_worldcups.goal)
+           FROM matches, worldcups, players_teams_matches_worldcups, players, teams 
+           WHERE matches.id = players_teams_matches_worldcups.match_id
+           AND players.id = players_teams_matches_worldcups.player_id
+           AND worldcups.id = players_teams_matches_worldcups.worldcup_id
+           AND teams.id = players_teams_matches_worldcups.team_id
+           AND players_teams_matches_worldcups.goal LIKE '%G%' '''
 
     team = flask.request.args.get('team') #this is the team id
+    year = flask.request.args.get('year') #this is the year
+    player = flask.request.args.get('player') #this is the player id
+
 
     if team is not None:
         query += ''' AND (matches.home_team = %s OR matches.away_team = %s)'''
+    if year is not None:
+        query += ''' AND worldcups.year = %s'''
+    if player is not None:
+        query += '''AND players.id = %s'''
 
-    query += ''' ORDER BY matches.date_time;'''
-    
-    match_list = []
+    query += ''' GROUP BY players.id, players.surname, players.given_name
+                 ORDER BY COUNT(players_teams_matches_worldcups.goal) DESC
+                 LIMIT 20; '''
+
+    player_list = []
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        if team is not None:
-            cursor.execute(query, (year, team, team))
-        else:
+        #should be all combinations (should be six if-statements)
+        #need to definitely clean this up
+        if team is not None and player is None and year is None:
+            cursor.execute(query, (team, team))
+        if team is not None and player is not None and year is None:
+            cursor.execute(query, (team, team, player))
+        if team is not None and player is None and year is not None:
+            cursor.execute(query, (team, team, year))
+        if team is not None and player is not None and year is not None:
+            cursor.execute(query, (team, team, year, player))
+        if team is None and player is not None and year is None:
+            cursor.execute(query, (player,))
+        if team is None and player is None and year is not None:
             cursor.execute(query, (year,))
+        else:
+            print('here')
+            cursor.execute(query)
         for row in cursor:
-            match = {'match_id':row[0],
-                      'date':row[1],
-                      'stage':row[2],
-                      'stadium':row[3],
-                      'city':row[4],
-                      'home_team':row[5],
-                      'home_score':row[6],
-                      'away_team':row[7],
-                      'away_score':row[8],
-                      'home_first_half_score':row[9],
-                      'home_second_half_score':row[10],
-                      'away_first_half_score':row[11],
-                      'away_second_half_score':row[12]}
-            match_list.append(match)
+            player = {'player_id':row[0],
+                      'surname':row[1],
+                      'given_name':row[2],
+                      'goals':row[3]}
+            player_list.append(player)
         cursor.close()
         connection.close()
     except Exception as e:
         print(e, file=sys.stderr)
-    return json.dumps(match_list)
+    return json.dumps(player_list)
 
     
 
