@@ -340,6 +340,7 @@ function displayStats() {
 
 
 function onRosterButtonPressed() {
+    alert('yes')
    if (window.team_selected != null) {
 
 	let url = getAPIBaseURL() + '/'+getParam('year')+'/'+window.team_selected+'/roster';

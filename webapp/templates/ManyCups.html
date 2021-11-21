@@ -19,17 +19,10 @@
     <h3 id="page-title"></h3> 
  
     <div id="menu-panel">
-      <select id="gold_selector" class="box" onchange="dataSelect(this)">
-	<option>Golds</option>
-      </select>
-      <select id="silver_selector" class="box" onchange="dataSelect(this)">
-	<option>Silvers</option>
-      </select>
-      <select id="bronze_selector" class="box" onchange="dataSelect(this)">
-	<option>Bronzes</option>
-      </select>
-      <select id="attendance_selector" class="box" onchange="dataSelect(this)">
-	<option>Attendances</option>
+      <select id="medal_choice" class="box" onchange="dataSelect(this)">
+	<option>Gold</option>
+      <option>Silver</option>
+      <option>Bronze</option>
       </select>
       <select id="team_selector" class="box" onchange="dataSelect(this)"></select>
 
@@ -40,7 +33,8 @@
       </select>
 
       <button id="goal-scorers">Top 10 Goal Scorers</button>
-      
+      <button id="goal-scorers">Medal Data</button>
+      <button id="goal-scorers">Attendances</button>
       <!--based on team selection in team_selector dropdown
 	  (if a team is selected, just shows games that the
 	  team played in. Maybe can show the results of two
