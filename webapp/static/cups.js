@@ -342,7 +342,7 @@ function displayStats() {
 function onRosterButtonPressed() {
     alert('yes')
    if (window.team_selected != null) {
-
+        alert('yes')
 	let url = getAPIBaseURL() + '/'+getParam('year')+'/'+window.team_selected+'/roster';
 
     fetch(url, {method: 'get'})
@@ -418,9 +418,51 @@ function onMatchResultsButtonPressed() {
 	    });
 }
 
-else {
-    alert('Please choose a team!');
+   else {
+
+       //gets just the matches that a specific team played
+       //global variable?
+
+       let url = getAPIBaseURL() + '/allmatches/'+getParam('year')+'?team='+window.team_selected;
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(matches) {
+	    let matchesBody = '<tr>' +
+                              '<th>Date</th>' +
+                              '<th>Stage</th>' +
+                              '<th>Stadium</th>' +
+		              '<th>City</th>' +
+		              '<th>Match-up</th>' +
+                              '<th>Result</th>' +		 
+		              '</tr>;';
+	    for (let k = 0; k < matches.length; k++) {
+		let match = matches[k];
+		//going to need to put 'id' as a return of the query, ok for now
+		matchesBody += '<tr>' +
+                               '<td>' + match['date'] + '</td>' +
+		               '<td>' + match['stage'] + '</td>' + 
+		               '<td>' + match['stadium'] + '</td>' + 
+		               '<td>' + match['city'] + '</td>' + 
+		               '<td>' + match['home_team'] + ' vs. ' + match['away_team'] + '</td>' +
+		               '<td>' + match['home_score'] + ' - ' + match['away_score'] + '</td>' +
+		               '</tr>';
+	    }
+
+	    let results = document.getElementById('results');
+	    if (results) {
+		results.innerHTML = matchesBody;
+	    }
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
 }
+
+
 
 }
 
