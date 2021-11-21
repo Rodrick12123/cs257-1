@@ -23,9 +23,12 @@ def get_connection():
 def get_help():
     return flask.render_template('help.html')
 #need to edit
+
+
+
 @api.route('/<worldcup>/matches') 
-def get_matches(team,worldcup):
-    tms = team.split(",")
+def get_matches(worldcup):
+    #tms = teams.split(",")
     teams = flask.request.args.get('teams')
     
     if (teams):
@@ -481,6 +484,50 @@ def get_players(year, team):
         print(e, file=sys.stderr)
 
     return json.dumps(player_list)
+
+
+
+@api.route('/allmatches/<year>')
+def get_all_matches(year):
+
+    query = '''SELECT DISTINCT  matches.id, matches.date_time, matches.stage, matches.stadium,
+           matches.city, matches.home_team, matches.home_score, matches.away_team, 
+           matches.away_score, matches.home_first_half_goals, 
+           matches.home_second_half_goals, matches.away_first_half_goals, 
+           matches.away_second_half_goals
+           FROM matches, worldcups, players_teams_matches_worldcups 
+           WHERE matches.id = players_teams_matches_worldcups.match_id
+           AND worldcups.id = players_teams_matches_worldcups.worldcup_id
+           AND worldcups.year = %s
+           ORDER BY matches.date_time;'''
+    
+    match_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, (year,))
+        for row in cursor:
+            match = {'match_id':row[0],
+                      'date':row[1],
+                      'stage':row[2],
+                      'stadium':row[3],
+                      'city':row[4],
+                      'home_team':row[5],
+                      'home_score':row[6],
+                      'away_team':row[7],
+                      'away_score':row[8],
+                      'home_first_half_score':row[9],
+                      'home_second_half_score':row[10],
+                      'away_first_half_score':row[11],
+                      'away_second_half_score':row[12]}
+            match_list.append(match)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+    return json.dumps(match_list)
+
+    
 
 
 
