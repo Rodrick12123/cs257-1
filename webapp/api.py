@@ -544,18 +544,8 @@ def get_team_matches(year):
 def get_goals():
 
     #year, team, and player are options
-
-    query = '''SELECT DISTINCT players.surname, players.given_name, COUNT(players_teams_matches_worldcups.goal)
-           FROM matches, worldcups, players_teams_matches_worldcups, players, teams 
-           WHERE matches.id = players_teams_matches_worldcups.match_id
-           AND players.id = players_teams_matches_worldcups.player_id
-           AND worldcups.id = players_teams_matches_worldcups.worldcup_id
-           AND teams.id = players_teams_matches_worldcups.team_id
-           AND worldcups.year = %s
-           AND players.id = %s
-           AND players_teams_matches_worldcups.goal LIKE '%G%'
-           GROUP BY players.surname, players.given_name
-           ORDER BY COUNT(players_teams_matches_worldcups.goal) DESC;'''
+    #maybe not player?
+    #come back later to add player if desired, but not now
 
     query = '''SELECT DISTINCT players.id, players.surname, players.given_name, COUNT(players_teams_matches_worldcups.goal)
            FROM matches, worldcups, players_teams_matches_worldcups, players, teams 
@@ -563,7 +553,7 @@ def get_goals():
            AND players.id = players_teams_matches_worldcups.player_id
            AND worldcups.id = players_teams_matches_worldcups.worldcup_id
            AND teams.id = players_teams_matches_worldcups.team_id
-           AND players_teams_matches_worldcups.goal LIKE '%G%' '''
+           AND players_teams_matches_worldcups.goal LIKE %s '''
 
     team = flask.request.args.get('team') #this is the team id
     year = flask.request.args.get('year') #this is the year
@@ -571,37 +561,31 @@ def get_goals():
 
 
     if team is not None:
-        query += ''' AND (matches.home_team = %s OR matches.away_team = %s)'''
+        query += ''' AND teams.team_name = %s AND (matches.home_team = teams.team_name OR matches.away_team = teams.team_name)'''
     if year is not None:
-        query += ''' AND worldcups.year = %s'''
+        query += ''' AND CAST(worldcups.year AS TEXT) = %s'''
     if player is not None:
-        query += '''AND players.id = %s'''
+        query += ''' AND players.surname = %s '''
 
     query += ''' GROUP BY players.id, players.surname, players.given_name
                  ORDER BY COUNT(players_teams_matches_worldcups.goal) DESC
                  LIMIT 20; '''
 
+    search_string_goal = f'%G%'
+
     player_list = []
     try:
         connection = get_connection()
         cursor = connection.cursor()
-        #should be all combinations (should be six if-statements)
-        #need to definitely clean this up
-        if team is not None and player is None and year is None:
-            cursor.execute(query, (team, team))
-        if team is not None and player is not None and year is None:
-            cursor.execute(query, (team, team, player))
-        if team is not None and player is None and year is not None:
-            cursor.execute(query, (team, team, year))
-        if team is not None and player is not None and year is not None:
-            cursor.execute(query, (team, team, year, player))
-        if team is None and player is not None and year is None:
-            cursor.execute(query, (player,))
-        if team is None and player is None and year is not None:
-            cursor.execute(query, (year,))
+        #need to add 
+        if team is not None and year is None:
+            cursor.execute(query, (search_string_goal, team))
+        if year is not None and team is None:
+            cursor.execute(query, (search_string_goal, year))
+        if year is not None and team is not None:
+            cursor.execute(query, (search_string_goal, team, year))
         else:
-            print('here')
-            cursor.execute(query)
+            cursor.execute(query, (search_string_goal,))
         for row in cursor:
             player = {'player_id':row[0],
                       'surname':row[1],
