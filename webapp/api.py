@@ -340,8 +340,11 @@ def get_all_teams():
 @api.route('/medals/<year>/') 
 def get_all_medals(year):
     ylist = []
-    yrs = year.split(',')
-    ylist = [int(i) for i in yrs]
+    
+    if(year):
+        yrs = year.split(',')
+        ylist = [int(i) for i in yrs]
+    
     query = '''SELECT DISTINCT worldcups.year, worldcups.firstplace, worldcups.secoundplace, worldcups.thirdplace, worldcups.id
                 FROM worldcups
                 ORDER BY worldcups.year;'''
@@ -399,6 +402,7 @@ def get_teams_by_year(years):
     ylist = []
     yrs = years.split(',')
     ylist = [int(i) for i in yrs]
+    print('yes')
     query = '''SELECT DISTINCT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.id, teams.id
                FROM worldcups, teams, players_teams_matches_worldcups
                WHERE players_teams_matches_worldcups.team_id = teams.id
@@ -666,3 +670,43 @@ def get_attendance():
     except Exception as e:
         print(e, file=sys.stderr)
     return json.dumps(attendance_list)
+
+
+@api.route('/worldcups/<allyears>/<teams>/') 
+def get_cup_selector(allyears,teams):
+    
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace
+                FROM teams, worldcups, players_teams_matches_worldcups
+                WHERE players_teams_matches_worldcups.team_id = teams.id
+                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
+                ORDER BY worldcups.year;'''
+    cup_list = []
+    yr = []
+    yrs = allyears.split(',')
+    ylist = [int(i) for i in yrs]
+    tms = []
+    if(teams != 'null'):
+        
+        tms = teams.split(",")
+    else:
+        tms.append('all')
+    print(tms)
+
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query,)
+        for row in cursor:
+            if(row[2] not in yr and row[2] in ylist):                
+                if((row[1] in tms) or ('all' in tms)):                   
+                    cup = {
+                            'Worldcup':row[2]}
+                    cup_list.append(cup)
+                    yr.append(row[2])
+                
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(cup_list)

@@ -11,7 +11,7 @@ function initialize() {
     loadWorldCupCheckBoxes();    
 
     loadTeamsSelector();
-
+    loadWorldCupsSelector();
     displayStats();
     
     //loadWorldCupsSelector();
@@ -26,10 +26,10 @@ function initialize() {
     
 
     
-    let element = document.getElementById('team_selector');
-    if (element) {
-        element.onchange = onTeamsSelectionChanged;
-    }
+    // let element = document.getElementById('team_selector');
+    // if (element) {
+    //     element.onchange = onTeamsSelectionChanged;
+    // }
     
     /*
     let wc_element = document.getElementById('world_cup_selector');
@@ -132,10 +132,16 @@ function loadWorldCupCheckBoxes() {
 	    });
 }
 
-function loadTeamsSelector() {
+function loadTeamsSelector(cups=null) {
+  
     if (getParam('year') != null) {
         allyears = getParam('year').split(',');
+        // alert(cups)
         let url = getAPIBaseURL() + '/' + allyears + '/teams/';
+        if(cups != null){
+            url = getAPIBaseURL() + '/' + cups + '/teams/';
+        }
+            
 
         fetch(url, {method: 'get'})
 
@@ -146,7 +152,7 @@ function loadTeamsSelector() {
             for (let k = 0; k < teams.length; k++) {
             let team = teams[k];
             if (team['team_name'] != '') {
-                selectorBody += '<option value="' + team['team_id'] + '">'
+                selectorBody += '<option value="' + team['team_name'] + '">'
                                         + team['team_name'] + ' (' + team['team_abbreviation'] +')'
                                 + '</option>/n';
                 }
@@ -543,36 +549,35 @@ function onSpecificTeamsSelectionChanged() {
 
 
 
-function loadWorldCupsSelector() {
+function loadWorldCupsSelector(teams=null) {
+    if (getParam('year') != null) {
+        allyears = getParam('year').split(',');
+        let url = getAPIBaseURL() + '/worldcups/' + allyears + '/' + teams + '/';
 
-    if (getParam('team') != '') {
+        fetch(url, {method: 'get'})
 
-	let url = getAPIBaseURL() + '/Allcups/'+getParam('team')+'/cups';
+        .then((response) => response.json())
 
-    fetch(url, {method: 'get'})
+        .then(function(worldcups) {
+            let selectorBody = '<option selected>World Cups</option>';
+            for (let k = 0; k < worldcups.length; k++) {
+            let worldcup = worldcups[k];
+            //going to need to put 'id' as a return of the query, ok for now
+            selectorBody += '<option value="' + worldcup['Worldcup'] + '">'
+                                    + worldcup['Worldcup'] 
+                            + '</option>/n';
+            }
 
-    .then((response) => response.json())
+            let selector = document.getElementById('world_cup_selector');
+            if (selector) {
+            selector.innerHTML = selectorBody;
+            }
+        })
 
-    .then(function(worldcups) {
-	    let selectorBody = '<option selected>World Cups</option>';
-	    for (let k = 0; k < worldcups.length; k++) {
-		let worldcup = worldcups[k];
-		//going to need to put 'id' as a return of the query, ok for now
-		selectorBody += '<option value="' + worldcup['id'] + '">'
-                                + worldcup['wc_location'] + ' ' + worldcup['wc_year']
-		                + '</option>/n';
-	    }
-
-	    let selector = document.getElementById('world_cup_selector');
-	    if (selector) {
-		selector.innerHTML = selectorBody;
-	    }
-	})
-
-	.catch(function(error) {
-		console.log(error);
-	    });
-}
+        .catch(function(error) {
+            console.log(error);
+            });
+    }
 }
 
 
@@ -625,13 +630,19 @@ function loadPlayersSelector() {
 
 
 function dataSelect(evt) {
-    alert("evt.id")
     let years = localStorage.getItem("year");
     if(evt.id === "team_selector"){
-        alert("coming Soon")
+        //alert(evt.value)
+        localStorage.setItem("team_filter", evt.value);
+        let teams = localStorage.getItem("team_filter");
+        loadWorldCupsSelector(teams)
+        
     }
-    if(evt.id === "Teams"){
-        alert("coming Soon")
+    if(evt.id === "world_cup_selector"){
+        //alert(evt.value)
+        localStorage.setItem("cup_filter", evt.value);
+        let cups = localStorage.getItem("cup_filter");
+        loadTeamsSelector(cups);
     }
     if(evt.id === "Stats"){
         alert("coming Soon")
