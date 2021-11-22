@@ -26,9 +26,10 @@ def get_help():
 
 
 
-@api.route('/<worldcup>/matches') 
-def get_matches(worldcup):
+@api.route('/<years>/matches') 
+def get_matches(years):
     #tms = teams.split(",")
+    
     teams = flask.request.args.get('teams')
     
     if (teams):
@@ -37,38 +38,51 @@ def get_matches(worldcup):
         tms = []
         tms.append('all')
     ylist = []
-    yrs = worldcup.split(",")
+    
+    yrs = years.split(",")
     ylist = [int(i) for i in yrs]
     print(tms)
     print(ylist)
     #how do we want to identify matches...
-    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, matches.id
+    query = '''SELECT DISTINCT matches.date_time, teams.team_name, worldcups.year, matches.stage, matches.stadium,
+           matches.city, matches.home_team, matches.home_score, matches.away_team, 
+           matches.away_score
                 FROM teams, worldcups, players_teams_matches_worldcups, matches
                 WHERE players_teams_matches_worldcups.team_id = teams.id
                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
                 AND players_teams_matches_worldcups.match_id = matches.id
                 ORDER BY teams.team_name;'''
     
-    team_list = []
-    ylist =[]
+    match_list = []
+    
     try:
         connection = get_connection()
         cursor = connection.cursor()
         cursor.execute(query,)
         for row in cursor:
             if ( (row[1] in tms) or ('all' in tms)): 
+                
                 if(row[2] in ylist):
-                    team = {
-                        'Team Name':row[1],
-                        'Abbreviation':row[0],
+                    
+                    match = {
+                        'date':row[0],
                         'Worldcup':row[2],
-                        'Match':row[3]
+                        'stage':row[3],
+                        'stadium':row[4],
+                        'city':row[5],
+                        'home':row[6],
+                        'hscore':row[7],
+                        'away':row[8],
+                        'ascore':row[9]
                     }
+                    match_list.append(match)
                     
         cursor.close()
         connection.close()
     except Exception as e:
         print(e, file=sys.stderr)
+
+    return json.dumps(match_list)
 
 @api.route('/cups/<team>') 
 def get_cups(team):
@@ -101,6 +115,7 @@ def get_cups(team):
         connection.close()
     except Exception as e:
         print(e, file=sys.stderr)
+    return json.dumps(team_list)
 
 #need to edit
 @api.route('/medals') 
@@ -192,7 +207,7 @@ def get_medals():
 
     return json.dumps(team_list)
 
-@api.route('/silver/teams/') 
+@api.route('/silver/teams') 
 def get_silver():
     query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.secondplace
                 FROM teams, worldcups, players_teams_matches_worldcups
@@ -229,7 +244,7 @@ def get_silver():
 
     return json.dumps(team_list)
 
-@api.route('/bronze/teams/') 
+@api.route('/bronze/teams') 
 def get_bronze():
     query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.thirdplace
                 FROM teams, worldcups, players_teams_matches_worldcups
@@ -266,7 +281,7 @@ def get_bronze():
 
     return json.dumps(team_list)
 
-@api.route('/gold/teams/') 
+@api.route('/gold/teams') 
 def get_gold():
     
     query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace
@@ -342,8 +357,11 @@ def get_all_medals(year):
     ylist = []
     
     if(year):
-        yrs = year.split(',')
-        ylist = [int(i) for i in yrs]
+        if('null' not in year):
+            yrs = year.split(',')
+            ylist = [int(i) for i in yrs]
+        else:
+            ylist.append('all')
     
     query = '''SELECT DISTINCT worldcups.year, worldcups.firstplace, worldcups.secoundplace, worldcups.thirdplace, worldcups.id
                 FROM worldcups
@@ -355,7 +373,7 @@ def get_all_medals(year):
         cursor = connection.cursor()
         cursor.execute(query, (year,))
         for row in cursor:
-            if(row[0] in ylist):
+            if((row[0] in ylist) or ('all' in ylist)):
                 podium = {'year':row[0],  'wc_id':row[4], 'firstplace':row[1], 'secondplace':row[2], 'thirdplace':row[3]}
                 medal_list.append(podium)
         cursor.close()
@@ -664,14 +682,22 @@ def get_attendance():
     query = '''SELECT worldcups.attendance, worldcups.year 
                 FROM worldcups ORDER BY worldcups.year;'''
     attendance_list = []
+    years = flask.request.args.get('years')
+    ylist = []
+    
+    if (years):
+        yrs = years.split(",")
+        ylist = [int(i) for i in yrs]
+    print(ylist)
     try:
         connection = get_connection()
         cursor = connection.cursor()
         cursor.execute(query, tuple())
         for row in cursor:
-            wc = {  'attendance':row[0],
-                      'year':row[1]}
-            attendance_list.append(wc)
+            if(row[1] in ylist or len(ylist)==0):
+                wc = {  'attendance':row[0],
+                        'year':row[1]}
+                attendance_list.append(wc)
         cursor.close()
         connection.close()
     except Exception as e:

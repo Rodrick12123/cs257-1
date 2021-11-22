@@ -20,6 +20,7 @@
  
     <div id="menu-panel">
       <select id="medal_choice" class="box" onchange="dataSelect(this)">
+      <option>Medals</option>
 	<option>Gold</option>
       <option>Silver</option>
       <option>Bronze</option>
@@ -33,13 +34,13 @@
       </select>
 
       <button id="goal-scorers">Top 10 Goal Scorers</button>
-      <button id="goal-scorers">Medal Data</button>
-      <button id="goal-scorers">Attendances</button>
+      <button id="m-data" onclick="dataSelect(this)">Medal Data</button>
+      <button id="attend" onclick="dataSelect(this)">Attendances</button>
       <!--based on team selection in team_selector dropdown
 	  (if a team is selected, just shows games that the
 	  team played in. Maybe can show the results of two
 	  teams against each other? See if that's possible.-->
-      <button id="match-results">Match results</button>
+      <button id="match-results" onclick="dataSelect(this)">Match results</button>
 
 
 

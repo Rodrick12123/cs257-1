@@ -474,10 +474,45 @@ function onMatchResultsButtonPressed() {
 
 
 
+function loadAttendances(years=null) {
 
+    let url = getAPIBaseURL() + '/Allcups/attendance';
+    if(years){
+        url = getAPIBaseURL() + '/Allcups/attendance?years=' + years;
+    }
 
+    fetch(url, {method: 'get'})
 
+    .then((response) => response.json())
 
+    .then(function(attendances) {
+	    let tableBody = '';
+        tableBody = '<tr>'
+                    + '<TH>'+ 'Attendance' +'</TH>'
+                    + '<TH>'+ 'Worldcup' +'</TH>'
+                    + '</tr>\n';
+        for (let k = 0; k < attendances.length; k++) {
+            let attend = attendances[k];
+            // <td><input type="checkbox" name="brand">Apple</td>
+            
+            tableBody +=    '<tr ALIGN="CENTER">'
+                            + '<td>' + attend['attendance'] + '</td>'
+                            + '<td>' + attend['year'] + '</td>'
+                            + '</tr>\n';
+        }
+
+        let res = document.getElementById('results');
+        if (res) {
+            res.innerHTML = tableBody;
+        }
+
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+
+}
 
 function onWCQueriesSelectionChanged() {
 
@@ -489,6 +524,7 @@ function onWCQueriesSelectionChanged() {
 
     .then(function(attendances) {
 	    let resultsBody = '<table><tr><th>World Cup</th><th>Attendance</th>';
+
 	    for (let k = 0; k < attendances.length; k++) {
 		let attendance = attendances[k];
 		resultsBody += '<tr><td>'+attendance['year']+'</td><td>'
@@ -630,23 +666,104 @@ function loadPlayersSelector() {
 
 
 function dataSelect(evt) {
-    let years = localStorage.getItem("year");
+    let years = getParam('year')
+    
+    
+    
+    // let cups = null
+    // let teams = null
+    if(evt.id === "medal_choice"){
+        
+        localStorage.setItem("medal", evt.value);
+    }
     if(evt.id === "team_selector"){
         //alert(evt.value)
-        localStorage.setItem("team_filter", evt.value);
-        let teams = localStorage.getItem("team_filter");
-        loadWorldCupsSelector(teams)
         
+        if(evt.value != 'Teams'){
+            
+            localStorage.setItem("team_filter", evt.value);
+            
+            let teams = localStorage.getItem("team_filter");
+            //let element = document.getElementById('world_cup_selector');
+            loadWorldCupsSelector(teams)
+            // element.value.selected =true;
+            // select('world_cup_selector', element.value)
+            
+        }
     }
     if(evt.id === "world_cup_selector"){
         //alert(evt.value)
-        localStorage.setItem("cup_filter", evt.value);
+     
+        if(evt.value != 'World Cups'){
+            localStorage.setItem("cup_filter", evt.value);
+            let cups = localStorage.getItem("cup_filter");
+            //let element = document.getElementById('team_selector');
+            loadTeamsSelector(cups);
+            
+            // select('team_selector', element.value)
+        }
+    }
+    
+    if(evt.id === "match-results"){
+        
+        // let element = document.getElementById('world_cup_selector');
+        // let element2 = document.getElementById('team_selector');
+        // if(element2.value === 'Teams'){
+
+        //     localStorage.removeItem("team_filter");
+        // }
+        // if(element.value === 'World Cups'){
+        //     localStorage.removeItem("cup_filter");
+        // }
+        let teams = localStorage.getItem("team_filter");
         let cups = localStorage.getItem("cup_filter");
-        loadTeamsSelector(cups);
+        alert(cups)
+        alert(teams)
+        if(cups && teams ){
+            alert('n')
+            loadMatches(cups, teams)
+            localStorage.removeItem("cup_filter");
+            localStorage.removeItem("team_filter");
+        }else{
+            alert('yes')
+            if(cups){
+
+                loadMatches(cups)
+                localStorage.removeItem("cup_filter");
+            }else if(teams){
+                
+                loadMatches(years,teams)
+                localStorage.removeItem("team_filter");
+            }else{
+                alert('on')
+                loadMatches(years)
+            }
+        } 
     }
-    if(evt.id === "Stats"){
-        alert("coming Soon")
+    if(evt.id === "attend"){
+        let cups = localStorage.getItem("cup_filter");
+        alert('ok')
+        alert(cups)
+        if(cups){
+            loadAttendances(cups)
+            localStorage.removeItem("cup_filter");
+        }else{
+            alert(years)
+            loadAttendances(years)
+        }
     }
+
+    if(evt.id === "m-data"){
+    
+        let medal = localStorage.getItem("medal");
+        if(medal){
+            loadMedalData(years,medal)
+        }else{
+            loadMedalData(years)
+        }
+        
+    }
+
     if(evt.id === "p3"){
         
         if (evt.value === "All WC queries") {
@@ -679,6 +796,8 @@ function dataSelect(evt) {
 
 }
 
+
+
 function teamGetter() {
     let teams = [];
     
@@ -697,9 +816,12 @@ function teamGetter() {
     localStorage.setItem("teams", teams);
     return teams;
 }
-function loadMatches(years, teams) {
-    let url = getAPIBaseURL() + '/' + years + '/' + teams + '/matches';
+function loadMatches(years, teams=null) {
     
+    let url = getAPIBaseURL() + '/' + years + '/matches';
+    if(teams){
+        url = getAPIBaseUrl() + '/' + years + '/matches?teams=' + teams;
+    }
     // Send the request to the teamss API /authors/ endpoint
     fetch(url, {method: 'get'})
 
@@ -710,26 +832,32 @@ function loadMatches(years, teams) {
     // Once you have your list of author dictionaries, use it to build
     // an HTML table displaying the author names and lifespan.
     
-    .then(function(teams) {
+    .then(function(matches) {
         
         // Add the <option> elements to the <select> element
         let tableBody = '';
         tableBody = '<tr>'
                     + '<TH>'+ 'Worldcup' +'</TH>'
-                    + '<TH>'+ 'Team Name' +'</TH>'
-                    + '<TH>'+ 'Abbreviation' +'</TH>'
-                    + '<TH>'+ 'Match' +'</TH>'
+                    + '<TH>'+ 'Date' +'</TH>'
+                    + '<TH>'+ 'Stage' +'</TH>'
+                    + '<TH>'+ 'Stadium' +'</TH>'
+                    + '<TH>'+ 'City' +'</TH>'
+                    + '<TH>'+ 'Match-Up' +'</TH>'
+                    + '<TH>'+ 'Result' +'</TH>'
                     + '</tr>\n';
-        for (let k = 0; k < teams.length; k++) {
-            let team = teams[k];
+        for (let k = 0; k < matches.length; k++) {
+            let match = matches[k];
             // <td><input type="checkbox" name="brand">Apple</td>
         
             tableBody +=   
-                            '<tr ALIGN="CENTER">'
-                            + '<td>' + team['Worldcup'] + '</td>'
-                            + '<td>' + team['Team Name'] + '</td>'
-                            + '<td>' + team['Abbreviation'] + '</td>'
-                            + '<td>' + team['Match'] + '</td>'
+                            '<tr ALIGN="CENTER">' +
+                            '<td>' + match['Worldcup'] + '</td>' +
+                            '<td>' + match['date'] + '</td>' +
+                            '<td>' + match['stage'] + '</td>' + 
+                            '<td>' + match['stadium'] + '</td>' + 
+                            '<td>' + match['city'] + '</td>' + 
+                            '<td>' + match['home'] + ' vs. ' + match['away'] + '</td>' +
+                            '<td>' + match['hscore'] + ' - ' + match['ascore'] + '</td>' 
                             + '</tr>\n';
         }
 
@@ -790,7 +918,160 @@ function loadMedalCount(years=Null) {
     });
 }
 
-function loadGoldMedals(years=Null){
+function loadMedalData(years, medal=null){
+    let url = getAPIBaseURL() + '/medals/' + years + '/';
+    if(medal == 'Gold'){
+        url = getAPIBaseURL() + '/gold/teams?years=' + years; 
+        
+        fetch(url, {method: 'get'})
+        .then((response) => response.json())
+        .then(function(teams) {
+            
+            // Add the <option> elements to the <select> element
+            let tableBody = '';
+        
+            tableBody = '<tr>'
+                        + '<TH>'+ 'World Cup' +'</TH>'
+                        + '<TH>'+ 'Firstplace' +'</TH>'
+                        + '<TH>'+ 'Abbreviation' +'</TH>'
+                        + '</tr>\n';
+            for (let k = 0; k < teams.length; k++) {
+                let team = teams[k];
+                // <td><input type="checkbox" name="brand">Apple</td>
+                
+                tableBody +=    '<tr ALIGN="CENTER">'
+                                + '<td>' + team['Worldcup'] + '</td>'
+                                + '<td>' + team['Team Name'] + '</td>'
+                                + '<td>' + team['Abbreviation'] + '</td>'
+                                + '</tr>\n';
+            }
+
+            let res = document.getElementById('results');
+            if (res) {
+                res.innerHTML = tableBody;
+            }
+        })
+        
+        // Log the error if anything went wrong during the fetch.
+        .catch(function(error) {
+            console.log(error);
+        });
+    
+    }    
+    if(medal == 'Silver'){
+        url = getAPIBaseURL() + '/silver/teams?years=' + years; 
+        fetch(url, {method: 'get'})
+        .then((response) => response.json())
+        .then(function(teams) {
+            
+            // Add the <option> elements to the <select> element
+            let tableBody = '';
+        
+            tableBody = '<tr>'
+                        + '<TH>'+ 'World Cup' +'</TH>'
+                        + '<TH>'+ 'Secoundplace' +'</TH>'
+                        + '<TH>'+ 'Abbreviation' +'</TH>'
+                        + '</tr>\n';
+            for (let k = 0; k < teams.length; k++) {
+                let team = teams[k];
+                // <td><input type="checkbox" name="brand">Apple</td>
+                
+                tableBody +=    '<tr ALIGN="CENTER">'
+                                + '<td>' + team['Worldcup'] + '</td>'
+                                + '<td>' + team['Team Name'] + '</td>'
+                                + '<td>' + team['Abbreviation'] + '</td>'
+                                + '</tr>\n';
+            }
+
+            let res = document.getElementById('results');
+            if (res) {
+                res.innerHTML = tableBody;
+            }
+        })
+        
+        // Log the error if anything went wrong during the fetch.
+        .catch(function(error) {
+            console.log(error);
+        });
+    } 
+    
+    if(medal == 'Bronze'){
+        url = getAPIBaseURL() + '/bronze/teams?years=' + years;
+        fetch(url, {method: 'get'})
+        .then((response) => response.json())
+        .then(function(teams) {
+            
+            // Add the <option> elements to the <select> element
+            let tableBody = '';
+        
+            tableBody = '<tr>'
+                        + '<TH>'+ 'World Cup' +'</TH>'
+                        + '<TH>'+ 'Thirdplace' +'</TH>'
+                        + '<TH>'+ 'Abbreviation' +'</TH>'
+                        + '</tr>\n';
+            for (let k = 0; k < teams.length; k++) {
+                let team = teams[k];
+                // <td><input type="checkbox" name="brand">Apple</td>
+                
+                tableBody +=    '<tr ALIGN="CENTER">'
+                                + '<td>' + team['Worldcup'] + '</td>'
+                                + '<td>' + team['Team Name'] + '</td>'
+                                + '<td>' + team['Abbreviation'] + '</td>'
+                                + '</tr>\n';
+            }
+
+            let res = document.getElementById('results');
+            if (res) {
+                res.innerHTML = tableBody;
+            }
+        })
+        
+        // Log the error if anything went wrong during the fetch.
+        .catch(function(error) {
+            console.log(error);
+        }); 
+    }
+    if(medal == null){    
+        fetch(url, {method: 'get'})
+        .then((response) => response.json())
+        .then(function(teams) {
+            
+            // Add the <option> elements to the <select> element
+            let tableBody = '';
+        
+            tableBody = '<tr>'
+                        + '<TH>'+ 'World Cup' +'</TH>'
+                        + '<TH>'+ 'Firstplace' +'</TH>'
+                        + '<TH>'+ 'Secoundplace' +'</TH>'
+                        + '<TH>'+ 'Thirdplace' +'</TH>'
+                        + '</tr>\n';
+            for (let k = 0; k < teams.length; k++) {
+                let team = teams[k];
+                // <td><input type="checkbox" name="brand">Apple</td>
+                
+                tableBody +=    '<tr ALIGN="CENTER">'
+                                + '<td>' + team['year'] + '</td>'
+                                + '<td>' + team['firstplace'] + '</td>'
+                                + '<td>' + team['secondplace'] + '</td>'
+                                + '<td>' + team['thirdplace'] + '</td>'
+                                + '</tr>\n';
+            }
+
+            let res = document.getElementById('results');
+            if (res) {
+                res.innerHTML = tableBody;
+            }
+        })
+        
+        // Log the error if anything went wrong during the fetch.
+        .catch(function(error) {
+            console.log(error);
+        });
+    }
+}
+
+
+function loadGoldMedals(years=null){
     
 
     let url = getAPIBaseURL() + '/gold/teams?years=' + years;
@@ -1002,7 +1283,6 @@ function yearGetter() {
                 years.push(val);
             }
         }
-           
     }
     
         // save data value
