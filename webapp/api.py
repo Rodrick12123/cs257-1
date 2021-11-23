@@ -485,7 +485,7 @@ def get_players(year, team):
                WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
                  AND players_teams_matches_worldcups.player_id = players.id
-                     AND teams.id = %s
+                     AND teams.team_name = %s
                 AND worldcups.year = %s
                  
 
@@ -521,7 +521,7 @@ def get_team_matches(year):
            AND worldcups.id = players_teams_matches_worldcups.worldcup_id
            AND worldcups.year = %s'''
 
-    team = flask.request.args.get('team') #this is the team id
+    team = flask.request.args.get('team') #this is the team name
 
     if team is not None:
         query += ''' AND (matches.home_team = %s OR matches.away_team = %s)'''
@@ -572,9 +572,12 @@ def get_goals():
            AND teams.id = players_teams_matches_worldcups.team_id
            AND players_teams_matches_worldcups.goal LIKE %s '''
 
-    team = flask.request.args.get('team') #this is the team id
+    team = flask.request.args.get('team') #this is the team name
     year = flask.request.args.get('year') #this is the year
     player = flask.request.args.get('player') #this is the player id
+
+    #what to do about spaces in country name (El Salvador doesn't work)
+    #why is it telling me that tuple is out of range?
 
 
     if team is not None:
