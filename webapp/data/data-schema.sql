@@ -1,13 +1,12 @@
 CREATE TABLE players (
     id integer,
     surname text,
-    given_name text,
-    coach text
+    given_name text
 );
 
 CREATE TABLE matches (
     id integer,
-    date_time text,
+    date_time date,
     stage text,
     stadium text,
     city text,
@@ -35,7 +34,7 @@ CREATE TABLE worldcups (
     year integer,
     location text,
     firstplace text,
-    secoundplace text,
+    secondplace text,
     thirdplace text,
     fourthplace text,
     attendance text,
@@ -49,5 +48,6 @@ CREATE TABLE players_teams_matches_worldcups (
        worldcup_id integer,
        starter text,
        captain text,
-       goal text
+       goal text,
+       coach text
 );

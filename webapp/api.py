@@ -25,7 +25,6 @@ def get_help():
 #need to edit
 
 
-
 @api.route('/matches/<years>') 
 def get_matches(years):
     teams = flask.request.args.get('teams')
@@ -42,14 +41,14 @@ def get_matches(years):
         tms.append('all')
     print(tms)
     #how do we want to identify matches...
-    query = '''SELECT DISTINCT matches.date_time, teams.team_name, worldcups.year, matches.stage, matches.stadium,
+    query = '''SELECT DISTINCT matches.date_time, CAST(matches.date_time AS text), teams.team_name, worldcups.year, matches.stage, matches.stadium,
                 matches.city, matches.home_team, matches.home_score, matches.away_team, 
                 matches.away_score
                 FROM teams, worldcups, players_teams_matches_worldcups, matches
                 WHERE players_teams_matches_worldcups.team_id = teams.id
                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
                 AND players_teams_matches_worldcups.match_id = matches.id
-                ORDER BY teams.team_name;'''
+                ORDER BY matches.date_time, matches.stage;'''
     
     match_list = []
     
@@ -59,20 +58,21 @@ def get_matches(years):
         cursor = connection.cursor()
         cursor.execute(query,)
         for row in cursor:
-            if ( (row[1] in tms) or ('all' in tms)): 
+            if ( (row[2] in tms) or ('all' in tms)): 
                 
-                if(row[2] in ylist):
-                    
+                if(row[3] in ylist):
+                    print('hey')
+                    print(type(row[1]))
                     match = {
-                        'date':row[0],
-                        'Worldcup':row[2],
-                        'stage':row[3],
-                        'stadium':row[4],
-                        'city':row[5],
-                        'home':row[6],
-                        'hscore':row[7],
-                        'away':row[8],
-                        'ascore':row[9]
+                        'date':row[1],
+                        'Worldcup':row[3],
+                        'stage':row[4],
+                        'stadium':row[5],
+                        'city':row[6],
+                        'home':row[7],
+                        'hscore':row[8],
+                        'away':row[9],
+                        'ascore':row[10]
                     }
                     match_list.append(match)
                     
@@ -515,7 +515,7 @@ def get_team_matches(year):
            matches.city, matches.home_team, matches.home_score, matches.away_team, 
            matches.away_score, matches.home_first_half_goals, 
            matches.home_second_half_goals, matches.away_first_half_goals, 
-           matches.away_second_half_goals
+           matches.away_second_half_goals, CAST(matches.date_time AS text) 
            FROM matches, worldcups, players_teams_matches_worldcups, teams 
            WHERE matches.id = players_teams_matches_worldcups.match_id
            AND worldcups.id = players_teams_matches_worldcups.worldcup_id
@@ -526,7 +526,7 @@ def get_team_matches(year):
     if team is not None:
         query += ''' AND (matches.home_team = %s OR matches.away_team = %s)'''
 
-    query += ''' ORDER BY matches.date_time;'''
+    query += ''' ORDER BY matches.date_time, matches.stage;'''
     
     match_list = []
     try:
@@ -538,7 +538,7 @@ def get_team_matches(year):
             cursor.execute(query, (year,))
         for row in cursor:
             match = {'match_id':row[0],
-                      'date':row[1],
+                      'date':row[13],
                       'stage':row[2],
                       'stadium':row[3],
                       'city':row[4],

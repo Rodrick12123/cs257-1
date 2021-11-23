@@ -5,17 +5,18 @@ File Converter
 
 import csv
 
-#USING worldcups.csv
+#USING WorldCups.csv
 
 world_cups = {}
 
-world_cups_data_file = open('worldcupsdata.csv')
+world_cups_data_file = open('WorldCupsData.csv')
 world_cups_reader = csv.reader(world_cups_data_file)
 
 world_cups_file = open('worldcups.csv', 'w')
 world_cups_writer = csv.writer(world_cups_file)
 
 heading_row = next(world_cups_reader)
+
 for row in world_cups_reader:
 
     year = row[0]
@@ -44,9 +45,9 @@ world_cups_data_file.close()
 ################################################
 
 
-#USING worldcupmatches.csv                                                                                  
+#USING WorldCupMatches.csv                                                                                  
 
-world_cup_matches_data_file = open('worldcupmatchesdata.csv')
+world_cup_matches_data_file = open('WorldCupMatchesData.csv')
 world_cup_matches_reader = csv.reader(world_cup_matches_data_file)
 
 #dictionaries                                                                                                
@@ -63,6 +64,10 @@ matches_writer = csv.writer(matches_file)
 
 #give some specific attention to 
 
+def process_date_time(date_time):
+    components = date_time.split(' - ')
+    return components[0]
+
 def add_match_entry(row, writer):
 
     match_id = row[17]
@@ -72,7 +77,8 @@ def add_match_entry(row, writer):
 
     else:
 
-        date_time = row[1]
+        date_time_unprocessed = row[1]
+        date_time = process_date_time(date_time_unprocessed)
         stage = row[2]
         home_team = row[5]
         home_team_score = int(row[6])
@@ -137,9 +143,9 @@ world_cup_matches_data_file.close()
 
 ##############################################################
 
-#USING worldcupplayers.csv
+#USING WorldCupPlayers.csv
 
-world_cup_players_data_file = open('worldcupplayersdata.csv')
+world_cup_players_data_file = open('WorldCupPlayersData.csv')
 world_cup_players_reader = csv.reader(world_cup_players_data_file)
 
 players_teams_matches_worldcups_file = open('players_teams_matches_worldcups.csv', 'w')
@@ -171,8 +177,7 @@ def process_name_into_parts(full_name):
             surname = surname + ' ' + component
         else:
             given_name = given_name + ' ' + component
-
-
+    
     #remove the extra spaces after the surname and given_name
     #surname = surname[:-1]
     #given_name = given_name[:-1]
@@ -188,13 +193,13 @@ def add_player_entry(row, writer):
     given_name = processed_player_name[1]
 
     #coach is may not be constant between world cups. will have to change this, but ok for now
-    processed_coach_name = process_name_into_parts(row[3])
-    coach = processed_coach_name[1] + ' ' + processed_coach_name[0]
+    #processed_coach_name = process_name_into_parts(row[3])
+    #coach = processed_coach_name[1] + ' ' + processed_coach_name[0]
 
     if full_name not in players: #not sure there's any other way to distinguish?? but there has to be. there's probably at least a couple of John Smiths that have played
         player_id = len(players) + 1
-        players[full_name] = [player_id, surname, given_name, coach]
-        writer.writerow([player_id, surname, given_name, coach])
+        players[full_name] = [player_id, surname, given_name]
+        writer.writerow([player_id, surname, given_name])
 
 
 #helper function to deal with game events
@@ -219,6 +224,10 @@ def add_players_teams_matches_worldcups_entry(row, writer):
 
     player_full_name = row[6]
     team_abbreviation = row[2]
+
+    coach_full_name = row[3]
+    processed_coach_name = process_name_into_parts(coach_full_name)
+    coach = processed_coach_name[1] + ' ' + processed_coach_name[0]
 
     match_id = row[1]
 
@@ -247,7 +256,7 @@ def add_players_teams_matches_worldcups_entry(row, writer):
     goals = process_game_events(row[8])
 
     if len(goals) == 0:
-        row_to_add = (player_id, team_id, match_id, world_cup_id, starter, captain, 'Null')
+        row_to_add = (player_id, team_id, match_id, world_cup_id, starter, captain, 'Null', coach)
         
         if row_to_add not in already_added:
 
@@ -255,7 +264,7 @@ def add_players_teams_matches_worldcups_entry(row, writer):
             already_added.add(row_to_add)
     else:
         for goal in goals:
-            row_to_add = (player_id, team_id, match_id, world_cup_id, starter, captain, goal)
+            row_to_add = (player_id, team_id, match_id, world_cup_id, starter, captain, goal, coach)
             if row_to_add not in already_added:
                 writer.writerow(row_to_add)
                 already_added.add(row_to_add)
