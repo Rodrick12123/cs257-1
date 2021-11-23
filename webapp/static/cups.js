@@ -450,51 +450,27 @@ else {
 function onManyGoalsButtonPressed() {
     if (window.team_selected != null && window.team_selected != 'Teams') {
 
-	const scorers = [];
-	const allyears = getParam('year').split(',');
+	let url = getAPIBaseURL() + '/allmatches/goals?team='+window.team_selected+'&year='+getParam('year');
 
-	let scorersBody = '<tr><th>Player</th><th>Goal Count</th><th>Year</th></tr>';
+	fetch(url, {method: 'get'})
 
-	for (let i = 0; i < allyears.length; i++){
-	   
-	    let url = getAPIBaseURL() + '/allmatches/goals?team='+window.team_selected+'&year='+allyears[i];
+	    .then((response) => response.json())
+	    
+	    .then(function(players) {
 
-    fetch(url, {method: 'get'})
+		    let scorersBody = '<tr><th>Player</th><th>Goal Count</th><th>Year</th></tr>';	   
 
-    .then((response) => response.json())
-
-    .then(function(players) {
-
-	    for (let k = 0; k < players.length; k++) {
-		let player = players[k];
+		    for (let k = 0; k < players.length; k++) {
+			let player = players[k];
 		//going to need to put 'id' as a return of the query, ok for now
-		//scorersBody += '<tr><td>'
-		//              + player['surname'] + ', ' + player['given_name']
-		//              + '</td><td>' + player['goals'] + '</td></tr>';
-		scorers[scorers.length] = [player['surname'], player['given_name'], player['goals']];
+			scorersBody += '<tr><td>'
+			    + player['surname'] + ', ' + player['given_name']
+		           + '</td><td>' + player['goals'] + '</td></tr>';
+			scorers[scorers.length] = [player['surname'], player['given_name'], player['goals']];
 	    }
 
 	    let results = document.getElementById('results');
 	    if (results) {
-		const a = scorers;
-		//scorers.sort(function sortTwoArrays(a, b){
-		//return a[2] - b[2];})
-		//scorersBody = ''
-		for (let k = 0; k < scorers.length; k++) {
-		    /*
-		    z = scorers[k];
-		    a = scorers[k][1];
-		    b = scorers[k][1];
-		    c = scorers[k][2];
-		    d = allyears[i];
-		    */
-		    scorersBody += '<tr><td>'
-                                + scorers[k][0] + ', ' + scorers[k][1]
-		                + '</td><td>' + scorers[k][2] + '</td><td>' + allyears[i] + '</td></tr>';
-		    //a = scorersBody;
-		}
-		
-
 		results.innerHTML = scorersBody;
 	    }
 
@@ -506,7 +482,7 @@ function onManyGoalsButtonPressed() {
 	    });
 	}
 
-}
+
 
     else if (getParam('year').split(',').length == 20) {
     	let url = getAPIBaseURL() + '/allmatches/goals';
