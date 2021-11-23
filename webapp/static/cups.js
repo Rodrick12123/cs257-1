@@ -453,7 +453,7 @@ else {
 
 
 function onMatchResultsButtonPressed() {
-   if (window.team_selected == null) {
+   if (window.team_selected == null || window.team_selected == 'Teams') {
 
        let url = getAPIBaseURL() + '/allmatches/'+getParam('year');
 
