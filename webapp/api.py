@@ -208,7 +208,7 @@ def get_medals():
 
 @api.route('/silver/teams') 
 def get_silver():
-    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.secondplace
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.secoundplace
                 FROM teams, worldcups, players_teams_matches_worldcups
                 WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
@@ -573,7 +573,7 @@ def get_goals():
            AND players_teams_matches_worldcups.goal LIKE %s '''
 
     team = flask.request.args.get('team') #this is the team name
-    year = flask.request.args.get('year') #this is the year
+    year = flask.request.args.get('year') #this is the year or a list of years
     player = flask.request.args.get('player') #this is the player id
 
     #what to do about spaces in country name (El Salvador doesn't work)
