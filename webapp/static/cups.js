@@ -475,10 +475,15 @@ function onManyGoalsButtonPressed() {
 		    for (let k = 0; k < players.length; k++) {
 			let player = players[k];
 		//going to need to put 'id' as a return of the query, ok for now
-			scorersBody += '<tr><td>'
-			    + player['surname'] + ', ' + player['given_name']
-		           + '</td><td>' + player['goals'] + '</td></tr>';
-			scorers[scorers.length] = [player['surname'], player['given_name'], player['goals']];
+			if (player['given_name'] != '') {
+			    scorersBody += '<tr><td>'
+				+ player['surname'] + ', ' + player['given_name']
+				+ '</td><td>' + player['goals'] + '</td></tr>';
+			}
+			else {
+			    scorersBody += '<tr><td>' + player['surname']
+				+ '</td><td>' + player['goals'] + '</td></tr>';
+			}
 	    }
 
 	    let results = document.getElementById('results');
@@ -508,10 +513,17 @@ function onManyGoalsButtonPressed() {
 	    for (let k = 0; k < players.length; k++) {
 		let player = players[k];
 		//going to need to put 'id' as a return of the query, ok for now
-		scorersBody += '<tr><td>'
+		if (player['given_name'] != '') {
+		    scorersBody += '<tr><td>'
                                 + player['surname'] + ', ' + player['given_name']
 		                + '</td><td>' + player['goals'] + '</td></tr>';
-	    }
+		}
+		else {
+		    scorersBody += '<tr><td>'
+                                + player['surname']
+		                + '</td><td>' + player['goals'] + '</td></tr>';
+		}
+		}
 
 	    let results = document.getElementById('results');
 	    if (results) {
@@ -541,10 +553,17 @@ else {
 	    for (let k = 0; k < players.length; k++) {
 		let player = players[k];
 		//going to need to put 'id' as a return of the query, ok for now
+		if (player['given_name'] != '') {
 		scorersBody += '<tr><td>'
                                 + player['surname'] + ', ' + player['given_name']
 		                + '</td><td>' + player['goals'] + '</td></tr>';
-	    }
+		}
+		else {
+		scorersBody += '<tr><td>'
+                                + player['surname']
+		                + '</td><td>' + player['goals'] + '</td></tr>';
+		}
+		}
 
 	    let results = document.getElementById('results');
 	    if (results) {
