@@ -566,6 +566,11 @@ def get_goals():
 
 
     team = flask.request.args.get('team') #this is the team name
+    
+    if team is not None:
+        if team.find('%20') != -1:
+            team.replace('%20', ' ')
+
     year = flask.request.args.get('year') #this is the year or a list of years
 
     if year is None:
