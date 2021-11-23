@@ -663,7 +663,35 @@ function loadPlayersSelector() {
 
 
 
+function matchResults(){
+    let years = getParam('year')
+    let tms = localStorage.getItem("team_filter");
+    let cups = localStorage.getItem("cup_filter");
 
+    if(cups && tms ){
+        alert(cups)
+        alert(tms)
+        //loadMatches(cups,tms)
+    }else{
+        if(cups){
+            loadMatches(cups)
+        }
+        if(tms){
+
+            // Wont work with teams
+            //loadMatches(years, teams)
+            
+        }
+        if(cups == null && tms == null){
+            
+            loadMatches(years)
+        }
+    } 
+    localStorage.removeItem("cup_filter");
+    localStorage.removeItem("team_filter");
+    alert('check')
+    //alert(cups)
+}
 
 function dataSelect(evt) {
     let years = getParam('year')
@@ -699,46 +727,34 @@ function dataSelect(evt) {
             let cups = localStorage.getItem("cup_filter");
             //let element = document.getElementById('team_selector');
             loadTeamsSelector(cups);
-            
+
             // select('team_selector', element.value)
         }
     }
     
     if(evt.id === "match-results"){
-        
-        // let element = document.getElementById('world_cup_selector');
-        // let element2 = document.getElementById('team_selector');
-        // if(element2.value === 'Teams'){
 
-        //     localStorage.removeItem("team_filter");
-        // }
-        // if(element.value === 'World Cups'){
+        // let teams = localStorage.getItem("team_filter");
+        // let cups = localStorage.getItem("cup_filter");
+
+        // if(cups && teams ){
+        //     alert('yes')
+        //     loadMatches(cups, teams)
         //     localStorage.removeItem("cup_filter");
-        // }
-        let teams = localStorage.getItem("team_filter");
-        let cups = localStorage.getItem("cup_filter");
-        alert(cups)
-        alert(teams)
-        if(cups && teams ){
-            alert('n')
-            loadMatches(cups, teams)
-            localStorage.removeItem("cup_filter");
-            localStorage.removeItem("team_filter");
-        }else{
-            alert('yes')
-            if(cups){
+        //     localStorage.removeItem("team_filter");
+        // }else{
+        //     if(cups){
 
-                loadMatches(cups)
-                localStorage.removeItem("cup_filter");
-            }else if(teams){
+        //         loadMatches(cups)
+        //         localStorage.removeItem("cup_filter");
+        //     }else if(teams){
                 
-                loadMatches(years,teams)
-                localStorage.removeItem("team_filter");
-            }else{
-                alert('on')
-                loadMatches(years)
-            }
-        } 
+        //         loadMatches(years,teams)
+        //         localStorage.removeItem("team_filter");
+        //     }else{
+        //         loadMatches(years)
+        //     }
+        // } 
     }
     if(evt.id === "attend"){
         let cups = localStorage.getItem("cup_filter");
@@ -754,12 +770,23 @@ function dataSelect(evt) {
     }
 
     if(evt.id === "m-data"){
-    
+        let cups = localStorage.getItem("cup_filter");
         let medal = localStorage.getItem("medal");
         if(medal){
-            loadMedalData(years,medal)
+            if(cups){
+                loadMedalData(cups,medal)
+                localStorage.removeItem("cup_filter");
+            }else{
+                loadMedalData(years,medal)
+            }
+            
         }else{
-            loadMedalData(years)
+            if(cups){
+                loadMedalData(cups)
+                localStorage.removeItem("cup_filter");
+            }else{
+                loadMedalData(years)
+            }
         }
         
     }
@@ -816,11 +843,15 @@ function teamGetter() {
     localStorage.setItem("teams", teams);
     return teams;
 }
-function loadMatches(years, teams=null) {
+
+
+function loadMatches(years,teams=null) {
     
-    let url = getAPIBaseURL() + '/' + years + '/matches';
     if(teams){
-        url = getAPIBaseUrl() + '/' + years + '/matches?teams=' + teams;
+        alert("teams")
+        url = getAPIBaseUrl() + '/matches/' + years +'?teams=' + teams;
+    }else{
+        url = getAPIBaseURL() + '/matches/' + years;
     }
     // Send the request to the teamss API /authors/ endpoint
     fetch(url, {method: 'get'})

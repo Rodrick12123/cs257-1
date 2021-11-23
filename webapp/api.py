@@ -26,27 +26,25 @@ def get_help():
 
 
 
-@api.route('/<years>/matches') 
+@api.route('/matches/<years>') 
 def get_matches(years):
-    #tms = teams.split(",")
-    
     teams = flask.request.args.get('teams')
-    
+
+    ylist = []
+    yrs = years.split(",")
+    ylist = [int(i) for i in yrs]
+    print(ylist)
+
     if (teams):
         tms = teams.split(",") 
     else:  
         tms = []
         tms.append('all')
-    ylist = []
-    
-    yrs = years.split(",")
-    ylist = [int(i) for i in yrs]
     print(tms)
-    print(ylist)
     #how do we want to identify matches...
     query = '''SELECT DISTINCT matches.date_time, teams.team_name, worldcups.year, matches.stage, matches.stadium,
-           matches.city, matches.home_team, matches.home_score, matches.away_team, 
-           matches.away_score
+                matches.city, matches.home_team, matches.home_score, matches.away_team, 
+                matches.away_score
                 FROM teams, worldcups, players_teams_matches_worldcups, matches
                 WHERE players_teams_matches_worldcups.team_id = teams.id
                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
@@ -54,6 +52,7 @@ def get_matches(years):
                 ORDER BY teams.team_name;'''
     
     match_list = []
+    
     
     try:
         connection = get_connection()
@@ -87,7 +86,7 @@ def get_matches(years):
 @api.route('/cups/<team>') 
 def get_cups(team):
     tms = team.split(",")
-    print(tms)
+
     query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace
                 FROM teams, worldcups, players_teams_matches_worldcups
                 WHERE players_teams_matches_worldcups.team_id = teams.id
@@ -135,7 +134,7 @@ def get_medals():
     if (years):
         yrs = years.split(",")
         ylist = [int(i) for i in yrs]
-        print(ylist)
+
         
     try:
         connection = get_connection()
@@ -420,7 +419,7 @@ def get_teams_by_year(years):
     ylist = []
     yrs = years.split(',')
     ylist = [int(i) for i in yrs]
-    print('yes')
+
     query = '''SELECT DISTINCT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.id, teams.id
                FROM worldcups, teams, players_teams_matches_worldcups
                WHERE players_teams_matches_worldcups.team_id = teams.id
@@ -688,7 +687,7 @@ def get_attendance():
     if (years):
         yrs = years.split(",")
         ylist = [int(i) for i in yrs]
-    print(ylist)
+
     try:
         connection = get_connection()
         cursor = connection.cursor()
@@ -723,7 +722,7 @@ def get_cup_selector(allyears,teams):
         tms = teams.split(",")
     else:
         tms.append('all')
-    print(tms)
+
 
     try:
         connection = get_connection()
