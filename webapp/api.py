@@ -583,7 +583,7 @@ def get_goals():
     allscorers = []
     for year in allyears:
 
-        query = '''SELECT DISTINCT players.id, players.surname, players.given_name, COUNT(players_teams_matches_worldcups.goal)
+        query = '''SELECT DISTINCT players.id, players.surname, players.given_name, teams.team_abbreviation, COUNT(players_teams_matches_worldcups.goal)
            FROM matches, worldcups, players_teams_matches_worldcups, players, teams 
            WHERE matches.id = players_teams_matches_worldcups.match_id
            AND players.id = players_teams_matches_worldcups.player_id
@@ -602,7 +602,7 @@ def get_goals():
         if player is not None:
             query += ''' AND players.surname = %s '''
 
-        query += ''' GROUP BY players.id, players.surname, players.given_name
+        query += ''' GROUP BY players.id, players.surname, players.given_name, teams.team_abbreviation
                  ORDER BY COUNT(players_teams_matches_worldcups.goal) DESC
                  LIMIT 10; '''
 
@@ -625,7 +625,8 @@ def get_goals():
                 player = {'player_id':row[0],
                           'surname':row[1],
                           'given_name':row[2],
-                          'goals':row[3],
+                          'team':row[3],
+                          'goals':row[4],
                           'year':year}
                 player_list.append(player)
             cursor.close()

@@ -403,12 +403,13 @@ function onGoalsButtonPressed() {
 		//going to need to put 'id' as a return of the query, ok for now
 		if (player['given_name'] != '') {
 		    scorersBody += '<tr><td>'
-                                + player['surname'] + ', ' + player['given_name']
+                                + player['surname'] + ', ' + player['given_name'] 
+			        + ' (' + player['team'] + '( ' + 
 		                + '</td><td>' + player['goals'] + '</td></tr>';
 		}
 		else {
 		    scorersBody += '<tr><td>'
-                                + player['surname']
+                                + player['surname'] + ' (' + player['team'] + ') '
 		                + '</td><td>' + player['goals'] + '</td></tr>';
 		}
 	    }
@@ -438,6 +439,7 @@ else {
 		//going to need to put 'id' as a return of the query, ok for now
 		scorersBody += '<tr><td>'
                                 + player['surname'] + ', ' + player['given_name']
+		                + ' (' + player['team'] + ') '
 		                + '</td><td>' + player['goals'] + '</td></tr>';
 	    }
 
@@ -478,10 +480,12 @@ function onManyGoalsButtonPressed() {
 			if (player['given_name'] != '') {
 			    scorersBody += '<tr><td>'
 				+ player['surname'] + ', ' + player['given_name']
+				+ ' (' + player['team'] + ') '
 				+ '</td><td>' + player['goals'] + '</td></tr>';
 			}
 			else {
 			    scorersBody += '<tr><td>' + player['surname']
+				+ ' (' + player['team'] + ') '
 				+ '</td><td>' + player['goals'] + '</td></tr>';
 			}
 	    }
@@ -516,11 +520,12 @@ function onManyGoalsButtonPressed() {
 		if (player['given_name'] != '') {
 		    scorersBody += '<tr><td>'
                                 + player['surname'] + ', ' + player['given_name']
+			        + ' (' + player['team'] + ') '
 		                + '</td><td>' + player['goals'] + '</td></tr>';
 		}
 		else {
 		    scorersBody += '<tr><td>'
-                                + player['surname']
+                                + player['surname'] + ' (' + player['team'] + ') '
 		                + '</td><td>' + player['goals'] + '</td></tr>';
 		}
 		}
@@ -556,11 +561,12 @@ else {
 		if (player['given_name'] != '') {
 		scorersBody += '<tr><td>'
                                 + player['surname'] + ', ' + player['given_name']
+		                + ' (' + player['team'] + ') '
 		                + '</td><td>' + player['goals'] + '</td></tr>';
 		}
 		else {
 		scorersBody += '<tr><td>'
-                                + player['surname']
+                                + player['surname'] + ' (' + player['team'] + ') '
 		                + '</td><td>' + player['goals'] + '</td></tr>';
 		}
 		}
