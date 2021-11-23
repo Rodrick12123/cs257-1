@@ -1175,7 +1175,7 @@ function loadMedalData(years, medal=null){
         
             tableBody = '<tr>'
                         + '<TH>'+ 'World Cup' +'</TH>'
-                        + '<TH>'+ 'Secoundplace' +'</TH>'
+                        + '<TH>'+ 'Secondplace' +'</TH>'
                         + '<TH>'+ 'Abbreviation' +'</TH>'
                         + '</tr>\n';
             for (let k = 0; k < teams.length; k++) {
@@ -1248,7 +1248,7 @@ function loadMedalData(years, medal=null){
             tableBody = '<tr>'
                         + '<TH>'+ 'World Cup' +'</TH>'
                         + '<TH>'+ 'Firstplace' +'</TH>'
-                        + '<TH>'+ 'Secoundplace' +'</TH>'
+                        + '<TH>'+ 'Secondplace' +'</TH>'
                         + '<TH>'+ 'Thirdplace' +'</TH>'
                         + '</tr>\n';
             for (let k = 0; k < teams.length; k++) {
