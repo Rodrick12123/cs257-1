@@ -26,11 +26,11 @@ function initialize() {
     
 
     
-    // let element = document.getElementById('team_selector');
-    // if (element) {
-    //     element.onchange = onTeamsSelectionChanged;
-    // }
-    
+     let element = document.getElementById('team_selector');
+     if (element) {
+         element.onchange = onTeamsSelectionChanged;
+     }
+
     /*
     let wc_element = document.getElementById('world_cup_selector');
     if (wc_element) {
@@ -148,7 +148,7 @@ function loadTeamsSelector(cups=null) {
         .then((response) => response.json())
 
         .then(function(teams) {
-            let selectorBody = '<option selected>Teams</option>';
+            let selectorBody = '<option value = "Teams" selected>Teams</option>';
             for (let k = 0; k < teams.length; k++) {
             let team = teams[k];
             if (team['team_name'] != '') {
@@ -174,11 +174,11 @@ function loadTeamsSelector(cups=null) {
 }
 
 function onTeamsSelectionChanged() {
-    let teamID = this.value;
+    let teamName = this.value;
     /*
     let url = getBaseURL() + 'OneCup?year='+getParam('year')+'&team=' + teamID;
     */
-    window.team_selected = teamID;
+    window.team_selected = teamName;
 
     //window.location = url;
 }
@@ -346,9 +346,8 @@ function displayStats() {
 
 
 function onRosterButtonPressed() {
-    alert('yes')
-   if (window.team_selected != null) {
-        alert('yes')
+    
+	if (window.team_selected != null && window.team_selected != 'Teams') {
 	let url = getAPIBaseURL() + '/'+getParam('year')+'/'+window.team_selected+'/roster';
 
     fetch(url, {method: 'get'})
@@ -381,6 +380,77 @@ else {
 }
 
 }
+
+
+
+function onGoalsButtonPressed() {
+    if (window.team_selected != null && window.team_selected != 'Teams') {
+	let url = getAPIBaseURL() + '/allmatches/goals?team='+window.team_selected+'&year='+getParam('year');
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(players) {
+	    let scorersBody = '<tr><th>Player</th><th>Goal Count</th></tr>';
+	    for (let k = 0; k < players.length; k++) {
+		let player = players[k];
+		//going to need to put 'id' as a return of the query, ok for now
+		scorersBody += '<tr><td>'
+                                + player['surname'] + ', ' + player['given_name']
+		                + '</td><td>' + player['goals'] + '</td></tr>';
+	    }
+
+	    let results = document.getElementById('results');
+	    if (results) {
+		results.innerHTML = scorersBody;
+	    }
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+}
+
+else {
+    	let url = getAPIBaseURL() + '/allmatches/goals?year='+getParam('year');
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(players) {
+	    let scorersBody = '<tr><th>Player</th><th>Goal Count</th></tr>';
+	    for (let k = 0; k < players.length; k++) {
+		let player = players[k];
+		//going to need to put 'id' as a return of the query, ok for now
+		scorersBody += '<tr><td>'
+                                + player['surname'] + ', ' + player['given_name']
+		                + '</td><td>' + player['goals'] + '</td></tr>';
+	    }
+
+	    let results = document.getElementById('results');
+	    if (results) {
+		results.innerHTML = scorersBody;
+	    }
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+
+}
+
+}
+
+
+
+
+
+
+
+
+
 
 function onMatchResultsButtonPressed() {
    if (window.team_selected == null) {
