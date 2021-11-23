@@ -508,6 +508,39 @@ function onManyGoalsButtonPressed() {
 
 }
 
+    else if (getParam('year').split(',').length == 20) {
+    	let url = getAPIBaseURL() + '/allmatches/goals';
+
+    fetch(url, {method: 'get'})
+
+    .then((response) => response.json())
+
+    .then(function(players) {
+	    let scorersBody = '<tr><th>Player</th><th>Goal Count</th></tr>';
+	    for (let k = 0; k < players.length; k++) {
+		let player = players[k];
+		//going to need to put 'id' as a return of the query, ok for now
+		scorersBody += '<tr><td>'
+                                + player['surname'] + ', ' + player['given_name']
+		                + '</td><td>' + player['goals'] + '</td></tr>';
+	    }
+
+	    let results = document.getElementById('results');
+	    if (results) {
+		results.innerHTML = scorersBody;
+	    }
+	})
+
+	.catch(function(error) {
+		console.log(error);
+	    });
+
+}
+
+
+
+
+
 else {
     	let url = getAPIBaseURL() + '/allmatches/goals?year='+getParam('year');
 
