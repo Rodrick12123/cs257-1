@@ -564,7 +564,21 @@ def get_goals():
     #maybe not player?
     #come back later to add player if desired, but not now
 
-    query = '''SELECT DISTINCT players.id, players.surname, players.given_name, COUNT(players_teams_matches_worldcups.goal)
+
+    team = flask.request.args.get('team') #this is the team name
+    year = flask.request.args.get('year') #this is the year or a list of years
+
+    if year is None:
+        allyears = [None]
+    else:
+        allyears = year.split(',')
+    
+    player = flask.request.args.get('player') #this is the player id
+
+    allscorers = []
+    for year in allyears:
+
+        query = '''SELECT DISTINCT players.id, players.surname, players.given_name, COUNT(players_teams_matches_worldcups.goal)
            FROM matches, worldcups, players_teams_matches_worldcups, players, teams 
            WHERE matches.id = players_teams_matches_worldcups.match_id
            AND players.id = players_teams_matches_worldcups.player_id
@@ -572,52 +586,57 @@ def get_goals():
            AND teams.id = players_teams_matches_worldcups.team_id
            AND players_teams_matches_worldcups.goal LIKE %s '''
 
-    team = flask.request.args.get('team') #this is the team name
-    year = flask.request.args.get('year') #this is the year or a list of years
-    player = flask.request.args.get('player') #this is the player id
-
     #what to do about spaces in country name (El Salvador doesn't work)
     #why is it telling me that tuple is out of range?
 
 
-    if team is not None:
-        query += ''' AND teams.team_name = %s AND (matches.home_team = teams.team_name OR matches.away_team = teams.team_name)'''
-    if year is not None:
-        query += ''' AND CAST(worldcups.year AS TEXT) = %s'''
-    if player is not None:
-        query += ''' AND players.surname = %s '''
+        if team is not None:
+            query += ''' AND teams.team_name = %s AND (matches.home_team = teams.team_name OR matches.away_team = teams.team_name)'''
+        if year is not None:
+            query += ''' AND CAST(worldcups.year AS TEXT) = %s'''
+        if player is not None:
+            query += ''' AND players.surname = %s '''
 
-    query += ''' GROUP BY players.id, players.surname, players.given_name
+        query += ''' GROUP BY players.id, players.surname, players.given_name
                  ORDER BY COUNT(players_teams_matches_worldcups.goal) DESC
-                 LIMIT 20; '''
+                 LIMIT 10; '''
 
-    search_string_goal = f'%G%'
+        search_string_goal = f'%G%'
 
-    player_list = []
-    try:
-        connection = get_connection()
-        cursor = connection.cursor()
+        player_list = []
+        try:
+            connection = get_connection()
+            cursor = connection.cursor()
         #need to add 
-        if team is not None and year is None:
-            cursor.execute(query, (search_string_goal, team))
-        if year is not None and team is None:
-            cursor.execute(query, (search_string_goal, year))
-        if year is not None and team is not None:
-            cursor.execute(query, (search_string_goal, team, year))
-        else:
-            cursor.execute(query, (search_string_goal,))
-        for row in cursor:
-            player = {'player_id':row[0],
-                      'surname':row[1],
-                      'given_name':row[2],
-                      'goals':row[3]}
-            player_list.append(player)
-        cursor.close()
-        connection.close()
-    except Exception as e:
-        print(e, file=sys.stderr)
-    return json.dumps(player_list)
+            if team is not None and year is None:
+                cursor.execute(query, (search_string_goal, team))
+            elif year is not None and team is None:
+                cursor.execute(query, (search_string_goal, year))
+            elif year is not None and team is not None:
+                cursor.execute(query, (search_string_goal, team, year))
+            else:
+                cursor.execute(query, (search_string_goal,))
+            for row in cursor:
+                player = {'player_id':row[0],
+                          'surname':row[1],
+                          'given_name':row[2],
+                          'goals':row[3],
+                          'year':year}
+                player_list.append(player)
+            cursor.close()
+            connection.close()
+        except Exception as e:
+            print(e, file=sys.stderr)
 
+        allscorers.extend(player_list)
+    
+    if len(allyears) == 1:
+        return json.dumps(player_list)
+    else:
+        #scorers_to_return = sorted(allscorers, key=lambda d: allscorers['goals'])[0:10]
+        #allscorers.sort(key=operator.itemgetter('goals'))
+        scorers_to_return = sorted(allscorers, key=lambda k: k['goals'], reverse=True)
+        return json.dumps(scorers_to_return)
     
 
 
