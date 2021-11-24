@@ -215,6 +215,47 @@ World Cup, sorted by year.
    /medals/1930/
    [{"year": 1930, "firstplace": Uruguay "secoundplace": Argentina "thirdplace": USA }] 
 
+   REQUEST: /allmatches/{year}/
+
+   GET parameters
+        years (necessary, no default) -- the year of the World Cup (which you can look up with /Allcups/) that you want a list of matches from
+        teams (necessary, all teams) -- the team the user has chosen
+
+   RESPONSE: a JSON list of dictionaries, each of which represents one
+   match in a user-given World Cup and team. If no team is given, then the defualt is all teams.
+    Each dictionary in this list will have the following fields.
+    'match_id':row[0],
+    'date':row[13],
+    'stage':row[2],
+    'stadium':row[3],
+    'city':row[4],
+    'home_team':row[5],
+    'home_score':row[6],
+    'away_team':row[7],
+    'away_score':row[8],
+    'home_first_half_score':row[9],
+    'home_second_half_score':row[10],
+    'away_first_half_score':row[11],
+    'away_second_half_score':row[12]}
+      Worldcup -- (INTEGER) the year of the match
+      date -- (TEXT) date match took place
+      stadium -- (TEXT) match stadium location
+      city -- (TEXT) match city location
+      home_team -- (TEXT) home team
+      home_score -- (INTEGER) home team score
+      away_team -- (TEXT) away team
+      away_score -- (INTEGER) away team score
+      stage -- (TEXT) area of worldcup
+      home_first_half_score -- (TEXT) home team score in first half
+      home_second_half_score -- (TEXT) home team score in second half
+      away_first_half_score -- (TEXT) away team score in first half
+      away_second_half_score -- (TEXT) away team score in second half
+      
+   EXAMPLE(S):
+   /allmatches/1930/
+   
+   [{"Worldcup": 1930, "date": "1930-07-17", "stadium": "Parque Central", "city": Montevideo, "home_team": Yugoslavia, "home_score": 4, "away_team": Bolivia, "away_score": 0}...] 
+   
 </pre>
 </body>
 </html>
