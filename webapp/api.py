@@ -208,7 +208,7 @@ def get_medals():
 
 @api.route('/silver/teams') 
 def get_silver():
-    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.secoundplace
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.secondplace
                 FROM teams, worldcups, players_teams_matches_worldcups
                 WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
@@ -362,7 +362,7 @@ def get_all_medals(year):
         else:
             ylist.append('all')
     
-    query = '''SELECT DISTINCT worldcups.year, worldcups.firstplace, worldcups.secoundplace, worldcups.thirdplace, worldcups.id
+    query = '''SELECT DISTINCT worldcups.year, worldcups.firstplace, worldcups.secondplace, worldcups.thirdplace, worldcups.id
                 FROM worldcups
                 ORDER BY worldcups.year;'''
     medal_list = []
