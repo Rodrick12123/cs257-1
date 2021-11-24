@@ -382,13 +382,22 @@ function onGoalsButtonPressed() {
         .then(function(players) {
             let scorersBody = '<tr><th>Player</th><th>Goal Count</th></tr>';
             for (let k = 0; k < players.length; k++) {
+	   
             let player = players[k];
+	    if (player['name'] != '') {
             //going to need to put 'id' as a return of the query, ok for now
             scorersBody += '<tr><td>'
                                     + player['surname'] + ', ' + player['given_name']
                             + ' (' + player['team'] + ') '
                             + '</td><td>' + player['goals'] + '</td></tr>';
             }
+	    else {
+            scorersBody += '<tr><td>'
+                                    + player['surname']
+                            + ' (' + player['team'] + ') '
+                            + '</td><td>' + player['goals'] + '</td></tr>';
+	    }
+	    }
 
             let results = document.getElementById('results');
             if (results) {
@@ -428,12 +437,13 @@ function onManyGoalsButtonPressed() {
 			    scorersBody += '<tr ALIGN="CENTER"><td>'
 				+ player['surname'] + ', ' + player['given_name']
 				+ ' (' + player['team'] + ') '
-				+ '</td><td>' + player['goals'] + '</td></tr>';
+				+ '</td><td>' + player['goals'] + '</td><td>' +                                   player['year'] + '</td></tr>';
 			}
 			else {
 			    scorersBody += '<tr ALIGN="CENTER"><td>' + player['surname']
 				+ ' (' + player['team'] + ') '
-				+ '</td><td>' + player['goals'] + '</td></tr>';
+				+ '</td><td>' + player['goals'] + '</td><td>'+
+				player['year'] + '</td></tr>';
 			}
 	    }
 
@@ -468,7 +478,7 @@ function onManyGoalsButtonPressed() {
 		    scorersBody += '<tr><td>'
                                 + player['surname'] + ', ' + player['given_name']
 			        + ' (' + player['team'] + ') '
-		                + '</td><td>' + player['goals'] + '</td></tr>';
+			+ '</td><td>' + player['goals'] + '</td></tr>';
 		}
 		else {
 		    scorersBody += '<tr><td>'
@@ -509,12 +519,14 @@ else {
 		scorersBody += '<tr><td>'
                                 + player['surname'] + ', ' + player['given_name']
 		                + ' (' + player['team'] + ') '
-		                + '</td><td>' + player['goals'] + '</td></tr>';
+		                + '</td><td>' + player['goals'] + '</td><td>' +
+		    player['year']+ '</td></tr>';
 		}
 		else {
 		scorersBody += '<tr><td>'
                                 + player['surname'] + ' (' + player['team'] + ') '
-		                + '</td><td>' + player['goals'] + '</td></tr>';
+		                + '</td><td>' + player['goals'] + '</td><td>' +
+		    player['year']+'</td></tr>';
 		}
 		}
 

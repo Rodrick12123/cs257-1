@@ -83,7 +83,7 @@ def get_matches(years,teams):
 
 @api.route('/silver/teams') 
 def get_silver():
-    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.secoundplace
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.secondplace
                 FROM teams, worldcups, players_teams_matches_worldcups
                 WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
@@ -230,7 +230,7 @@ def get_all_medals(year):
         else:
             ylist.append('all')
     
-    query = '''SELECT DISTINCT worldcups.year, worldcups.firstplace, worldcups.secoundplace, worldcups.thirdplace, worldcups.id
+    query = '''SELECT DISTINCT worldcups.year, worldcups.firstplace, worldcups.secondplace, worldcups.thirdplace, worldcups.id
                 FROM worldcups
                 ORDER BY worldcups.year;'''
     medal_list = []
@@ -241,7 +241,7 @@ def get_all_medals(year):
         cursor.execute(query, (year,))
         for row in cursor:
             if((row[0] in ylist) or ('all' in ylist)):
-                podium = {'year':row[0],  'wc_id':row[4], 'firstplace':row[1], 'secoundplace':row[2], 'thirdplace':row[3]}
+                podium = {'year':row[0],  'wc_id':row[4], 'firstplace':row[1], 'secondplace':row[2], 'thirdplace':row[3]}
                 medal_list.append(podium)
         cursor.close()
         connection.close()
@@ -378,9 +378,9 @@ def get_team_matches(year):
                       'away_team':row[7],
                       'away_score':row[8],
                       'home_first_half_score':row[9],
-                      'home_secound_half_score':row[10],
+                      'home_second_half_score':row[10],
                       'away_first_half_score':row[11],
-                      'away_secound_half_score':row[12]}
+                      'away_second_half_score':row[12]}
             match_list.append(match)
         cursor.close()
         connection.close()
@@ -429,8 +429,6 @@ def get_goals():
             query += ''' AND teams.team_name = %s AND (matches.home_team = teams.team_name OR matches.away_team = teams.team_name)'''
         if year is not None:
             query += ''' AND CAST(worldcups.year AS TEXT) = %s'''
-        if player is not None:
-            query += ''' AND players.surname = %s '''
 
         query += ''' GROUP BY players.id, players.surname, players.given_name, teams.team_abbreviation
                  ORDER BY COUNT(players_teams_matches_worldcups.goal) DESC
@@ -470,7 +468,7 @@ def get_goals():
         return json.dumps(player_list)
     else:
        
-        scorers_to_return = sorted(allscorers, key=lambda k: k['goals'], reverse=True)
+        scorers_to_return = sorted(allscorers, key=lambda k: k['goals'], reverse=True)[0:9]
         return json.dumps(scorers_to_return)
     
 
