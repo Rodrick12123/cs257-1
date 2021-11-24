@@ -209,9 +209,7 @@ function loadPageTitle() {
 	    }
 	    }
 
-	    //remove extra characters at end of title
-	    //figure out how to do dot character
-	    //	    titleBody = titleBody[:-3];
+	   
 	    
 
 	    let title = document.getElementById('page-title');
@@ -307,7 +305,6 @@ function onRosterButtonPressed() {
 	    let rosterBody = '';
 	    for (let k = 0; k < players.length; k++) {
 		let player = players[k];
-		//going to need to put 'id' as a return of the query, ok for now
 		if (player['given_name'] != '') {
 		    rosterBody += '<tr><td>'
 			+ player['surname'] + ', ' + player['given_name']
@@ -349,7 +346,6 @@ function onGoalsButtonPressed() {
 	    let scorersBody = '<tr><th>Player</th><th>Goal Count</th></tr>';
 	    for (let k = 0; k < players.length; k++) {
 		let player = players[k];
-		//going to need to put 'id' as a return of the query, ok for now
 		if (player['given_name'] != '') {
 		    scorersBody += '<tr><td>'
                                 + player['surname'] + ', ' + player['given_name'] 
@@ -385,7 +381,6 @@ function onGoalsButtonPressed() {
 	   
             let player = players[k];
 	    if (player['name'] != '') {
-            //going to need to put 'id' as a return of the query, ok for now
             scorersBody += '<tr><td>'
                                     + player['surname'] + ', ' + player['given_name']
                             + ' (' + player['team'] + ') '
@@ -432,12 +427,11 @@ function onManyGoalsButtonPressed() {
             '<tr ALIGN="CENTER">'
 		    for (let k = 0; k < players.length; k++) {
 			let player = players[k];
-		//going to need to put 'id' as a return of the query, ok for now
 			if (player['given_name'] != '') {
 			    scorersBody += '<tr ALIGN="CENTER"><td>'
 				+ player['surname'] + ', ' + player['given_name']
 				+ ' (' + player['team'] + ') '
-				+ '</td><td>' + player['goals'] + '</td><td>' +                                   player['year'] + '</td></tr>';
+				+ '</td><td>' + player['goals'] + '</td><td>' + player['year'] + '</td></tr>';
 			}
 			else {
 			    scorersBody += '<tr ALIGN="CENTER"><td>' + player['surname']
@@ -473,7 +467,6 @@ function onManyGoalsButtonPressed() {
 	    let scorersBody = '<tr><th>Player</th><th>Goal Count</th></tr>';
 	    for (let k = 0; k < players.length; k++) {
 		let player = players[k];
-		//going to need to put 'id' as a return of the query, ok for now
 		if (player['given_name'] != '') {
 		    scorersBody += '<tr><td>'
                                 + player['surname'] + ', ' + player['given_name']
@@ -514,7 +507,6 @@ else {
 	    let scorersBody = '<tr><th>Player</th><th>Goal Count</th></tr>';
 	    for (let k = 0; k < players.length; k++) {
 		let player = players[k];
-		//going to need to put 'id' as a return of the query, ok for now
 		if (player['given_name'] != '') {
 		scorersBody += '<tr><td>'
                                 + player['surname'] + ', ' + player['given_name']
@@ -565,7 +557,6 @@ function onMatchResultsButtonPressed() {
 		              '</tr>;';
 	    for (let k = 0; k < matches.length; k++) {
 		let match = matches[k];
-		//going to need to put 'id' as a return of the query, ok for now
 		matchesBody += '<tr>' +
                                '<td>' + match['date'] + '</td>' +
 		               '<td>' + match['stage'] + '</td>' + 
@@ -589,8 +580,7 @@ function onMatchResultsButtonPressed() {
 
    else {
 
-       //gets just the matches that a specific team played
-       //global variable?
+     
 
        let url = getAPIBaseURL() + '/allmatches/'+getParam('year')+'?team='+window.team_selected;
 
@@ -609,7 +599,6 @@ function onMatchResultsButtonPressed() {
 		              '</tr>;';
 	    for (let k = 0; k < matches.length; k++) {
 		let match = matches[k];
-		//going to need to put 'id' as a return of the query, ok for now
 		matchesBody += '<tr>' +
                                '<td>' + match['date'] + '</td>' +
 		               '<td>' + match['stage'] + '</td>' + 
