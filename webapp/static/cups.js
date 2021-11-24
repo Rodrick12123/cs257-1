@@ -778,7 +778,7 @@ function dataSelect(evt) {
     }
 
     if(evt.id === "m-data"){
-        let cups = window.team_selected
+        let cups = window.cup_selected
         let medal = window.medal_selected
         if(medal){
             if(cups){
