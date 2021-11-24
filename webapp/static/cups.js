@@ -8,7 +8,7 @@ window.onload = initialize;
 
 function initialize() {
 
-    //loadWorldCupCheckBoxes();    
+    loadWorldCupCheckBoxes();    
     loadTeamsSelector();
     loadWorldCupsSelector();
     displayStats();

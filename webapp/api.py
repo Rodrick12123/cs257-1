@@ -120,7 +120,7 @@ def get_cups(team):
 @api.route('/medals') 
 def get_medals():
     
-    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace, worldcups.secondplace,
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace, worldcups.secoundplace,
                 worldcups.thirdplace, worldcups.fourthplace
                 FROM worldcups, players_teams_matches_worldcups, teams
                 WHERE players_teams_matches_worldcups.team_id = teams.id
@@ -208,7 +208,7 @@ def get_medals():
 
 @api.route('/silver/teams') 
 def get_silver():
-    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.secondplace
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.secoundplace
                 FROM teams, worldcups, players_teams_matches_worldcups
                 WHERE players_teams_matches_worldcups.team_id = teams.id
                  AND players_teams_matches_worldcups.worldcup_id = worldcups.id
@@ -362,7 +362,7 @@ def get_all_medals(year):
         else:
             ylist.append('all')
     
-    query = '''SELECT DISTINCT worldcups.year, worldcups.firstplace, worldcups.secondplace, worldcups.thirdplace, worldcups.id
+    query = '''SELECT DISTINCT worldcups.year, worldcups.firstplace, worldcups.secoundplace, worldcups.thirdplace, worldcups.id
                 FROM worldcups
                 ORDER BY worldcups.year;'''
     medal_list = []
@@ -373,7 +373,7 @@ def get_all_medals(year):
         cursor.execute(query, (year,))
         for row in cursor:
             if((row[0] in ylist) or ('all' in ylist)):
-                podium = {'year':row[0],  'wc_id':row[4], 'firstplace':row[1], 'secondplace':row[2], 'thirdplace':row[3]}
+                podium = {'year':row[0],  'wc_id':row[4], 'firstplace':row[1], 'secoundplace':row[2], 'thirdplace':row[3]}
                 medal_list.append(podium)
         cursor.close()
         connection.close()
@@ -514,8 +514,8 @@ def get_team_matches(year):
     query = '''SELECT DISTINCT  matches.id, matches.date_time, matches.stage, matches.stadium,
            matches.city, matches.home_team, matches.home_score, matches.away_team, 
            matches.away_score, matches.home_first_half_goals, 
-           matches.home_second_half_goals, matches.away_first_half_goals, 
-           matches.away_second_half_goals, CAST(matches.date_time AS text) 
+           matches.home_secound_half_goals, matches.away_first_half_goals, 
+           matches.away_secound_half_goals, CAST(matches.date_time AS text) 
            FROM matches, worldcups, players_teams_matches_worldcups, teams 
            WHERE matches.id = players_teams_matches_worldcups.match_id
            AND worldcups.id = players_teams_matches_worldcups.worldcup_id
@@ -547,9 +547,9 @@ def get_team_matches(year):
                       'away_team':row[7],
                       'away_score':row[8],
                       'home_first_half_score':row[9],
-                      'home_second_half_score':row[10],
+                      'home_secound_half_score':row[10],
                       'away_first_half_score':row[11],
-                      'away_second_half_score':row[12]}
+                      'away_secound_half_score':row[12]}
             match_list.append(match)
         cursor.close()
         connection.close()

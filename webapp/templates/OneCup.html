@@ -7,13 +7,19 @@
     <title>World Cup Explorer</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cups.css') }}" />
     <script type="text/javascript" src="{{ url_for('static', filename='cups.js') }}" ></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='q.png') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='button.ico') }}" />
 </head>
 
 <body>   
 
     <ul class="horizontal-navbar">
-        <li><a href="/">Home</a></li>
-	<li><a href="/help">Help</a></li>
+      <li><a href="/">
+        <image src= "{{ url_for('static', filename='Soccer-Trophy-128.png') }}" style="width:42px;height:38px;"></image>
+      </a></li>
+      <li><a href="/help">
+        <image src= "{{ url_for('static', filename='q.png') }}" style="width:42px;height:38px;"></image>
+      </a></li>
     </ul>
  
     <h3 id="page-title"></h3> 
