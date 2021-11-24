@@ -265,6 +265,49 @@ World Cup, sorted by year.
    EXAMPLE(S):
    /worldcups/1930/"all"/
    [{"year": 1930}]
+   
+   
+   REQUEST: /allmatches/{year}
+
+   GET parameters
+        year (necessary, no default) -- the year of the World Cup that you want a list of teams from
+
+   RESPONSE: a JSON list of dictionaries, each of which represents one
+   match played by the given team in the respective worldcup year. 
+   Each dictionary in this list will have the following fields.
+
+    'match_id':row[0],
+                      'date':row[13],
+                      'stage':row[2],
+                      'stadium':row[3],
+                      'city':row[4],
+                      'home_team':row[5],
+                      'home_score':row[6],
+                      'away_team':row[7],
+                      'away_score':row[8],
+                      'home_first_half_score':row[9],
+                      'home_second_half_score':row[10],
+                      'away_first_half_score':row[11],
+                      'away_second_half_score':row[12]} 
+      date -- (DATE) the date in YYYY/MM/DD format
+      stage -- (TEXT) What stage in the tournament the match was
+      stadium -- (TEXT) The stadium the match was played in
+      city -- (TEXT) Location of the match
+      home_team -- (TEXT) Whichever team was designated home for that match
+      away_team -- (TEXT) Whichever team was designated away for that match
+      home_score -- (INTEGER) the number of goals the home team scored
+      away_score -- (INTEGER) the number of goals the away team scored
+      home_first_half_score -- (INTEGER) number of goals scored in 1st half by home team
+      home_second_half_score -- (INTEGER) number of goals scored in 2nd half by home team
+      away_first_half_score -- (INTEGER) number of goals scored in 1st half by away team
+      away_second_half_score -- (INTEGER) number of goals scored in 2nd half by away team
+
+   EXAMPLE(S):
+       /allmatches/2014
+   [{"match_id": 300186456, "date": "2014-06-12", "stage": "Group A", "stadium": "Arena de Sao Paulo", "city": "Sao Paulo ", "home_team": "Brazil", "home_score": 3, "away_team": "Croatia", "away_score": 1, "home_first_half_score": 1, "home_second_half_score": 2, "away_first_half_score": 1, "away_second_half_score": 0},...]
+   
+
+
 
 </pre>
 </body>
