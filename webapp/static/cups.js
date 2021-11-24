@@ -349,8 +349,8 @@ function onGoalsButtonPressed() {
 		if (player['given_name'] != '') {
 		    scorersBody += '<tr><td>'
                                 + player['surname'] + ', ' + player['given_name'] 
-			        + ' (' + player['team'] + '( ' + 
-		                + '</td><td>' + player['goals'] + '</td></tr>';
+			        + ' (' + player['team'] + ') </td><td>' 
+			        + player['goals'] + '</td></tr>';
 		}
 		else {
 		    scorersBody += '<tr><td>'
