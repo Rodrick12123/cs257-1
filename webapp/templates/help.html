@@ -112,6 +112,108 @@ World Cup, sorted by year.
    
    [{"Worldcup": 1930, "Abbreviation": "BEL", "Team Name": "Belgium"]
    
+   REQUEST: /matches/{years}/{teams}
+
+   GET parameters
+        years (necessary, no default) -- the year of the World Cup (which you can look up with /Allcups/) that you want a list of matches from
+        teams (necessary, all teams) -- the team the user has chosen
+
+   RESPONSE: a JSON list of dictionaries, each of which represents one
+   match in a user-given World Cup and team. If no team is given, then the defualt is all teams.
+    Each dictionary in this list will have the following fields.
+   
+      Worldcup -- (INTEGER) the year of the match
+      date -- (TEXT) date match took place
+      stadium -- (TEXT) match stadium location
+      city -- (TEXT) match city location
+      home -- (TEXT) home team
+      hscore -- (INTEGER) home team score
+      away -- (TEXT) away team
+      ascore -- (INTEGER) away team score
+      
+   EXAMPLE(S):
+       /matches/1930/Bolivia
+   
+   [{"Worldcup": 1930, "date": "1930-07-17", "stadium": "Parque Central", "city": Montevideo, "home": Yugoslavia, "hscore": 4, "away": Bolivia, "ascore": 0}...] 
+   
+   REQUEST: /silver/teams
+
+   GET parameters
+        years (not necessary, no default) -- the year of the World Cup (which you can look up with /Allcups/) that you want a list of teams from
+        
+
+   RESPONSE: a JSON list of dictionaries, each of which represents one
+   team in specific worlducp(s). Each list will have information on second place winners.
+    Each dictionary in this list will have the following fields.
+
+      Abbreviation -- (INTEGER) the abbreviation of the team
+      Team Name -- (TEXT) Full team name
+      Worldcup -- (INTEGER) Worldcup year
+     
+      
+   EXAMPLE(S):
+       /bronze/teams
+   [{"Worldcup": 1930, "Team Name": Sweden "Abbreviation": SWE}...] 
+
+   REQUEST: /bronze/teams
+
+   GET parameters
+        years (not necessary, no default) -- the year of the World Cup (which you can look up with /Allcups/) that you want a list of teams from
+        
+
+   RESPONSE: a JSON list of dictionaries, each of which represents one
+   team in specific worlducp(s). Each list will have information on third place winners.
+    Each dictionary in this list will have the following fields.
+
+      Abbreviation -- (INTEGER) the abbreviation of the team
+      Team Name -- (TEXT) Full team name
+      Worldcup -- (INTEGER) Worldcup year
+     
+      
+   EXAMPLE(S):
+       /silver/teams
+   [{"Worldcup": 1930, "Team Name": Argentina "Abbreviation": ARG}...] 
+
+   REQUEST: /gold/teams
+
+   GET parameters
+        years (not necessary, no default) -- the year of the World Cup (which you can look up with /Allcups/) that you want a list of teams from
+        
+
+   RESPONSE: a JSON list of dictionaries, each of which represents one
+   team in specific worlducp(s). Each list will have information on first place winners.
+    Each dictionary in this list will have the following fields.
+
+      Abbreviation -- (INTEGER) the abbreviation of the team
+      Team Name -- (TEXT) Full team name
+      Worldcup -- (INTEGER) Worldcup year
+     
+      
+   EXAMPLE(S):
+       /gold/teams
+   [{"Worldcup": 1930, "Team Name": Uruguay "Abbreviation": URU}...] 
+
+   REQUEST: /medals/{year}/
+
+   GET parameters
+        year (necessary, no default) -- the year of the World Cup (which you can look up with /Allcups/) that you want a list of teams from
+        
+
+   RESPONSE: a JSON list of dictionaries, each of which represents one
+   first, second, and thrid place finishers in the respective worldcup year. 
+   Each dictionary in this list will have the following fields.
+
+    'year':row[0],  'wc_id':row[4], 'firstplace':row[1], 'secoundplace':row[2], 'thirdplace':row[3]
+      wc_id -- (INTEGER) the abbreviation of the team
+      firstplace -- (TEXT) Full team of first placers
+      year -- (INTEGER) Worldcup year
+      secoundplace -- (TEXT) Full team of seond placers
+      thirdplace -- (TEXT) Full team of third placers
+     
+      
+   EXAMPLE(S):
+       /gold/teams
+   [{"Worldcup": 1930, "Team Name": Uruguay "Abbreviation": URU}...] 
 
 </pre>
 </body>

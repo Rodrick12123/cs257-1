@@ -241,6 +241,7 @@ def get_all_medals(year):
         cursor.execute(query, (year,))
         for row in cursor:
             if((row[0] in ylist) or ('all' in ylist)):
+                
                 podium = {'year':row[0],  'wc_id':row[4], 'firstplace':row[1], 'secoundplace':row[2], 'thirdplace':row[3]}
                 medal_list.append(podium)
         cursor.close()

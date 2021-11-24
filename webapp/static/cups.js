@@ -965,7 +965,7 @@ function loadMedalData(years, medal=null){
                 tableBody +=    '<tr ALIGN="CENTER">'
                                 + '<td>' + team['year'] + '</td>'
                                 + '<td>' + team['firstplace'] + '</td>'
-                                + '<td>' + team['secondplace'] + '</td>'
+                                + '<td>' + team['secoundplace'] + '</td>'
                                 + '<td>' + team['thirdplace'] + '</td>'
                                 + '</tr>\n';
             }
