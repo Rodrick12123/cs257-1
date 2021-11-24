@@ -22,22 +22,25 @@ def get_connection():
 @api.route('/help/')
 def get_help():
     return flask.render_template('help.html')
+#need to edit
 
 
 @api.route('/matches/<years>/<teams>') 
 def get_matches(years,teams):
+    # teams = flask.request.args.get('teams')
 
     ylist = []
     yrs = years.split(",")
     ylist = [int(i) for i in yrs]
-  
+    print(ylist)
+    
     if (teams != 'undefined' and teams != 'null'):
         tms = teams.split(",") 
     else:  
         tms = []
         tms.append('all')
-  
-    
+    print(tms)
+    #how do we want to identify matches...
     query = '''SELECT DISTINCT matches.date_time, CAST(matches.date_time AS text), teams.team_name, worldcups.year, matches.stage, matches.stadium,
                 matches.city, matches.home_team, matches.home_score, matches.away_team,
                 matches.away_score,  matches.id
@@ -80,6 +83,128 @@ def get_matches(years,teams):
 
     return json.dumps(match_list)
 
+@api.route('/cups/<team>') 
+def get_cups(team):
+    tms = team.split(",")
+
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace
+                FROM teams, worldcups, players_teams_matches_worldcups
+                WHERE players_teams_matches_worldcups.team_id = teams.id
+                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
+                 
+                ORDER BY worldcups.year;'''
+    
+    team_list = []
+    ylist =[]
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query,)
+        for row in cursor:
+            if ( row[1] in tms):
+                
+                if( row[2] not in ylist):
+                    team = {
+                        'Team Name':row[1],
+                        'Worldcup':row[2]
+                    }
+                    ylist.append(row[2])
+                    team_list.append(team)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+    return json.dumps(team_list)
+
+#need to edit
+@api.route('/medals') 
+def get_medals():
+    
+    query = '''SELECT teams.team_abbreviation, teams.team_name, worldcups.year, worldcups.firstplace, worldcups.secoundplace,
+                worldcups.thirdplace, worldcups.fourthplace
+                FROM worldcups, players_teams_matches_worldcups, teams
+                WHERE players_teams_matches_worldcups.team_id = teams.id
+                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
+                ORDER BY worldcups.year;'''
+    team_list = []
+    year_list = []
+
+    years = flask.request.args.get('years')
+    ylist = []
+    if (years):
+        yrs = years.split(",")
+        ylist = [int(i) for i in yrs]
+
+        
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query,)
+        for row in cursor:
+            
+            if(row[2] in ylist):
+                tvals = [value for elem in team_list
+                        for value in elem.values()]
+                if ( row[1] not in tvals):
+                    team = {
+                            'Team Name':row[1],
+                            'Worldcup':row[2],
+                            'Medals':0}
+                    team_list.append(team)
+                tvals = [value for elem in team_list
+                        for value in elem.values()]
+                if( row[2] not in year_list):
+                    year_list.append(row[2])
+                    if(row[3] not in tvals):
+                        team = {
+                                'Team Name':row[3],
+                                'Worldcup':row[2],
+                                'Medals':1}
+                        team_list.append(team)
+                    else:
+                        tname = row[3]
+                        for t in team_list:
+                            if t['Team Name'] == tname:
+                                t['Medals'] += 1
+                    if(row[4] not in tvals):
+                        team = {
+                                'Team Name':row[4],
+                                'Worldcup':row[2],
+                                'Medals':1}
+                        team_list.append(team)
+                    else:
+                        tname = row[4]
+                        for t in team_list:
+                            if t['Team Name'] == tname:
+                                t['Medals'] += 1
+                    if(row[5] not in tvals):
+                        team = {
+                                'Team Name':row[5],
+                                'Worldcup':row[2],
+                                'Medals':1}
+                        team_list.append(team)
+                    else:
+                        tname = row[5]
+                        for t in team_list:
+                            if t['Team Name'] == tname:
+                                t['Medals'] += 1
+                    if(row[6] not in tvals):
+                        team = {
+                                'Team Name':row[6],
+                                'Worldcup':row[2],
+                                'Medals':1}
+                        team_list.append(team)
+                    else:
+                        tname = row[6]
+                        for t in team_list:
+                            if t['Team Name'] == tname:
+                                t['Medals'] += 1
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(team_list)
 
 @api.route('/silver/teams') 
 def get_silver():
@@ -201,6 +326,13 @@ def get_all_teams():
     query = '''SELECT teams.team_abbreviation, teams.team_name, teams.id 
                 FROM teams ORDER BY teams.team_name;'''
 
+    # sort_argument = flask.request.args.get('sort')
+    # if sort_argument == 'birth_year':
+    #     query += 'birth_year'
+    # else:
+    #     query += 'surname, given_name'
+    #query += 'team_name'
+    
     team_list = []
     try:
         connection = get_connection()
@@ -250,6 +382,12 @@ def get_all_medals(year):
 
     return json.dumps(medal_list)
 
+
+
+
+
+
+
 @api.route('/Allcups/')
 def get_all_worldcups():
     
@@ -277,7 +415,7 @@ def get_all_worldcups():
 
 @api.route('/<years>/teams/') 
 def get_teams_by_year(years):
-
+    # print(years)
     ylist = []
     yrs = years.split(',')
     ylist = [int(i) for i in yrs]
@@ -307,10 +445,41 @@ def get_teams_by_year(years):
     return json.dumps(team_list)
 
 
+@api.route('/Allcups/<team>/cups/')
+def get_team_worldcups(team):
+
+    query = '''SELECT DISTINCT worldcups.year, worldcups.location, worldcups.id 
+FROM worldcups, teams, players_teams_matches_worldcups 
+WHERE players_teams_matches_worldcups.worldcup_id = worldcups.id
+AND players_teams_matches_worldcups.team_id = teams.id
+AND teams.id = %s
+ORDER BY worldcups.year;'''
+
+    wc_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, (team,))
+        for row in cursor:
+            wc = {  'wc_year':row[0],
+                    'wc_location':row[1],
+                    'id':row[2]}
+            wc_list.append(wc)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(wc_list)
 
 @api.route('/<year>/<team>/roster') 
 def get_players(year, team):
-
+    # print(year)
+    # print(team)
+    # tms = team.split(",")
+    # ylist = []
+    # yrs = year.split(",")
+    # ylist = [int(i) for i in yrs]
     query = '''SELECT DISTINCT players.surname, players.given_name, players.id
                FROM worldcups, teams, players_teams_matches_worldcups, players
                WHERE players_teams_matches_worldcups.team_id = teams.id
@@ -327,7 +496,7 @@ def get_players(year, team):
         cursor = connection.cursor()
         cursor.execute(query, (team, year))
         for row in cursor:
-
+            # if ( (row[1] in tms) and (row[2] in ylist) ):
             player = {'surname':row[0], 'given_name':row[1], 'id':row[2]}
             player_list.append(player)
         cursor.close()
@@ -393,7 +562,8 @@ def get_goals():
 
     #year, team, and player are options
     #maybe not player?
-    
+    #come back later to add player if desired, but not now
+
 
     team = flask.request.args.get('team') #this is the team name
     
@@ -469,10 +639,69 @@ def get_goals():
     if len(allyears) == 1:
         return json.dumps(player_list)
     else:
-       
+        #scorers_to_return = sorted(allscorers, key=lambda d: allscorers['goals'])[0:10]
+        #allscorers.sort(key=operator.itemgetter('goals'))
         scorers_to_return = sorted(allscorers, key=lambda k: k['goals'], reverse=True)
         return json.dumps(scorers_to_return)
     
+
+
+
+
+
+
+
+
+
+
+@api.route('/<teams>/players/') 
+def get_players1():
+    ''' Returns a list of all the authors in our database. See
+        get_author_by_id below for description of the author
+        resource representation.
+        By default, the list is presented in alphabetical order
+        by surname, then given_name. You may, however, use
+        the GET parameter sort to request sorting by birth year.
+            http://.../authors/?sort=birth_year
+        Returns an empty list if there's any database failure.
+    '''
+
+    query = '''SELECT players.playerid, players.tmid, players.firstname, players.lastname, players.captain, players.starter, 
+                teams.team_abbreviation, players.pnumber, players.position
+               FROM players, teams 
+               WHERE teams.teamid = players.tmid
+               AND teams.year = %s
+               ORDER BY teams.team_abbreviation'''
+
+    # sort_argument = flask.request.args.get('sort')
+    # if sort_argument == 'birth_year':
+    #     query += 'birth_year'
+    # else:
+    #     query += 'surname, given_name'
+    query += 'lastname, surname'
+    
+    player_list = []
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(query, teams)
+        for row in cursor:
+            player = {'plaerid':row[0],
+                      'tmid':row[1],
+                      'firstname':row[2],
+                      'lastname':row[3],
+                      'captain':row[4],
+                      'starter':row[4],
+                      'team_abbreviation':row[5],
+                      'number':row[6],
+                      'position':row[7]}
+            player_list.append(player)
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+
+    return json.dumps(player_list)
 
 @api.route('/Allcups/attendance')
 def get_attendance():

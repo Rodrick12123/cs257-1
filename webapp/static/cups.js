@@ -694,36 +694,6 @@ function onWCQueriesSelectionChanged() {
 
 }
 
-function loadSpecificTeamsSelector() {
-
-    //need to get <year> from home page when sending to this page
-    let url = getAPIBaseURL() + '/<year>/teams/';
-
-    fetch(url, {method: 'get'})
-
-    .then((response) => response.json())
-
-    .then(function(teams) {
-	    let selectorBody = '<option selected>Countries</option>';
-	    for (let k = 0; k < teams.length; k++) {
-		let team = teams[k];
-		if (team['team_name'] != '') {
-		selectorBody += '<option value="' + team['id'] + '">'
-                                + team['team_name'] + ' (' + team['team_abbreviation'] +')'
-		                + '</option>/n';
-		}}
-	    let selector = document.getElementById('team_selector');
-	    if (selector) {
-		selector.innerHTML = selectorBody;
-	    }
-
-	})
-
-	.catch(function(error) {
-		console.log(error);
-	    });
-}
-
 
 function loadWorldCupsSelector(teams=null) {
     if (getParam('year') != null) {
@@ -764,43 +734,6 @@ function onWorldCupsSelectionChanged() {
    
     window.location = url;
 }
-
-
-
-function loadPlayersSelector() {
-
-    if (getParam('team') != null && getParam('year') != null) {
-
-	let url = getAPIBaseURL() + '/'+getParam('year')+'/'+getParam('team')+'/roster';
-
-    fetch(url, {method: 'get'})
-
-    .then((response) => response.json())
-
-    .then(function(players) {
-	    let selectorBody = '<option selected>Roster</option>';
-	    for (let k = 0; k < players.length; k++) {
-		let player = players[k];
-		//going to need to put 'id' as a return of the query, ok for now
-		selectorBody += '<option value="' + player['id'] + '">'
-                                + player['surname'] + ', ' + player['given_name']
-		                + '</option>/n';
-	    }
-
-	    let selector = document.getElementById('player_selector');
-	    if (selector) {
-		selector.innerHTML = selectorBody;
-	    }
-	})
-
-	.catch(function(error) {
-		console.log(error);
-	    });
-}
-}
-
-
-
 
 
 function matchResults(){
@@ -854,27 +787,6 @@ function dataSelect(evt) {
 }
 
 
-
-function teamGetter() {
-    let teams = [];
-    
-    checkboxes = document.getElementsByName('team');
-    for (var i = 0, n = checkboxes.length; i < n; i++) {
-        
-        if(checkboxes[i].checked == true){
-
-            val = checkboxes[i].value;
-            
-            teams.push(val);
-        }
-           
-    }
-        // save data value
-    localStorage.setItem("teams", teams);
-    return teams;
-}
-
-
 function loadMatches(years) {
     let teams = window.team_selected;
     let url = getAPIBaseURL() + '/matches/' + years + '/' + teams;
@@ -923,44 +835,7 @@ function loadMatches(years) {
         console.log(error);
     });
 }
-function loadMedalCount(years=Null) {
-    let url = getAPIBaseURL() + '/medals?years=' + years;
-    
-    fetch(url, {method: 'get'})
 
-    .then((response) => response.json())
-
-    .then(function(teams) {
-        
-
-        let tableBody = '';
-        tableBody = '<tr>'
-                    + '<TH>'+ 'Worldcup' +'</TH>'
-                    + '<TH>'+ 'Team Name' +'</TH>'
-                    + '<TH>'+ 'Number Of Medals' +'</TH>'
-                    + '</tr>\n';
-        for (let k = 0; k < teams.length; k++) {
-            let team = teams[k];
-
-            tableBody +=   
-                            '<tr ALIGN="CENTER">'
-                            + '<td>' + team['Worldcup'] + '</td>'
-                            + '<td>' + team['Team Name'] + '</td>'
-                            + '<td>' + team['Medals'] + '</td>'
-                            + '</tr>\n';
-        }
-
-        let res = document.getElementById('results');
-        if (res) {
-            res.innerHTML = tableBody;
-        }
-    })
-    
-    // Log the error if anything went wrong during the fetch.
-    .catch(function(error) {
-        console.log(error);
-    });
-}
 
 function loadMedalData(years, medal=null){
     let url = getAPIBaseURL() + '/medals/' + years + '/';
@@ -1109,82 +984,6 @@ function loadMedalData(years, medal=null){
 }
 
 
-function loadGoldMedals(years=null){
-    
-
-    let url = getAPIBaseURL() + '/gold/teams?years=' + years;
-
-    fetch(url, {method: 'get'})
-
-    .then((response) => response.json())
-
-    .then(function(teams) {
-
-        let tableBody = '';
-        tableBody = '<tr>'
-                    + '<TH>'+ 'Abbreviation' +'</TH>'
-                    + '<TH>'+ 'Team Name' +'</TH>'
-                    + '<TH>'+ 'Worldcups' +'</TH>'
-                    + '</tr>\n';
-        for (let k = 0; k < teams.length; k++) {
-            let team = teams[k];
-            // <td><input type="checkbox" name="brand">Apple</td>
-            
-            tableBody +=    '<tr ALIGN="CENTER">'
-                            + '<td>' + team['Abbreviation'] + '</td>'
-                            + '<td>' + team['Team Name'] + '</td>'
-                            + '<td>' + team['Worldcup'] + '</td>'
-                            + '</tr>\n';
-        }
-
-        let res = document.getElementById('results');
-        if (res) {
-            res.innerHTML = tableBody;
-        }
-    })
-    
-    .catch(function(error) {
-        console.log(error);
-    });
-}
-
-function loadAllTeams() {
-    
-    
-    let url = getAPIBaseURL() + '/Allcups/teams/';
-
-    fetch(url, {method: 'get'})
-
-    .then((response) => response.json())
-    
-
-    .then(function(teams) {
-        
-
-        let tableBody = '';
-        for (let k = 1; k < teams.length; k++) {
-            let team = teams[k];
-
-            tableBody += '<tr>'
-                            + '<td>' + team['team_name'] + '</td>'
-                            + '<td>' + team['team_abbreviation'] + '</td>'
-                            + '<td>' + '<input type="checkbox" name="team"  id="'
-                            + team['team_abbreviation'] + '" value="' + team['team_name'] + '">'+ '<td>'
-                            + '</tr>\n';
-        }
-
-        let res = document.getElementById('results');
-        if (res) {
-            res.innerHTML = tableBody;
-        }
-    })
-    
-    // Log the error if anything went wrong during the fetch.
-    .catch(function(error) {
-        console.log(error);
-    });
-}
-
 function loadTeamYear(years) {
 
     let url = getAPIBaseURL() + '/' + years + '/teams/';
@@ -1218,38 +1017,6 @@ function loadTeamYear(years) {
     });
 }
 
-function loadTeamCups(teams) {
-    
-    let url = getAPIBaseURL() + '/cups/' + teams;
-
-    fetch(url, {method: 'get'})
-
-    .then((response) => response.json())
-
-    .then(function(teams) {
-
-        let tableBody = '';
-        for (let k = 0; k < teams.length; k++) {
-            let team = teams[k];
-            tableBody += '<tr>'
-                            + '<th>' + "World Cups"+'</th>'
-                            + '<td>' + team['Worldcup'] + '</td>'
-                            + '<th>' + "Team Name"+'</th>'
-                            + '<td>' + team['Team Name'] + '</td>'
-                            + '</tr>\n';
-        }
-
-        let res = document.getElementById('results');
-        if (res) {
-            res.innerHTML = tableBody;
-        }
-    })
-    
-    // Log the error if anything went wrong during the fetch.
-    .catch(function(error) {
-        console.log(error);
-    });
-}
 
 function valGetter() {
     yrs = yearGetter()

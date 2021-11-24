@@ -17,10 +17,13 @@
   transition: .5s ease;
   top: 0%;
   left: 0%;
-  
+  background-image: url('field.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
 .head1 {  
-  background-color: rgb(255, 254, 254);  
+
   color: rgb(0, 0, 0);  
   padding: 10px;  
   font-size: 30px;  
@@ -168,6 +171,11 @@
     height: 300px;
     border-style: solid;
     border-width:2px;	 
+    background-image: url('field.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    color: rgb(255, 255, 255);
 }
 
 /* Horizontal navigation */
@@ -185,7 +193,7 @@ ul.horizontal-navbar li {
 
 ul.horizontal-navbar li a {
     display: block;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
@@ -193,10 +201,10 @@ ul.horizontal-navbar li a {
 
 
 
-/* ul.horizontal-navbar li a:hover {
+ul.horizontal-navbar li a:hover {
     background-color: #555;
     color: white;
-} */
+}
 
 /* table {
   border-collapse: collapse;
