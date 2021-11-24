@@ -392,8 +392,8 @@ def get_team_matches(year):
 @api.route('/allmatches/goals')
 def get_goals():
 
-    #year, team, and player are options
-    #maybe not player?
+    #year, team are options
+   
     
 
     team = flask.request.args.get('team') #this is the team name
@@ -409,7 +409,7 @@ def get_goals():
     else:
         allyears = year.split(',')
     
-    player = flask.request.args.get('player') #this is the player id
+    #player = flask.request.args.get('player') #this is the player id
 
     allscorers = []
     for year in allyears:
@@ -421,9 +421,6 @@ def get_goals():
            AND worldcups.id = players_teams_matches_worldcups.worldcup_id
            AND teams.id = players_teams_matches_worldcups.team_id
            AND players_teams_matches_worldcups.goal LIKE %s '''
-
-    #what to do about spaces in country name (El Salvador doesn't work)
-    #why is it telling me that tuple is out of range?
 
 
         if team is not None:
