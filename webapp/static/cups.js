@@ -8,7 +8,7 @@ window.onload = initialize;
 
 function initialize() {
 
-    loadWorldCupCheckBoxes();    
+    //loadWorldCupCheckBoxes();    
     loadTeamsSelector();
     loadWorldCupsSelector();
     displayStats();
@@ -121,7 +121,7 @@ function loadTeamsSelector(cups=null) {
         
             let selector = document.getElementById('team_selector');
             if (selector) {
-            selector.innerHTML += selectorBody;
+            selector.innerHTML = selectorBody;
             }
 
         })
@@ -149,10 +149,12 @@ function onCupSelection(){
 
     if(cupName != 'World Cups'){
         window.cup_selected = cupName;
+        loadTeamsSelector(cupName)
     }else{
         window.cup_selected = null;
+        loadTeamsSelector()
     }
-    loadTeamsSelector(cupName)
+    
 }
 
 function onTeamsSelectionChanged() {
@@ -161,10 +163,12 @@ function onTeamsSelectionChanged() {
 
     if(teamName != 'Teams'){
         window.team_selected = teamName;
+        loadWorldCupsSelector(teamName)
     }else{
         window.team_selected = null;
+        loadWorldCupsSelector()
     }
-    loadWorldCupsSelector(teamName)
+    
 
 }
 
@@ -1148,8 +1152,7 @@ function loadAllTeams() {
     
     
     let url = getAPIBaseURL() + '/Allcups/teams/';
-    
-    // Send the request to the teamss API /authors/ endpoint
+
     fetch(url, {method: 'get'})
 
     .then((response) => response.json())
@@ -1157,12 +1160,11 @@ function loadAllTeams() {
 
     .then(function(teams) {
         
-        // Add the <option> elements to the <select> element
+
         let tableBody = '';
         for (let k = 1; k < teams.length; k++) {
             let team = teams[k];
-            // <td><input type="checkbox" name="brand">Apple</td>
-            
+
             tableBody += '<tr>'
                             + '<td>' + team['team_name'] + '</td>'
                             + '<td>' + team['team_abbreviation'] + '</td>'
@@ -1184,24 +1186,15 @@ function loadAllTeams() {
 }
 
 function loadTeamYear(years) {
-    
 
-    //years = getParam('year');
-
-    // let url = getAPIBaseURL() + '/<years>/teams/';
     let url = getAPIBaseURL() + '/' + years + '/teams/';
-    // Send the request to the teamss API /authors/ endpoint
+
     fetch(url, {method: 'get'})
 
-    // When the results come back, transform them from a JSON string into
-    // a Javascript object (in this case, a list of author dictionaries).
     .then((response) => response.json())
     
-    // Once you have your list of author dictionaries, use it to build
-    // an HTML table displaying the author names and lifespan.
     .then(function(teams) {
-        // Add the <option> elements to the <select> element
-        
+
         let tableBody = '';
         for (let k = 0; k < teams.length; k++) {
             let team = teams[k];
@@ -1228,18 +1221,13 @@ function loadTeamYear(years) {
 function loadTeamCups(teams) {
     
     let url = getAPIBaseURL() + '/cups/' + teams;
-    // Send the request to the teamss API /authors/ endpoint
+
     fetch(url, {method: 'get'})
 
-    // When the results come back, transform them from a JSON string into
-    // a Javascript object (in this case, a list of author dictionaries).
     .then((response) => response.json())
-    
-    // Once you have your list of author dictionaries, use it to build
-    // an HTML table displaying the author names and lifespan.
+
     .then(function(teams) {
-        // Add the <option> elements to the <select> element
-        
+
         let tableBody = '';
         for (let k = 0; k < teams.length; k++) {
             let team = teams[k];
@@ -1265,18 +1253,7 @@ function loadTeamCups(teams) {
 
 function valGetter() {
     yrs = yearGetter()
-    let cLength = localStorage.getItem("checkLength");
-    
-    // if(yrs[0] == "all"){
-    //     alert(yrs[0])
-    //     yrs.remove(0)
-    //     alert(yrs)
-    // }
-    // if((yrs.length) == cLength){
-    //     //Put links here
-    //     window.location.href="/AllCups";
-    //     loadAllTeams();
-    // }else{
+
     if(yrs.length == 1){
         window.location.href="/OneCup?year="+yrs;
 
@@ -1288,7 +1265,7 @@ function valGetter() {
     }else{
         alert("You Must Print Something")
     }
-    // }
+    
     
     
 }

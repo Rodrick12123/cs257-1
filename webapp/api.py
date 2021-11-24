@@ -42,8 +42,8 @@ def get_matches(years,teams):
     print(tms)
     #how do we want to identify matches...
     query = '''SELECT DISTINCT matches.date_time, CAST(matches.date_time AS text), teams.team_name, worldcups.year, matches.stage, matches.stadium,
-                matches.city, matches.home_team, matches.home_score, matches.away_team, matches.id,
-                matches.away_score
+                matches.city, matches.home_team, matches.home_score, matches.away_team,
+                matches.away_score,  matches.id
                 FROM teams, worldcups, players_teams_matches_worldcups, matches
                 WHERE players_teams_matches_worldcups.team_id = teams.id
                 AND players_teams_matches_worldcups.worldcup_id = worldcups.id
@@ -61,7 +61,7 @@ def get_matches(years,teams):
             if ( (row[2] in tms) or ('all' in tms)): 
                 
                 if(row[3] in ylist):
-                    if(row[10] not in matchids):
+                    if(row[11] not in matchids):
                         match = {
                             'date':row[1],
                             'Worldcup':row[3],
@@ -74,7 +74,7 @@ def get_matches(years,teams):
                             'ascore':row[10]
                         }
                         match_list.append(match)
-                        matchids.append(row[10])
+                        matchids.append(row[11])
                         
         cursor.close()
         connection.close()
